@@ -1,5 +1,5 @@
 
-**packaged-utilities** is an extension of [linux-shell-base][linux-shell-base] for utilities made up of two or more files. These utilities conform to a low-level methodology just as those in **linux-shell-base**.
+**packaged-utilities** is an extension of [linux-shell-base][linux-shell-base] for utilities made up of two or more files. These utilities conform to a low-level methodology like those in **linux-shell-base**.
 
 # Content
 
