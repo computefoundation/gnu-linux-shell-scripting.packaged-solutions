@@ -1,0 +1,6 @@
+{MNTPNT_DIR}/components/main
+{MNTPNT_DIR}/components/main/configurations/default
+{MNTPNT_DIR}/components/main/configurations/webapp
+{MNTPNT_DIR}/components/main/resources
+{MNTPNT_DIR}/global
+{MNTPNT_DIR}/global/resources

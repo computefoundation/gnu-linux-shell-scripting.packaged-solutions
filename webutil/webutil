@@ -1,0 +1,636 @@
+#!/usr/bin/env bash
+# 
+# Introduction:
+#   See https://github.com/linux-shell-base/packaged-utilities/tree/master/webutil
+# 
+# Initial set up:
+#   The only set up required is to retrieve the dependencies and assign
+#   preferred browser commands in "User configurations."
+# 
+# Dependencies:
+#   xterm: Used for opening terminal windows to run terminal browsers. For
+#   quick and easy startup, simply download it. If another terminal emulator is
+#   preferred, please adjust the command in the TERMINAL function in "User
+#   configurations."
+# 
+#   url-search-placeholder-parser.pl in the "_global" directory. There are two
+#   ways it can be retrieved:
+#   1. Download it to this script's directory, optionally with the following:
+#      wget -O <path_to_dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
+#   2. Download the "_global" directory and adjust its path in "User
+#      configurations."
+# 
+#   URI::Escape Perl module; install with command "cpan URI::Escape".
+# 
+
+readonly HERE="$(dirname "${0}")"
+readonly SCRIPT_NAME="$(basename ${BASH_SOURCE[0]//.sh})"
+
+# ===========================================================
+#   User configurations
+# ===========================================================
+
+# Directory where URL aliases files are stored
+readonly URL_ALIASES_FILES_DIR="${HERE}"
+
+# URL aliases files
+readonly URL_ALIASES_FILES=(
+  'url-aliases'
+)
+
+# URL search placeholder parser script
+# Use the one in a local copy of the "_global" directory (from
+# packaged-utilities) if it exists (path will likely have to be adjusted); use a
+# copy in the current directory otherwise.
+glblDir="${HERE}/../_global"
+[ -f "${glblDir}/url-search-placeholder-parser.pl" ] && \
+readonly URL_SRCH_PLH_PARSER_SCRIPT="${glblDir}/url-search-placeholder-parser.pl" || \
+readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl"
+
+# GUI and terminal web browsers (commands)
+# Webutil will open all URLs for a browser in one command for that browser. To
+# run a browser command for each of its URLs individually, prepend "::" to it
+# (only applies to GUI browsers). To run a command after the browser command has
+# run, append ";;" to it followed by the command (applies to both GUI and
+# terminal browsers).
+readonly BROWSER_GUI1='chromium'
+readonly BROWSER_GUI2='chromium --incognito'
+readonly BROWSER_GUI3='firefox -new-tab'
+readonly BROWSER_GUI4='firefox -private-window'
+readonly BROWSER_GUI5='dwb;;id="$(xdotool search --class "dwb"|tail -1)"; [ -n "${id}" ] && xdotool windowactivate "${id}"'
+readonly BROWSER_GUI6='::netsurf'
+readonly BROWSER_GUI7=''
+readonly BROWSER_GUI8=''
+readonly BROWSER_GUI9=''
+readonly BROWSER_TERM1='/usr/bin/w3m'
+readonly BROWSER_TERM2='/usr/bin/w3m -s +120'
+readonly BROWSER_TERM3='/usr/bin/lynx --accept_all_cookies'
+readonly BROWSER_TERM4=''
+readonly BROWSER_TERM5=''
+readonly BROWSER_TERM6=''
+readonly BROWSER_TERM7=''
+
+# Whether or not to use all arguments for a search query with the default search
+# URL if the URL alias was not found; will exit otherwise.
+readonly SEARCH_IF_ALIAS_NOT_FOUND=true
+
+# Default search URL (must contain a {search\D} placeholder)
+readonly DEFAULT_SEARCH_URL='http://www.google.com/search?q={search\+}'
+
+# Terminal emulator command used for opening terminal windows.
+# (Note: A command is executed for it, being a terminal browser command, and it
+# exits immediately after the command finishes. The browser's exit status is
+# checked to prevent the terminal window from closing immediately if it
+# encounters an error (e.g. no internet connection)).
+TERMINAL() {
+  startX=50; startY=100; width=110; height=44
+  geometry="${width}x${height}+${startX}+${startY}"
+  nohup xterm -xrm 'XTerm.vt100.allowTitleOps: false' -geometry "${geometry}" \
+      -fg '#FFFFFF' -bg '#000000' -fa 'size=12:antialias=true' -title "${1}" \
+      -e bash -c "eval ${@:2};"' rs=$? && [ $rs -ne 0 ] && sleep 3' \
+      &>/dev/null &
+}
+
+# Whether or not to open all URLs for a terminal browser in their own individual
+# terminal windows; they will be opened in the same terminal window for their
+# browser otherwise. (The latter works well for browsers like w3m which uses
+# buffers that can be switched using "s"). (This does not apply to the dump
+# option as each URL is always dumped to its own terminal window).
+readonly OPEN_TERM_BRWSR_URLS_IN_MULT_WIND=false
+
+# Default less options used for the less command when dumping a webpage.
+readonly DUMP_LESS_OPTS='-IFRXMc'
+
+# ===========================================================
+#   Initialization
+# ===========================================================
+
+printHelpMessage() {
+  if [ "${1}" = 'full' ]; then
+    echo -e "${SCRIPT_NAME}: Utility app to make using the web easier"
+  fi
+  helpMsg="
+Usage:
+  webutil [options] <url alias> [search queries]
+  webutil [options] <websites/URLs...>
+  webutil [options] <search query for default search url>
+
+Options:
+  -<1-9>  -g<1-9>    open in GUI browser of the given number
+          -t<1-7>    open in terminal browser of the given
+                     number
+  -d  -dump[+NUM_PAGES]
+                     dump output of each URL to a
+                     terminal window (using terminal
+                     browser 1 by default);
+                     optionally, jump forward the
+                     given number of pages.
+  -s                 override URL alias matching and search
+                     with the default search URL using all
+                     arguments as a search query
+  -a                 use all arguments for URL aliases
+                     (all arguments after the last matching
+                     alias will be used for search queries)
+  -l  --list         list current browser commands
+  -h  --help         show help message
+
+
+Examples (first usage):
+  webutil wikip history of science
+  webutil dir phoenix, az %% seattle, wa
+
+  Multiple search queries can be specified for
+  a URL alias; search queries are delimited by
+  \"%%\".
+
+Second usage:
+  If the first argument begins with \"www.\",
+  \"http[s]://\", \"ftp://\" or \"file://\", each
+  argument will be openend as a URL directly.
+
+Third usage:
+  If a URL alias is not found, all arguments
+  will be used as search queries with the default
+  search URL (this can be changed in \"User
+  configurations\").
+
+Notes:
+  Using any of the browser type or dump option(s)
+  will override all alias and URL configuration
+  options in the URL aliases file.
+  
+  Unsafe URL characters in a search query
+  will be encoded. A character can be kept from
+  being encoded by escaping it with two
+  backslashes.\
+"
+  echo -e "${helpMsg}"
+}
+
+printBrowserCommands() {
+  msg="webutil: Current browsers (commands):"
+  for i in {1..9}; do
+    brwsrVar="BROWSER_GUI${i}"
+    browser="${!brwsrVar}"
+    msg+="\nGUI ${i}: ${browser}"
+  done
+  for i in {1..7}; do
+    brwsrVar="BROWSER_TERM${i}"
+    browser="${!brwsrVar}"
+    msg+="\nTERM ${i}: ${browser}"
+  done
+  echo -e "${msg}"
+}
+
+# printMsgForBrwsrVarNotDef:
+#   Print an error message for the browser variable not being defined. Argument
+#   1 should be how the variable was defined; it must be either "alias", "url"
+#   or empty if it was specified with an argument option.
+printMsgForBrwsrVarNotDef() {
+  if [ $# -ge 3 ]; then
+    brwsrValCaps="$(echo -n "${3}"|tr '[:lower:]' '[:upper:]')"
+  fi
+
+  if [ "${1}" = 'alias' ]; then
+    echo -e "webutil: Browser \"${3}\" selected for alias\n  \"${2}\""\
+        "in one of the URL aliases\n  files, however, variable"\
+        "BROWSER_${brwsrValCaps} is\n  not defined." 1>&2
+  elif [ "${1}" = 'url' ]; then
+    echo -e "webutil: Browser \"${3}\" selected for a URL in\n  one of"\
+        "the URL aliases files, however, variable\n  BROWSER_${brwsrValCaps}"\
+        "is not defined." 1>&2
+  else
+    echo -e "webutil: Browser \"${2}\" is not defined." 1>&2
+  fi
+
+  read -d '' msg <<-EOF
+    Please define it in "User configurations"
+    or use a different browser. The value may
+    be a new browser command or simply a
+    duplicate of another.
+	EOF
+  
+  while read -r line; do echo "  ${line}" 1>&2; done <<< "${msg}"
+}
+
+# DEFAULT/ALIAS CONFIGURATIONS (Assigned by either argument or alias/URL
+# configuration options; this is because argument options override all alias
+# options. If their values are changed, they will be applied everytime a URL is
+# opened unless changed by argument or alias/URL configuration options).
+# Initial/default browser
+BROWSER="${BROWSER_GUI1}"
+# Whether or not to dump the page (it is likely not preferrable to set this to
+# true by default)
+DUMP=false
+# Number of pages to skip forward after dumping a URL's output
+DUMP_PG_FWD=0
+
+# UTILITY VARIABLES
+BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
+                   # browser is changed
+
+if [ ! -f "${URL_SRCH_PLH_PARSER_SCRIPT}" ]; then
+  echo -e 'webutil: url-search-placeholder-parser.pl\n  not found.'\
+      "Please get it using one of the\n  following two methods:\n\n  1."\
+      "Download it to webutil's directory, optionally\n     with the"\
+      'following:\n' 1>&2
+  url='https://raw.githubusercontent.com/linux-shell-base/packaged-utilities'
+  url+='/tree/master/_global/url-search-placeholder-parser.pl'
+  echo -n "     wget -O <path_to_dir> ${url}" 1>&2
+  echo -e '\n\n  2. Download the "_global" directory in\n    '\
+      'bin/utilities/packaged and adjust its path in\n     "User'\
+      'configurations."' 1>&2
+  exit 1
+fi
+
+for urlAliasesFile in "${URL_ALIASES_FILES[@]}"; do
+  path="${URL_ALIASES_FILES_DIR}/${urlAliasesFile}"
+  if [ ! -f "${path}" ]; then
+    echo -e "webutil: URL aliases file not found:\n  '${path}'" 1>&2
+    exit 1
+  fi
+
+  URL_ALIASES_FILES_STR+="${urlAliasesFile}|"
+done
+
+# ===========================================================
+#   Process options and arguments
+# ===========================================================
+
+OPTS="$(getopt -a -o 1,2,3,4,5,6,7,8,9,d::,s,a,l,h --long g1,g2,g3,g4,g5,g6,g7 \
+    --long g8,g9,t1,t2,t3,t4,t5,t6,t7,list,help -n "${SCRIPT_NAME}" -- "${@}")"
+[ $? -ne 0 ] && exit 1
+eval set -- "${OPTS}" 
+while true; do
+  case "${1}" in
+    --g?|-1|-2|-3|-4|-5|-6|-7|-8|-9)
+        [[ "${1}" = '--g'* ]] && brwsrNum="${1:3}" || brwsrNum="${1:1}"
+        brwsrVar="BROWSER_GUI${brwsrNum}"
+        BROWSER="${!brwsrVar}"
+        BROWSER_TYPE='GUI'
+        CONFIG_OPT_SET=true
+        ;;
+    --t?)
+        brwsrNum="${1:3}"
+        brwsrVar="BROWSER_TERM${brwsrNum}"
+        BROWSER="${!brwsrVar}"
+        BROWSER_TYPE='TERM'
+        CONFIG_OPT_SET=true
+        ;;
+    -d|-dump)
+        DUMP=true; CONFIG_OPT_SET=true
+        if [ -n "${2}" ]; then
+          arg="${2}"
+          [[ "${arg}" = 'ump'* ]] && arg="${arg#'ump'}"
+          if [[ "${arg}" =~ ^\+([0-9]{1,3}(\.[0-9])?)$ ]]; then
+            DUMP_PG_FWD="${BASH_REMATCH[1]}"
+          elif [ -n "${arg}" ]; then
+            echo "webutil: invalid option '${1}${2}'" 1>&2; exit 1;
+          fi
+        fi
+        shift
+        ;;
+    -s) OPT_OVERRIDE_ALIAS_MATCHING=true;;
+    -a) OPT_USE_ALL_ARGS_FOR_ALIASES=true;;
+    --list|-l) printBrowserCommands; exit;;
+    --help|-h) printHelpMessage full; exit;;
+    --) shift; break;;
+    * ) break;;
+  esac
+  shift
+done
+
+if [[ $# -eq 0 && "${DUMP}" = 'true' ]]; then
+  echo 'webutil: cannot use option "dump" without arguments' 1>&2
+  exit 1
+fi
+
+if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
+  if [ "${OPT_OVERRIDE_ALIAS_MATCHING}" = 'true' ]; then
+    echo 'webutil: cannot use options -s and -a together' 1>&2
+    exit 1
+  fi
+  if [ $# -eq 0 ]; then
+    echo -e 'webutil: one or more aliases required\n  with option -a' 1>&2
+    exit 1
+  fi
+fi
+
+if [ -z "${BROWSER}" ]; then
+  printMsgForBrwsrVarNotDef '' "${BROWSER_TYPE}${brwsrNum}"
+  exit 1
+fi
+
+if [[ "${DUMP}" = 'true' && "${BROWSER_TYPE}" = 'GUI' ]]; then
+  BROWSER="${BROWSER_TERM1}"
+  BROWSER_TYPE='TERM'
+fi
+
+# ===========================================================
+#   Utility functions
+# ===========================================================
+
+# parseAliasCfgOpts:
+#   Parse configuration options for an alias and assign global configurations
+#   values based on their values.
+parseAliasCfgOpts() {
+  local brwsrVar
+  for aliasOpt in ${ALIAS_OPTS[@]}; do
+    case "${aliasOpt}" in
+      browser*)
+        brwsrVal="${aliasOpt#*=}"
+        brwsrValCaps="$(echo -n "${brwsrVal}"|tr '[:lower:]' '[:upper:]')"
+        brwsrVar="BROWSER_${brwsrValCaps}"
+        BROWSER="${!brwsrVar}"
+        BROWSER_TYPE="${brwsrValCaps%[0-9]}"
+
+        [ -z "${BROWSER}" ] && printMsgForBrwsrVarNotDef 'alias' "${1}" \
+            "${brwsrVal}" && exit 1
+        ;;
+      dump*)
+        DUMP=true
+        if [[ "${aliasOpt}" = 'dump+'* ]]; then
+          DUMP_PG_FWD="${aliasOpt#*+}"
+        fi
+        if [ -z "${brwsrVar}" ]; then
+          BROWSER="${BROWSER_TERM1}"
+          BROWSER_TYPE='TERM'
+        fi
+        ;;
+    esac
+  done
+}
+
+# createBrowserUrlHashes:
+#   Create hashes for URLs using the same browser and URLs that are to dump
+#   their output and process their final configuration values.
+createBrowserUrlHashes() {
+  for url_urlOpts in ${URLS_URLS_OPTS[@]}; do
+    url_urlOptsArr=(${url_urlOpts//'<>'/ })
+    if [[ ${#url_urlOptsArr[@]} -eq 1 || "${CONFIG_OPT_SET}" = 'true' ]]; then
+      if [ "${DUMP}" != 'true' ]; then
+        key="${BROWSER}%%${BROWSER_TYPE}"
+        BROWSER_URL_HASHES["${key}"]+=" ${url_urlOptsArr[0]}"
+      else
+        # add the dump page forward value so that it can be retrieved later
+        [ "${DUMP_PG_FWD}" -ne 0 ] && addPgFwd="<>${DUMP_PG_FWD}";
+        BROWSER_URL_DUMP_HASHES["${BROWSER}"]+=" ${url_urlOptsArr[0]}${addPgFwd}"
+      fi
+    else
+      unset brwsrVal
+      unset hasDumpOpt
+      unset pgFwdVal
+      for urlOpt in ${url_urlOptsArr[@]:1}; do
+        case "${urlOpt}" in
+          browser*) brwsrVal="${urlOpt#*=}";;
+          dump*)
+            hasDumpOpt=true
+            [[ "${urlOpt}" = 'dump+'* ]] && pgFwdVal="${urlOpt#*+}"
+            ;;
+        esac
+      done
+
+      if [[ "${hasDumpOpt}" = 'true' && -z "${brwsrVal}" ]]; then
+        brwsrVal='term1'
+      fi
+
+      brwsrValCaps="$(echo -n "${brwsrVal}"|tr '[:lower:]' '[:upper:]')"
+      brwsrVar="BROWSER_${brwsrValCaps}"
+      brwsr="${!brwsrVar}"
+
+      [ -z "${brwsr}" ] && printMsgForBrwsrVarNotDef 'url' '' "${brwsrVal}" \
+          && exit 1
+
+      brwsrType="${brwsrValCaps%[0-9]}"
+
+      if [[ ( "${hasDumpOpt}" = 'true' || "${DUMP}" = 'true' ) && ${brwsrType} \
+          != 'GUI' ]]; then
+        unset addPgFwd
+        if [ "${hasDumpOpt}" = 'true' ]; then
+          [ -n "${pgFwdVal}" ] && addPgFwd="<>${pgFwdVal}"
+        else
+          [[ "${DUMP_PG_FWD}" != 0 ]] && addPgFwd="<>${DUMP_PG_FWD}"
+        fi
+
+        BROWSER_URL_DUMP_HASHES["${brwsr}"]+=" ${url_urlOptsArr[0]}${addPgFwd}"
+      else
+        BROWSER_URL_HASHES["${brwsr}%%${brwsrType}"]+=" ${url_urlOptsArr[0]}"
+      fi
+    fi
+  done
+}
+
+# finalizeCfgsAndExeBrowser:
+#   Finalize configurations and execute browser for one or more URLs.
+finalizeCfgsAndExeBrowser() {
+  local browser="${1}"
+  local browserType="${2}" # 'GUI' or 'TERM'
+  local dump="${3}"
+  local dumpPgFwd="${4}"
+  local urls="${@: 5}"
+
+  # Quotes must be put around URLs because otherwise they will fail to open
+  # correctly if they contain special bash characters such as the AND and OR
+  # operators.
+  local urlsArr=(${urls})
+  local termTtl
+  for url in "${urlsArr[@]}"; do
+    local urlsNew+=" '${url}'"
+    if [ "${browserType}" = 'TERM' ]; then
+      ttlStrt="${url: 6}"
+      { [ "${#urlsArr[@]}" -ge 3 ] && termTtl+="...${ttlStrt%%\?*}"; } || \
+      { [ "${#urlsArr[@]}" -gt 1 ] && termTtl+="...${ttlStrt%%&*}"; } || \
+          termTtl="${url}"
+    fi
+  done
+  urls="${urlsNew}"
+  if [ "${browserType}" = 'TERM' ]; then
+    [ "${#urlsArr[@]}" -gt 1 ] && termTtl+='...'
+  fi
+
+  if [[ "${browser}" = *';;'* ]]; then
+    postRunCmd="${browser##*';;'}"
+    browser="${browser%';;'*}"
+  fi
+
+  if [ "${dump}" = 'true' ]; then
+    cmd="${browser} -dump ${urls} | less ${DUMP_LESS_OPTS} +${dumpPgFwd}p"
+    TERMINAL "${termTtl}" "${cmd}"
+  else
+    if [ "${browserType}" = 'GUI' ]; then
+      if [[ "${browser}" = '::'* ]]; then
+        browser="${browser#*'::'}"
+
+        local urlsArr=(${urls})
+        for url in "${urlsArr[@]}"; do
+          eval nohup "${browser} ${url}" &>/dev/null &
+        done
+      else
+        eval nohup "${browser} ${urls}" &>/dev/null &
+      fi
+    else
+      TERMINAL "${termTtl}" "${browser} ${urls}"
+    fi
+  fi
+
+  if [ -n "${postRunCmd}" ]; then
+    eval "${postRunCmd}"
+  fi
+}
+
+# ===========================================================
+#   Open arguments as URLs if first is a website or URL and exit
+# ===========================================================
+
+if [[ "${1}" =~ ^(www\.|((http[s]?|ftp|file)://)).*\..* ]]; then
+  finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
+      "${DUMP_PG_FWD}" "${@}"
+  exit
+fi
+
+# ===========================================================
+#   Get and parse URLs for an alias if it exists; search otherwise
+# ===========================================================
+
+# If not using all arguments for URL aliases, use the first argument as the
+# alias and if it is found, use the remaining for search queries for the URLs
+# returned for it (which will include at least 1). If the alias was not found,
+# search with the default search URL using all arguments as a search query. If
+# using all arguments for URL aliases, return and open all URLs for all matched
+# aliases. If no aliases were found, exit. (Note: The return string format of
+# url-aliases-parser.pl is given in its documentation).
+
+if [ -z "${OPT_OVERRIDE_ALIAS_MATCHING}" ]; then
+  if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
+    urlAliasesParserArgs="${@}"
+  else
+    urlAliasesParserArgs="${1}"
+  fi
+
+  urlAliasesParserOut="$("${HERE}/url-aliases-parser.pl" \
+      "${URL_ALIASES_FILES_DIR}" "${URL_ALIASES_FILES_STR}" \
+      ${urlAliasesParserArgs})"
+fi
+
+if [ -n "${urlAliasesParserOut}" ]; then
+  if [[ "${urlAliasesParserOut}" = 'error:'* ]]; then
+    echo "error in URL aliases file ${urlAliasesParserOut#'error:'}" 1>&2
+    exit 1
+  elif [[ "${urlAliasesParserOut}" = 'error_:'* ]]; then
+    echo "error in arguments: ${urlAliasesParserOut#'error_:'}" 1>&2
+    exit 1
+  fi
+
+  initBrowser="${BROWSER}"
+  initDump="${DUMP}"
+  initDumpPgFwd="${DUMP_PG_FWD}"
+
+  declare -gA BROWSER_URL_HASHES
+  declare -gA BROWSER_URL_DUMP_HASHES
+
+  aliases_aliasOpts_urls_urlsOpts=(${urlAliasesParserOut//'<&>'/ })
+
+  numAliasesMtchd="${#aliases_aliasOpts_urls_urlsOpts[@]}"
+  urlSearchPlaceholderParserArgs="${@: $((numAliasesMtchd + 1))}"
+
+  for as_aO_us_usO_indx in "${!aliases_aliasOpts_urls_urlsOpts[@]}"
+  do
+
+    alias_aliasOpts_urls_urlsOpts="\
+        ${aliases_aliasOpts_urls_urlsOpts[${as_aO_us_usO_indx}]}"
+
+    # Variable formats quick reference:
+    #   aliasOpts_urls_urlsOpts[0] (will not exist if alias has no options):
+    #     "[alias_opt1[<>alias_opt2]]"
+    #   aliasOpts_urls_urlsOpts[1] (will always contain at least one URL):
+    #     "URL1[<>opt1[<>opt2]][<|>URL2[<>opt1[<>opt2]][<|>URL3[<>opt1[<>opt2]]
+    #     ...]]"
+    #   ALIAS_OPTS (array; may be empty):
+    #     (["alias_opt1" "alias_opt2"])
+    #   URLS_URLS_OPTS (array; will always contain at least one element):
+    #     ("URL1[<>opt1[<>opt2]]" ["URL2[<>opt1[<>opt2]]" ...])
+
+    aliasOpts_urls_urlsOpts=(${alias_aliasOpts_urls_urlsOpts//'<$>'/ })
+
+    setUpUrlsUrlsOptsArr() {
+      urlSrchPlhParserOut="$("${URL_SRCH_PLH_PARSER_SCRIPT}" \
+          "${aliasOpts_urls_urlsOpts["${1}"]}" \
+          ${urlSearchPlaceholderParserArgs})"
+      [[ "${urlSrchPlhParserOut}" = 'error:'* ]] && \
+          echo -e "error in URL aliases file: ${urlSrchPlhParserOut#'error:'}" \
+          1>&2 && exit 1
+      URLS_URLS_OPTS=(${urlSrchPlhParserOut//'<|>'/ })
+    }
+
+    if [ ${#aliasOpts_urls_urlsOpts[@]} -eq 1 ]; then
+      setUpUrlsUrlsOptsArr '0' "${@}"
+    else
+      if [ -z "${CONFIG_OPT_SET}" ]; then
+        ALIAS_OPTS=(${aliasOpts_urls_urlsOpts[0]//'<>'/ })
+        argNum=$((${as_aO_us_usO_indx} + 1))
+        parseAliasCfgOpts "${!argNum}"
+      fi
+
+      setUpUrlsUrlsOptsArr '1' "${@}"
+    fi
+
+    # Create hashes for URLs using the same browser so they can be opened with
+    # the browser command once rather than individually.
+    createBrowserUrlHashes
+
+    for brwsr_brwsrType in "${!BROWSER_URL_HASHES[@]}"
+    do
+      brwsr="${brwsr_brwsrType%'%%'*}"
+      brwsrType="${brwsr_brwsrType#*'%%'}"
+      urls="${BROWSER_URL_HASHES["${brwsr_brwsrType}"]}"
+
+      if [[ ${OPEN_TERM_BRWSR_URLS_IN_MULT_WIND} = 'true' && ${brwsrType} = \
+          'TERM' ]]; then
+        for url in ${urls[@]}; do
+          finalizeCfgsAndExeBrowser "${brwsr}" ${brwsrType} false 0 "${url}"
+        done
+      else
+        [ "${as_aO_us_usO_indx}" -eq \
+            "$((${#aliases_aliasOpts_urls_urlsOpts[@]} - 1))" ] && 
+            finalizeCfgsAndExeBrowser "${brwsr}" ${brwsrType} false 0 \
+            "${urls[@]}"
+      fi
+    done
+
+    for brwsr in "${!BROWSER_URL_DUMP_HASHES[@]}"
+    do
+      urls_urlsDumpPgFwd="${BROWSER_URL_DUMP_HASHES["${brwsr}"]}"
+
+      for urls_urlDumpPgFwd in ${urls_urlsDumpPgFwd[@]}; do
+        urls_urlDumpPgFwd=(${urls_urlDumpPgFwd//'<>'/ })
+
+        [ "${#urls_urlDumpPgFwd[@]}" -gt 1 ] && \
+            pgFwd="${urls_urlDumpPgFwd[1]}" || pgFwd='0'
+
+        finalizeCfgsAndExeBrowser "${brwsr}" 'TERM' true "${pgFwd}" \
+            "${urls_urlDumpPgFwd[0]}"
+      done
+    done
+
+    BROWSER="${initBrowser}"
+    DUMP="${initDump}"
+    DUMP_PG_FWD="${initDumpPgFwd}"
+  done #!for each alias options and URLs
+
+else
+  if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
+    echo 'webutil: no aliases found'
+    exit
+  fi
+
+  if [ "${SEARCH_IF_ALIAS_NOT_FOUND}" != 'true' ]; then
+    echo "webutil: alias \"${1}\" not found"
+    exit
+  fi
+
+  dfltSrchUrlPrsd="$("${URL_SRCH_PLH_PARSER_SCRIPT}" \
+      "${DEFAULT_SEARCH_URL}" "${@}")"
+
+  finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
+      "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
+fi

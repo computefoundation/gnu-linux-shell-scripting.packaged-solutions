@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+# 
+# Update the locate database.
+# 
+# Notes:
+#   The database file names in the case blocks under sections "File paths" and
+#   "Directory paths" must match those defined in the DB_FILE_NAMES array.
+# 
+
+readonly HERE="$(dirname "${0}")"
+source "${HERE}/CONSTANTS.sh"
+
+# Recursively output the given path to a database file.
+# Arguments:
+#   1. Type: "f" for files or "d" for directories
+#   2. Max search depth
+#   3. Destination database file
+#   4. Path to output recursively (note: will accept wildcards)
+#   5. (Optional) "--nodot": skip dot files and directories
+find_out() {
+  if [[ $# -le 3 || $# -ge 6 ]]; then
+    echo 'updatedb: invalid number of arguments' 1>&2
+    exit 1
+  fi
+
+  if [[ ! -f "${4}" && ! -d "${4}" ]]; then
+    echo -e "updatedb: ’${4}’: No such file or directory"
+    return 1
+  fi
+
+  findOpts="-maxdepth ${2} -type ${1}"
+
+  # -- Uncomment to disclude vim swap files in find paths --
+  # findOpts+=" ! -path '*/*\.swp' ! -path '*/*\.swo'"
+
+  if [ "${5}" = '--nodot' ]; then
+    find ${4} ${findOpts} ! -path '*/\.*' >> "${3}"
+  else
+    find ${4} ${findOpts} >> "${3}"
+  fi
+}
+
+# The next two sections are where the file and directory output paths are
+# specified. The function used to output a path is find_out.
+
+# =========================================================
+#   File paths
+# =========================================================
+
+for dbFileName in "${DB_FILE_NAMES[@]}"; do
+  dest="${FILE_PATHS_DB_DIR}/${dbFileName}"
+
+  case "${dbFileName}" in
+    'container1')
+      if mountpoint '/mnt/usb2' >/dev/null; then
+        echo -n '' > "${dest}"
+        find_out 'f' '0' "${dest}" '/mnt/usb2/general/notes/assignment.txt'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/general'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/general/reference'
+        find_out 'f' '0' "${dest}" '/mnt/usb2/other/finished_tasks.txt'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/finance'
+        find_out 'f' '9' "${dest}" '/mnt/usb2/current' --nodot
+        find_out 'f' '1' "${dest}" '/mnt/usb2/records/internal'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/records/external'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/bookmarks'
+      fi
+      ;;
+
+    'container2')
+      if mountpoint '/mnt/usb2' >/dev/null; then
+        echo -n '' > "${dest}"
+        find_out 'f' '5' "${dest}" '/mnt/usb3/components/main'
+        find_out 'f' '0' "${dest}" '/mnt/usb3/components/configurations/default/main_config.sh'
+        find_out 'f' '0' "${dest}" '/mnt/usb3/components/main/resources/logo.png'
+        find_out 'f' '2' "${dest}" '/mnt/usb3/global'
+      fi
+      ;;
+
+    'home-data')
+      echo -n '' > "${dest}"
+      find_out 'f' '1' "${dest}" '/home/<username>/documents'
+      find_out 'f' '0' "${dest}" '/home/<username>/.bashrc'
+      find_out 'f' '0' "${dest}" '/home/<username>/.bash_profile'
+      find_out 'f' '0' "${dest}" '/home/<username>/.vimrc'
+      find_out 'f' '0' "${dest}" '/home/<username>/.ssh/config'
+      find_out 'f' '1' "${dest}" '/home/<username>/bin'
+      find_out 'f' '0' "${dest}" '/home/<username>/share/calendar/events.txt'
+      find_out 'f' '2' "${dest}" '/home/<username>/pictures'
+      find_out 'f' '1' "${dest}" '/home/<username>/archived_data/backup'
+      ;;
+  esac
+done
+
+# =========================================================
+#   Directory paths
+# =========================================================
+
+for dbFileName in "${DB_FILE_NAMES[@]}"; do
+  dest="${DIR_PATHS_DB_DIR}/${dbFileName}"
+
+  case "${dbFileName}" in
+    'container1')
+      if mountpoint '/mnt/usb2' >/dev/null; then
+        echo -n '' > "${dest}"
+        find_out 'd' '1' "${dest}" '/mnt/usb2/general'
+        find_out 'd' '1' "${dest}" '/mnt/usb2/current'
+        find_out 'd' '1' "${dest}" '/mnt/usb2/records'
+        find_out 'd' '0' "${dest}" '/mnt/usb2/bookmarks'
+      fi
+      ;;
+
+    'container2')
+      if mountpoint '/mnt/usb2' >/dev/null; then
+        echo -n '' > "${dest}"
+        find_out 'd' '5' "${dest}" '/mnt/usb3/components/main'
+        find_out 'd' '0' "${dest}" '/mnt/usb3/global'
+        find_out 'd' '0' "${dest}" '/mnt/usb3/global/resources'
+      fi
+      ;;
+
+    'home-data')
+      echo -n '' > "${dest}"
+      find_out 'd' '0' "${dest}" '/home/<username>/documents'
+      find_out 'd' '0' "${dest}" '/home/<username>/bin'
+      find_out 'd' '0' "${dest}" '/home/<username>/share'
+      find_out 'd' '0' "${dest}" '/home/<username>/pictures'
+      find_out 'd' '0' "${dest}" '/home/<username>/archived_data'
+      ;;
+  esac
+done
+
+# =========================================================
+#   Final parsing for the mountpoint directory paths
+# =========================================================
+
+for dbDir in "${FILE_PATHS_DB_DIR}" "${DIR_PATHS_DB_DIR}"; do
+  for dbFileName in "${DB_FILE_NAMES[@]}"; do
+    dbFile="${dbDir}/${dbFileName}"
+    if [ -f "${dbFile}" ]; then
+      for mntpntDir in "${MNTPNT_DIRS[@]}"; do
+        [[ "${mntpntDir}" = *'/' ]] && mntpntDir="${mntpntDir::-1}"
+          sed -i "s,${mntpntDir}/,{MNTPNT_DIR}/," "${dbFile}"
+      done
+    fi
+  done
+done

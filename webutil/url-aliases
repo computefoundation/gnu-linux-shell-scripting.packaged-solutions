@@ -1,0 +1,243 @@
+' url-aliases (documentation on aliases and URLs with examples)
+' 
+' Format:
+' 
+'   alias1|alias2|...
+'   url1
+'   url2
+'   ...more urls...
+' 
+'   alias|
+'   url1
+'   url2
+'   ...more urls...
+' 
+' Aliases:
+' 
+'   Aliases are defined with a vertical bar ("|") before or after them, which is
+'   also used to separate and define multiple aliases for one or more URLs.
+' 
+' {search\D} placeholder:
+' 
+'   URLs requiring a search query can contain a {search\D} placeholder (where D 
+'   is the URL's space delimiter) in its place to have it be replaced by the
+'   search query passed to webutil.
+'       E.g. webutil "stores" "specialty hardware"
+'       # Opens all URLs aliased by "stores" and replaces each of their
+'       # {search\D} placeholders with "specialtyDhardware".
+'   (See webutil's help documentation for information on passing in multiple
+'   search queries).
+' 
+'   A URL may contain up to eight {search\D} placeholders to allow multiple
+'   search queries (e.g. start and end locations for travel directions) or to
+'   copy them within itself. The search query used by each placeholder
+'   corresponds to its position in the URL by default. If a search query for
+'   a placeholder does not exist, the placeholder will be replaced with an empty
+'   string.
+' 
+'   Placeholder options can be used to change and modify the search query used
+'   by a placeholder. They are specified with a bang ("!") and placed right
+'   before the delimiter specifier. They are the following:
+' 
+'     !<P>:    Use search query at position P in arguments (e.g. {search!3\D})
+'     !W<P>:   Use only word at position P in the search query; will work for
+'              multiple words (e.g. {search!W2!W5!W6\+})
+'     !U[P]:   Make word at position P (or all words if P is omitted) in the
+'              search query upper case (e.g. {search!U1!U3\+});
+'     !C:      Capitalize all words in the search query
+'     !R:      Reverse all words in the search query
+'     !M:      Remove all commas in the search query
+' 
+'   Unsafe characters in a URL will be encoded and can be escaped with two
+'   backslashes to not be (this also applies for search queries passed to
+'   webutil).
+' 
+'   Instructions on adding a new URL with a {search\D} placeholder are at the
+'   bottom of this file.
+' 
+' Configuration options:
+' 
+'   Options can be used to configure how one or more URLs are opened. They can
+'   be placed after the last alias on an alias line to apply to multiple URLs,
+'   or after an individual URL. They are the following:
+' 
+'   %browser=VALUE:  Browser to use; possible values are "gui<1-5>" (for
+'                    graphical browsers) and "term<1-3>" (for terminal
+'                    browsers). (Browsers are defined in webutil under "User
+'                    configurations"; default is GUI 1).
+' 
+'   %dump[+NUM_PAGES]:  Dump the output of each URL to a terminal window (using
+'                       terminal browser 1 by default). Optionally, jump forward
+'                       the given number of pages. (The letter "p" may be
+'                       appended to NUM_PAGES for readability).
+' 
+'   Each URL configuration option will override the corresponding one for its
+'   alias.
+' 
+' Examples:
+' 
+'   Many of the examples below have a comment beginning with "Ex." for
+'   explanation.
+' 
+
+' ---------------------------------------------------
+'   MAIN
+' ---------------------------------------------------
+
+search|s|google|g
+http://www.google.com/search?q={search\+}
+
+search2|s2|yahoo
+https://search.yahoo.com/search?p={search\+}
+
+images|img
+https://www.google.com/search?site=&tbm=isch&q={search\+}
+
+videos|v|youtube|yt
+https://www.youtube.com/results?search_query={search\+}
+
+dictionary|dict
+http://www.thefreedictionary.com/{search\+}
+
+' Ex.: Open second dictionary in GUI browser 2.
+dictionary2|dict2 %browser=gui2
+http://www.merriam-webster.com/dictionary/{search\+}
+
+thesaurus|thes
+http://www.thesaurus.com/browse/{search\%20}
+
+abbreviations|abbr
+http://www.abbreviations.com/abbreviation/{search\%20}
+
+' ---------------------------------------------------
+'   REFERENCE AND INFORMATION
+' ---------------------------------------------------
+
+wikipedia|wikip|wiki|w
+https://en.wikipedia.org/w/index.php?search={search\+}
+
+' Ex.: Dump the output of each HTML reference site to a terminal window.
+html-reference|html-ref %dump
+https://www.codecademy.com/articles/glossary-html
+http://www.tizag.com/htmlT/reference/htmlreference.php
+http://www.simplehtmlguide.com/cheatsheet.php
+
+' ---------------------------------------------------
+'   MAPS AND NAVIGATION
+' ---------------------------------------------------
+
+maps|map
+https://www.google.com/maps/place/{search\+}
+
+' Ex.: Directions (URL accepts two search queries, however, one may be given)
+directions|dir
+https://www.google.com/maps/dir/{search\+}/{search\+}
+
+' ---------------------------------------------------
+'   SHOPPING
+' ---------------------------------------------------
+
+amazon|amz
+http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
+ebay|eby
+http://www.ebay.com/sch/i.html?_nkw={search\%20}
+tigerdirect|tgd
+http://www.tigerdirect.com/applications/SearchTools/search.asp?keywords={search\+}
+
+' Ex.: Search all three commerce websites at once.
+shopping|shp
+http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
+http://www.ebay.com/sch/i.html?_nkw={search\%20}
+http://www.tigerdirect.com/applications/SearchTools/search.asp?keywords={search\+}
+
+' ---------------------------------------------------
+'   STORE/BUSINESS LOCATORS
+' ---------------------------------------------------
+
+' Ex.: Search for stores/businesses in any location.
+yellowpages|yp|businesses|stores
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
+
+
+' Ex.: Search for stores/businesses in multiple cities and dump the output of
+'      each to a terminal window and skip ahead 18 pages. 
+yellowpages-my-cities|ypmc|my-cities|mc %dump+18
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Minneapolis,+MN
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Baltimore,+MD
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Seattle,+WA
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Nashville,+TN
+
+
+' Ex.: Same as previous except dump the output of each using terminal browser 3
+'      and open the URL for Austin, TX in GUI browser 1.
+yellowpages-my-cities2|ypmc2|my-cities2|mc2 %dump+10 %browser=term3
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Phoenix,+AZ
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Austin,+TX %browser=gui1
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Indianapolis,+IN
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Saint+Louis,+MO
+
+
+' Ex.: Search for stores/businesses across multiple business locator websites.
+'      (Provides examples for placeholders with placeholder options).
+businesses-all|
+https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
+'      Foursquare.com requires two search queries like other business locator
+'      websites: business and location. They are, however, in the opposite order
+'      order and as a result, switched with the "!<P>" option. Furthermore, the
+'      words for the location search query placeholder are capitalized with
+'      option "!C". To illustrate how the URL is parsed, it will be the
+'      following if opened with search queries "flea market" and
+'      "seattle, wa":
+'      https://foursquare.com/explore?mode=url&near=Seattle%2C%20WA&q=flea%20market
+https://foursquare.com/explore?mode=url&near={search!2!C\%20}&q={search!1\%20}
+'      Judysbook.com also uses placeholder options to change and format its
+'      search queries. Additionally, they appear in the URL twice, requiring two
+'      two additional placeholders. Since these additionaly placeholders will
+'      use the third and fourth search queries by default, they specify the
+'      "!<P>" option to use the first and second, respectively. To illustrate
+'      how the URL is parsed, it will be the following if opened with search
+'      queries "flea market" and "seattle, wa":
+'      https://www.judysbook.com/searchresult/Seattle/WA/p1/s0/t0?q=flea+market
+'      &afsq=flea+market+Seattle+WA&loc=
+'      (Note: For this URL, the state must be passed in using its abbreviation).
+https://www.judysbook.com/searchresult/{search!2!M!C!U2\/}/p1/s0/t0?q={search!1\+}&afsq={search!1\+}+{search!2!M!C!U2\+}&loc=
+http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
+https://www.yelp.com/search?find_desc={search\+}&find_loc={search!C\+}
+http://www.merchantcircle.com/search?q={search\+}&qn={search!C\+}
+http://www.local.com/business/results/?keyword={search\%20}&location={search!C\%20}
+http://www.insiderpages.com/search/search?query={search\+}&location={search!C\+}
+
+
+
+' 
+' Instructions on adding a new URL with a {search\D} placeholder:
+' 
+'   1. Go to the search page for the URL of interest.
+'   2. Search for something using at least two search words (space separated).
+'   3. Copy and paste the new loaded URL (from the browser's URL bar) to this
+'      file under an alias.
+'   4. Find the search words in the URL and make note of the character(s) used
+'      as their delimiter.
+'   5. Replace the search words with "{search\D}", where D is the delimiter.
+' 
+' Helpful notes/tips:
+' 
+'   Insufficient placeholder options:
+'     The current placeholder options were created based on use cases for the
+'     examples above. If others are need, please send an email to
+'     linux_user_base@yahoo.com with the request, however, only the most
+'     commonly asked for options will be added. If needing to add other options
+'     right away, please see and change the source code in
+'     url-search-placeholder-parser.pl. The code for placeholder options start
+'     around the middle of the file.
+' 
+'   Search query not appearing in URL:
+'     This means the website sends them using the request's body, form fields or
+'     another method. Webutil does not modify requests so the {search\D}
+'     placeholder cannot be used with the URL.
+' 
+'   URL is very long (e.g. contains a long key of random letters and numbers):
+'     A URL may possibly be shortened by removing some query parameters
+'     from it. Query parameters are separated by an ampersand ("&"). This could
+'     cause the URL to break however so it should be tested if altered.
+' 
