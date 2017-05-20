@@ -1,5 +1,5 @@
 
-**packaged-utilities** is an extension of [linux-shell-base][linux-shell-base] for utilities made up of two or more files. These utilities conform to a low-level methodology like those in **linux-shell-base**.
+**packaged-utilities** is an extension of [linux-shell-base][linux-shell-base] for utilities made up of two or more files. These utilities conform to a low-level methodology and scripts follow the same [guideline][wiki-Guideline-for-Scripts] as those in **linux-shell-base**.
 
 # Content
 
@@ -22,4 +22,7 @@ Open one or more URLs by alias in one of multiple browsers.
 Search the selected text in a browser (using a search URL), or open all space separated words within the selected text beginning with "www.", "http[s]://", "ftp://" or "file://" as URLs. This utility should be bound to a keybinding.
 
 
+
 [linux-shell-base]: https://github.com/linux-shell-base/linux-shell-base
+
+[wiki-Guideline-for-Scripts]: https://github.com/linux-shell-base/linux-shell-base/wiki/Guideline-for-Scripts
