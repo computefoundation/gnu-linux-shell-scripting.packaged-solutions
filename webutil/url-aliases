@@ -20,8 +20,8 @@
 ' {search\D} placeholder:
 ' 
 '   URLs requiring a search query can contain a {search\D} placeholder (where D 
-'   is the URL's space delimiter) in its place to have it be replaced by the
-'   search query passed to webutil.
+'   is the URL's space delimiter) in its place to be replaced by the search
+'   query passed to webutil.
 '       E.g. webutil "stores" "specialty hardware"
 '       # Opens all URLs aliased by "stores" and replaces each of their
 '       # {search\D} placeholders with "specialtyDhardware".
@@ -99,7 +99,7 @@ https://www.youtube.com/results?search_query={search\+}
 dictionary|dict
 http://www.thefreedictionary.com/{search\+}
 
-' Ex.: Open second dictionary in GUI browser 2.
+'Ex.: Open second dictionary in GUI browser 2.
 dictionary2|dict2 %browser=gui2
 http://www.merriam-webster.com/dictionary/{search\+}
 
@@ -116,7 +116,7 @@ http://www.abbreviations.com/abbreviation/{search\%20}
 wikipedia|wikip|wiki|w
 https://en.wikipedia.org/w/index.php?search={search\+}
 
-' Ex.: Dump the output of each HTML reference site to a terminal window.
+'Ex.: Dump the output of each HTML reference site to a terminal window.
 html-reference|html-ref %dump
 https://www.codecademy.com/articles/glossary-html
 http://www.tizag.com/htmlT/reference/htmlreference.php
@@ -129,7 +129,7 @@ http://www.simplehtmlguide.com/cheatsheet.php
 maps|map
 https://www.google.com/maps/place/{search\+}
 
-' Ex.: Directions (URL accepts two search queries, however, one may be given)
+'Ex.: Directions (URL accepts two search queries, however, one may be given)
 directions|dir
 https://www.google.com/maps/dir/{search\+}/{search\+}
 
@@ -144,7 +144,7 @@ http://www.ebay.com/sch/i.html?_nkw={search\%20}
 tigerdirect|tgd
 http://www.tigerdirect.com/applications/SearchTools/search.asp?keywords={search\+}
 
-' Ex.: Search all three commerce websites at once.
+'Ex.: Search all three commerce websites at once.
 shopping|shp
 http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
 http://www.ebay.com/sch/i.html?_nkw={search\%20}
@@ -154,22 +154,22 @@ http://www.tigerdirect.com/applications/SearchTools/search.asp?keywords={search\
 '   STORE/BUSINESS LOCATORS
 ' ---------------------------------------------------
 
-' Ex.: Search for stores/businesses in any location.
+'Ex.: Search for stores/businesses in any location.
 yellowpages|yp|businesses|stores
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 
 
-' Ex.: Search for stores/businesses in multiple cities and dump the output of
-'      each to a terminal window and skip ahead 18 pages. 
-yellowpages-my-cities|ypmc|my-cities|mc %dump+18
+'Ex.: Search for stores/businesses in multiple cities and dump the output of
+'     each to a terminal window and skip ahead 18 pages. 
+yellowpages-my-cities|ypmc|businesses-my-cities|bmc %dump+18
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Minneapolis,+MN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Baltimore,+MD
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Seattle,+WA
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Nashville,+TN
 
 
-' Ex.: Same as previous except dump the output of each using terminal browser 3
-'      and open the URL for Austin, TX in GUI browser 1.
+'Ex.: Same as previous except dump the output of each using terminal browser 3
+'     and open the URL for Austin, TX in GUI browser 1.
 yellowpages-my-cities2|ypmc2|my-cities2|mc2 %dump+10 %browser=term3
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Phoenix,+AZ
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Austin,+TX %browser=gui1
@@ -177,8 +177,8 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=In
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Saint+Louis,+MO
 
 
-' Ex.: Search for stores/businesses across multiple business locator websites.
-'      (Provides examples for placeholders with placeholder options).
+'Ex.: Search for stores/businesses across multiple business locator websites.
+'     (Provides examples for placeholders with placeholder options).
 businesses-all|
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 '      Foursquare.com requires two search queries like other business locator
@@ -222,7 +222,7 @@ http://www.insiderpages.com/search/search?query={search\+}&location={search!C\+}
 ' 
 ' Helpful notes/tips:
 ' 
-'   Insufficient placeholder options:
+'   Needing other placeholder options:
 '     The current placeholder options were created based on use cases for the
 '     examples above. If others are need, please send an email to
 '     linux_user_base@yahoo.com with the request, however, only the most

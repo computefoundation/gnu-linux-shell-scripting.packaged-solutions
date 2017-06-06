@@ -13,11 +13,13 @@ DIR_PATHS_DB_DIR="${HERE}/dirsdb"
 # and are used for file/directory paths in updatedb.
 DB_FILE_NAMES=('container1' 'container2' 'home-data')
 
-# Mountpoint directories
-# Directories containing locate paths in external drives. When an output path
-# begins with any of these base paths, they are traversed through as the base
-# path of the full path until the file or directory is found.
-MNTPNT_DIRS=(
+# Mountpoint directories: Directories containing locate paths in external
+# drives. When an output path in updatedb begins with any of these mountpoint
+# paths, the mountpoint path will be replaced by "{MNTPNT_PATH}" in the
+# database. When a file or directory is then located in the database and its
+# path begins with "{MNTPNT_PATH}", these mountpoint paths are traversed through
+# in its place until the file or directory is found.
+MNTPNT_PATHS=(
   '/mnt/usb1'
   '/mnt/usb2'
   '/mnt/usb3'

@@ -1,8 +1,8 @@
-{MNTPNT_DIR}/general
-{MNTPNT_DIR}/general/archive
-{MNTPNT_DIR}/general/reference
-{MNTPNT_DIR}/general/notes
-{MNTPNT_DIR}/current
-{MNTPNT_DIR}/current/notes
-{MNTPNT_DIR}/records
-{MNTPNT_DIR}/bookmarks
+{MNTPNT_PATH}/general
+{MNTPNT_PATH}/general/archive
+{MNTPNT_PATH}/general/reference
+{MNTPNT_PATH}/general/notes
+{MNTPNT_PATH}/current
+{MNTPNT_PATH}/current/notes
+{MNTPNT_PATH}/records
+{MNTPNT_PATH}/bookmarks

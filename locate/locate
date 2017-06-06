@@ -15,14 +15,14 @@ Usage:
 
 Options:
   -o <FIND_OCCURRENCE>
-        find occurrence to return
-  -d    locate directories
+        find occurrence of file
+  -d    locate a directory instead of a file
   -h    show help message\
 "
 }
 
 while getopts :o:dh OPT; do
-  case $OPT in
+  case "${OPT}" in
     o)
       if [[ ! "${OPTARG}" =~ ^[0-9]+$ ]]; then
         echo "locate: invalid value \"${OPTARG}\" for option -o" 1>&2
@@ -55,13 +55,13 @@ fi
 #   Set up mountpoint directories
 # ========================================================
 
-for mntpntDir in "${MNTPNT_DIRS[@]}"; do
+for mntpntDir in "${MNTPNT_PATHS[@]}"; do
   if [ -d "${mntpntDir}" ] && mountpoint "${mntpntDir}" >/dev/null; then
     mntpntDirsTmp+=("${mntpntDir}")
   fi
 done
 
-MNTPNT_DIRS=("${mntpntDirsTmp[@]}")
+MNTPNT_PATHS=("${mntpntDirsTmp[@]}")
 
 # ========================================================
 #   Start the search
@@ -82,9 +82,9 @@ do
   for mtch in $(grep -P "(?<=/)([^/]*)(?=[^/]*${1}[^/]*$)" \
       "${CURR_DB_DIR}/${dbFileName}"); do
 
-    if [[ "${mtch}" = '{MNTPNT_DIR}/'* ]]; then
-      for mntpntDir in "${MNTPNT_DIRS[@]}"; do
-        mntpntDirMtchPrsd="${mtch//'{MNTPNT_DIR}'/"${mntpntDir}"}"
+    if [[ "${mtch}" = '{MNTPNT_PATH}/'* ]]; then
+      for mntpntDir in "${MNTPNT_PATHS[@]}"; do
+        mntpntDirMtchPrsd="${mtch//'{MNTPNT_PATH}'/"${mntpntDir}"}"
 
         if [[ ("${OPT_FIND_DIRECTORIES}" = 'true' && -d \
             "${mntpntDirMtchPrsd}") || -f "${mntpntDirMtchPrsd}" ]]; then

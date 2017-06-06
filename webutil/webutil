@@ -13,10 +13,10 @@
 #   preferred, please adjust the command in the TERMINAL function in "User
 #   configurations."
 # 
-#   url-search-placeholder-parser.pl in the "_global" directory. There are two
-#   ways it can be retrieved:
-#   1. Download it to this script's directory, optionally with the following:
-#      wget -O <path_to_dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
+#   url-search-placeholder-parser.pl in directory "_global". It can be retrieved
+#   in two ways:
+#   1. Download it to the directory of this script, optionally with the following:
+#      wget -O <path/to/dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
 #   2. Download the "_global" directory and adjust its path in "User
 #      configurations."
 # 
@@ -38,14 +38,13 @@ readonly URL_ALIASES_FILES=(
   'url-aliases'
 )
 
-# URL search placeholder parser script
-# Use the one in a local copy of the "_global" directory (from
-# packaged-utilities) if it exists (path will likely have to be adjusted); use a
-# copy in the current directory otherwise.
+# URL search placeholder parser script; use the one in the directory of this
+# script or in the downloaded "_global" directory if it does not exist (path
+# will likely have to be adjusted).
 glblDir="${HERE}/../_global"
-[ -f "${glblDir}/url-search-placeholder-parser.pl" ] && \
-readonly URL_SRCH_PLH_PARSER_SCRIPT="${glblDir}/url-search-placeholder-parser.pl" || \
-readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl"
+[ -f "${HERE}/url-search-placeholder-parser.pl" ] && \
+readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl" || \
+readonly URL_SRCH_PLH_PARSER_SCRIPT="${glblDir}/url-search-placeholder-parser.pl"
 
 # GUI and terminal web browsers (commands)
 # Webutil will open all URLs for a browser in one command for that browser. To
@@ -53,12 +52,12 @@ readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl"
 # (only applies to GUI browsers). To run a command after the browser command has
 # run, append ";;" to it followed by the command (applies to both GUI and
 # terminal browsers).
-readonly BROWSER_GUI1='chromium'
-readonly BROWSER_GUI2='chromium --incognito'
-readonly BROWSER_GUI3='firefox -new-tab'
-readonly BROWSER_GUI4='firefox -private-window'
-readonly BROWSER_GUI5='dwb;;id="$(xdotool search --class "dwb"|tail -1)"; [ -n "${id}" ] && xdotool windowactivate "${id}"'
-readonly BROWSER_GUI6='::netsurf'
+readonly BROWSER_GUI1='/usr/bin/chromium'
+readonly BROWSER_GUI2='/usr/bin/chromium --incognito'
+readonly BROWSER_GUI3='/usr/bin/firefox -new-tab'
+readonly BROWSER_GUI4='/usr/bin/firefox -private-window'
+readonly BROWSER_GUI5='/usr/bin/dwb;;id="$(xdotool search --class "dwb"|tail -1)"; [ -n "${id}" ] && xdotool windowactivate "${id}"'
+readonly BROWSER_GUI6='::/usr/bin/netsurf'
 readonly BROWSER_GUI7=''
 readonly BROWSER_GUI8=''
 readonly BROWSER_GUI9=''
@@ -259,7 +258,7 @@ done
 
 OPTS="$(getopt -a -o 1,2,3,4,5,6,7,8,9,d::,s,a,l,h --long g1,g2,g3,g4,g5,g6,g7 \
     --long g8,g9,t1,t2,t3,t4,t5,t6,t7,list,help -n "${SCRIPT_NAME}" -- "${@}")"
-[ $? -ne 0 ] && exit 1
+[ "$?" -ne 0 ] && exit 1
 eval set -- "${OPTS}" 
 while true; do
   case "${1}" in
@@ -482,7 +481,10 @@ finalizeCfgsAndExeBrowser() {
 #   Open arguments as URLs if first is a website or URL and exit
 # ===========================================================
 
-if [[ "${1}" =~ ^(www\.|((http[s]?|ftp|file)://)).*\..* ]]; then
+echo "${1}" | perl -ne \
+    'm/^(www\.|((http[s]?|ftp|file):\/\/))/; if ($1) { exit 1 }'
+
+if [ "$?" -eq 1 ]; then
   finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
       "${DUMP_PG_FWD}" "${@}"
   exit

@@ -1,13 +1,13 @@
 
-**packaged-utilities** is an extension of [linux-shell-base][linux-shell-base] for utilities made up of two or more files. These utilities follow the same [Guideline for Scripts][wiki-Guideline-for-Scripts] and conform to a low-level methodology as those in **linux-shell-base**.
+**packaged-utilities** is an extension of [*linux-shell-base*][linux-shell-base] for utilities made up of two or more files. These utilities conform to the *linux-shell-base* philosophy and a low-level methodology as those in *linux-shell-base*.
 
 # Content
 
 ## _global/
 
-Dependencies for packaged utilities.
+*Dependencies for packaged utilities.*
 
-* **url-search-placeholder-parser.pl**: Replace one or more "{search\D}" placeholders in one or more URLs with a search query, where D is the URL's space delimiter.
+* [**url-search-placeholder-parser.pl**][url-search-placeholder-parser.pl]: Replace one or more "{search\D}" placeholders in one or more URLs with a search query, where D is the URL's space delimiter.
 
 ## locate/
 
@@ -19,10 +19,10 @@ Open one or more URLs by alias in one of multiple browsers.
 
 ## xselwebutil/
 
-Search the selected text in a browser (using a search URL), or open all space separated words within the selected text beginning with "www.", "http[s]://", "ftp://" or "file://" as URLs. This utility should be bound to a keybinding.
+Search the selected text in a browser (using a search URL) or open all space separated words within the selected text beginning with "www.", "http[s]://", "ftp://" or "file://" as URLs. This utility should be bound to a keybinding.
 
 
 
 [linux-shell-base]: https://github.com/linux-shell-base/linux-shell-base
 
-[wiki-Guideline-for-Scripts]: https://github.com/linux-shell-base/linux-shell-base/wiki/Guideline-for-Scripts
+[url-search-placeholder-parser.pl]: https://github.com/linux-shell-base/packaged-utilities/blob/master/_global/url-search-placeholder-parser.pl

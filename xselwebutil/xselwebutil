@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 
-# Search the selected text in a browser (using a search URL), or open all space
+# Search the selected text in a browser (using a search URL) or open all space
 # separated words within it beginning with "www.", "http[s]://", "ftp://" or
 # "file://" as URLs. This script should be bound to a keybinding.
 # 
@@ -8,19 +8,18 @@
 #   xselwebutil [options]
 # 
 # Options:
-#   --browser <CMD>      browser command to use (e.g. 'firefox -new-tab');
-#                        if it is not set, the default will be used
-#   --search-url <URL>   search URL to use; it must contain a {search\D}
-#                        placeholder (see
-#                        bin/global/url-search-placeholder-parser.pl in
-#                        linux-shell-base); if it is not set, the default will be
+#   --browser <CMD>      browser (command) to use (e.g. 'firefox -new-tab');
+#                        if not set, the default will be used
+#   --search-url <URL>   search URL to use; it must contain a "{search\D}"
+#                        placeholder (see url-search-placeholder-parser.pl in
+#                        directory "_global"); if not set, the default will be
 #                        used
 # 
 # Dependencies:
-#   url-search-placeholder-parser.pl in the "_global" directory. There are two
-#   ways it can be retrieved:
-#   1. Download it to this script's directory, optionally with the following:
-#      wget -O <path_to_dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
+#   url-search-placeholder-parser.pl in directory "_global". It can be retrieved
+#   in two ways:
+#   1. Download it to the directory of this script, optionally with the following:
+#      wget -O <path/to/dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
 #   2. Download the "_global" directory and adjust its path in "CONFIURATIONS."
 # 
 #   URI::Escape Perl module; install with command "cpan URI::Escape".
@@ -36,20 +35,19 @@ readonly BROWSER='chromium'
 # Default search URL
 readonly SEARCH_URL='http://www.google.com/search?q={search\+}'
 
-# URL search placeholder parser script
-# Use the one in a local copy of the "_global" directory (from
-# packaged-utilities) if it exists (path will likely have to be adjusted); use a
-# copy in the current directory otherwise.
+# URL search placeholder parser script; use the one in the directory of this
+# script or in the downloaded "_global" directory if it does not exist (path
+# will likely have to be adjusted).
 glblDir="${HERE}/../_global"
-[ -f "${glblDir}/url-search-placeholder-parser.pl" ] && \
-readonly URL_SRCH_PLH_PARSER_SCRIPT="${glblDir}/url-search-placeholder-parser.pl" || \
-readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl"
+[ -f "${HERE}/url-search-placeholder-parser.pl" ] && \
+readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl" || \
+readonly URL_SRCH_PLH_PARSER_SCRIPT="${glblDir}/url-search-placeholder-parser.pl"
 
 # ========== ! CONFIURATIONS ===========================
 
 OPTS="$(getopt -a -o h --long browser:,search-url:,help -n 'xselwebutil' -- \
     "${@}")"
-if [ $? -ne 0 ]; then
+if [ "$?" -ne 0 ]; then
   # output errors as a desktop notification since this script is meant to be
   # used with a keybinding and errors printed to stderr will not be seen.
   msg='xselwebutil (err): unrecognized option or option requires an argument'
