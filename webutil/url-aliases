@@ -25,25 +25,24 @@
 '       E.g. webutil "stores" "specialty hardware"
 '       # Opens all URLs aliased by "stores" and replaces each of their
 '       # {search\D} placeholders with "specialtyDhardware".
-'   (See webutil's help documentation for information on passing in multiple
-'   search queries).
 ' 
 '   A URL may contain up to eight {search\D} placeholders to allow multiple
 '   search queries (e.g. start and end locations for travel directions) or to
 '   copy them within itself. The search query used by each placeholder
 '   corresponds to its position in the URL by default. If a search query for
 '   a placeholder does not exist, the placeholder will be replaced with an empty
-'   string.
+'   string. (See webutil's help documentation for information on passing in
+'   multiple search queries).
 ' 
 '   Placeholder options can be used to change and modify the search query used
 '   by a placeholder. They are specified with a bang ("!") and placed right
 '   before the delimiter specifier. They are the following:
 ' 
-'     !<P>:    Use search query at position P in arguments (e.g. {search!3\D})
-'     !W<P>:   Use only word at position P in the search query; will work for
+'     !<N>:    Use search query N (e.g. {search!3\D})
+'     !W<P>:   Use word at position P in the search query only; will work for
 '              multiple words (e.g. {search!W2!W5!W6\+})
-'     !U[P]:   Make word at position P (or all words if P is omitted) in the
-'              search query upper case (e.g. {search!U1!U3\+});
+'     !U[P]:   Make all letters of word at position P in the search query
+'              uppercase (e.g. {search!U1!U3\+}); omit P for all words
 '     !C:      Capitalize all words in the search query
 '     !R:      Reverse all words in the search query
 '     !M:      Remove all commas in the search query
@@ -161,7 +160,7 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={s
 
 'Ex.: Search for stores/businesses in multiple cities and dump the output of
 '     each to a terminal window and skip ahead 18 pages. 
-yellowpages-my-cities|ypmc|businesses-my-cities|bmc %dump+18
+yellowpages-my-cities|ypmc|my-cities|mc %dump+18
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Minneapolis,+MN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Baltimore,+MD
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Seattle,+WA

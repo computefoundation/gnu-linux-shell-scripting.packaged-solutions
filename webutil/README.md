@@ -15,10 +15,10 @@ Open all URLs aliased by "search," passing in "currency converter" as each URLs 
 webutil "search" "currency converter"
 ```
 
-Open all URLs aliased by "businesses-my-cities" in GUI browser #2, passing in "specialty hardware" as each URLs search query.
+Open all URLs aliased by "my-cities" in GUI browser #2, passing in "specialty hardware" as each URLs search query.
 
 ```bash
-webutil -2 "businesses-my-cities" "specialty hardware"
+webutil -2 "my-cities" "specialty hardware"
 ```
 
 Open the URL aliased by "dir," passing in "phoenix, az" and "seattle, wa" as the URL's search queries.
@@ -27,7 +27,7 @@ Open the URL aliased by "dir," passing in "phoenix, az" and "seattle, wa" as the
 webutil "dir" "phoenix, az %% seattle, wa"
 ```
 
-*Note: These aliases are pre-defined in url-aliases and can be used right away.*
+*Note: These aliases are pre-defined in url-aliases and can be tested right away.*
 
 Open all arguments directly as URLs if the first begins with "www.", "http[s]://", "ftp://" or "file://".
 
@@ -39,7 +39,7 @@ webutil "www.wikipedia.com" "https://en.wikipedia.org/wiki/History_of_science"
 
 * Use up to 9 GUI and 7 terminal browsers.
 * Dump output to a terminal window.
-* Specify a browser and the dump option per alias or URL (see *url-aliases* for info).
+* Specify a browser or dump option per alias or URL (see *url-aliases* for info).
 
 
 

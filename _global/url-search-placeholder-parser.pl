@@ -18,11 +18,11 @@
 # by a placeholder. They are specified with a bang ("!") and placed right
 # before the delimiter specifier. They are the following:
 # 
-#   !<P>:    Use search query at position P in arguments (e.g. {search!3\D})
-#   !W<P>:   Use only word at position P in the search query; will work for
+#   !<N>:    Use search query N (e.g. {search!3\D})
+#   !W<P>:   Use word at position P in the search query only; will work for
 #            multiple words (e.g. {search!W2!W5!W6\+})
-#   !U[P]:   Make word at position P (or all words if P is omitted) in the
-#            search query upper case (e.g. {search!U1!U3\+});
+#   !U[P]:   Make all letters of word at position P in the search query
+#            uppercase (e.g. {search!U1!U3\+}); omit P for all words
 #   !C:      Capitalize all words in the search query
 #   !R:      Reverse all words in the search query
 #   !M:      Remove all commas in the search query
