@@ -16,11 +16,12 @@
 #                        used
 # 
 # Dependencies:
-#   url-search-placeholder-parser.pl in directory "_global". It can be retrieved
-#   in two ways:
+#   url-search-placeholder-parser.pl in directory "_global" in
+#   packaged-utilities. It can be retrieved in two ways:
 #   1. Download it to the directory of this script, optionally with the following:
 #      wget -O <path/to/dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
-#   2. Download the "_global" directory and adjust its path in "CONFIURATIONS."
+#   2. Create a local copy of the "_global" directory and adjust its path in
+#      "CONFIURATIONS."
 # 
 #   URI::Escape Perl module; install with command "cpan URI::Escape".
 # 
@@ -35,9 +36,9 @@ readonly BROWSER='chromium'
 # Default search URL
 readonly SEARCH_URL='http://www.google.com/search?q={search\+}'
 
-# URL search placeholder parser script; use the one in the directory of this
-# script or in the downloaded "_global" directory if it does not exist (path
-# will likely have to be adjusted).
+# URL search placeholder parser script; use the one in this directory or in a
+# local copy of the "_global" directory if it does not exist (path will likely
+# have to be adjusted).
 glblDir="${HERE}/../_global"
 [ -f "${HERE}/url-search-placeholder-parser.pl" ] && \
 readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl" || \
@@ -91,3 +92,4 @@ if [ -n "${SEL_TXT}" ]; then
 
   nohup ${BROWSER} "${brwsrArgs}" &>/dev/null &
 fi
+

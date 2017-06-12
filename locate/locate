@@ -7,7 +7,7 @@ readonly HERE="$(dirname "${0}")"
 source "${HERE}/CONSTANTS.sh"
 
 printHelpMessage() {
-  echo -e "\
+  echo -ne "\
 locate
 
 Usage:
@@ -17,7 +17,7 @@ Options:
   -o <FIND_OCCURRENCE>
         find occurrence of file
   -d    locate a directory instead of a file
-  -h    show help message\
+  -h    show help message
 "
 }
 
@@ -110,3 +110,4 @@ if [ "${#FOUND_MATCHES[@]}" -gt 0 ]; then
     echo "${FOUND_MATCHES[0]}"
   fi
 fi
+

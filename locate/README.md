@@ -3,23 +3,46 @@
 
 Locate a file or directory from a database.
 
-This utility is created entirely with bash and grep.
+This utility is created entirely with bash and grep, simple and fast.
 
 ## Databases
 
-There are two databases, one for file paths and one for directory paths. Each database is simply made up of text files consisting of paths. These databases are populated with *updatedb*.
+There are two databases, one for files and one for directories consisting of file and directory paths, respectively. The output paths used to populate them are defined in *updatedb*.
 
-Locate searches the file paths database by default and the directory paths database with the "-d" switch.
+*locate* searches the files database by default and the directories database with switch `-d`.
 
-## Usage
+*Note: The predefined output paths in updatedb and the precreated database directories dirsdb/ and filesdb/ are provided as examples.*
 
-To set up the databases, only three things have to be done:
+## Set up
 
-1. Assign the correct values for variables in *CONSTANTS.sh*.
+Three things have to be done to use locate:
+
+1. Assign the correct values for the variables in *CONSTANTS.sh*.
 2. Define the output paths in *updatedb*.
 3. Run *updatedb*.
 
-After the databases have been set up, *locate* can be used.
+At this point, *locate* can be used as shown in the examples below.
 
-*The predefined output paths in updatedb and the precreated database files are
-provided just as examples. The paths in the container\* database files begin with "{MNTPNT_PATH}". Please see the description for the MNTPNT_PATHS variable in CONSTANTS.sh for information on this placeholder.*
+## Examples (based on the precreated databases)
+
+Locate a file.
+
+```bash
+locate book
+# returns /home/<user>/archived_data/backup/bookmarks.html
+```
+
+Locate a file *(in a mounted drive [assuming the correct one is mounted]; see the *MNTPNT_PATHS* variable description in *CONSTANTS.sh* for more information)*.
+
+```bash
+locate urls.t
+# returns {MNTPNT_PATH}/general/reference/website_urls.txt where {MNTPNT_PATH} is the mountpoint of
+# the mounted drive
+```
+
+Locate a directory.
+
+```bash
+locate -d pic
+# returns /home/<user>/pictures
+```

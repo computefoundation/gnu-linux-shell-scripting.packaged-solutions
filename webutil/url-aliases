@@ -1,47 +1,46 @@
-' url-aliases (documentation on aliases and URLs with examples)
+' url-aliases (documentation on aliases with examples)
 ' 
 ' Format:
-' 
-'   alias1|alias2|...
-'   url1
-'   url2
-'   ...more urls...
 ' 
 '   alias|
 '   url1
 '   url2
 '   ...more urls...
 ' 
+'   alias1|alias2|...
+'   url1
+'   url2
+'   ...more urls...
+' 
 ' Aliases:
 ' 
-'   Aliases are defined with a vertical bar ("|") before or after them, which is
-'   also used to separate and define multiple aliases for one or more URLs.
+'   Aliases are defined with a vertical bar ("|") before or after them, used
+'   also to separate and define multiple aliases for one or more URLs.
 ' 
 ' {search\D} placeholder:
 ' 
-'   URLs requiring a search query can contain a {search\D} placeholder (where D 
-'   is the URL's space delimiter) in its place to be replaced by the search
-'   query passed to webutil.
-'       E.g. webutil "stores" "specialty hardware"
+'   URLs requiring a search query may contain a {search\D} placeholder (where D 
+'   is the URL's space delimiter) in its place. It will be replaced by the
+'   search query passed to webutil.
+'       E.g. webutil "stores" "outdoor gear"
 '       # Opens all URLs aliased by "stores" and replaces each of their
-'       # {search\D} placeholders with "specialtyDhardware".
+'       # {search\D} placeholders with "outdoorDgear".
 ' 
-'   A URL may contain up to eight {search\D} placeholders to allow multiple
-'   search queries (e.g. start and end locations for travel directions) or to
-'   copy them within itself. The search query used by each placeholder
-'   corresponds to its position in the URL by default. If a search query for
-'   a placeholder does not exist, the placeholder will be replaced with an empty
-'   string. (See webutil's help documentation for information on passing in
-'   multiple search queries).
+'   A URL may contain multiple {search\D} placeholders to allow multiple search
+'   queries (e.g. start and end locations for travel directions) or to copy them
+'   within itself. The search query used by each placeholder corresponds to its
+'   position in the URL by default. If a search query for a placeholder does not
+'   exist, the placeholder will be replaced with an empty string. (See webutil's
+'   help documentation for information on passing in multiple search queries).
 ' 
 '   Placeholder options can be used to change and modify the search query used
 '   by a placeholder. They are specified with a bang ("!") and placed right
 '   before the delimiter specifier. They are the following:
 ' 
 '     !<N>:    Use search query N (e.g. {search!3\D})
-'     !W<P>:   Use word at position P in the search query only; will work for
+'     !W<P>:   Use word at position P of the search query only; will work for
 '              multiple words (e.g. {search!W2!W5!W6\+})
-'     !U[P]:   Make all letters of word at position P in the search query
+'     !U[P]:   Make all letters of word at position P of the search query
 '              uppercase (e.g. {search!U1!U3\+}); omit P for all words
 '     !C:      Capitalize all words in the search query
 '     !R:      Reverse all words in the search query
@@ -60,8 +59,8 @@
 '   be placed after the last alias on an alias line to apply to multiple URLs,
 '   or after an individual URL. They are the following:
 ' 
-'   %browser=VALUE:  Browser to use; possible values are "gui<1-5>" (for
-'                    graphical browsers) and "term<1-3>" (for terminal
+'   %browser=VALUE:  Browser to use; possible values are "gui<1-9>" (for
+'                    graphical browsers) and "term<1-7>" (for terminal
 '                    browsers). (Browsers are defined in webutil under "User
 '                    configurations"; default is GUI 1).
 ' 
@@ -75,8 +74,7 @@
 ' 
 ' Examples:
 ' 
-'   Many of the examples below have a comment beginning with "Ex." for
-'   explanation.
+'   Many of the examples below have a comment for explanation marked by "Ex.".
 ' 
 
 ' ---------------------------------------------------
@@ -128,7 +126,7 @@ http://www.simplehtmlguide.com/cheatsheet.php
 maps|map
 https://www.google.com/maps/place/{search\+}
 
-'Ex.: Directions (URL accepts two search queries, however, one may be given)
+'Ex.: Directions (URL accepts two search queries, however, one may be passed)
 directions|dir
 https://www.google.com/maps/dir/{search\+}/{search\+}
 
@@ -136,18 +134,18 @@ https://www.google.com/maps/dir/{search\+}/{search\+}
 '   SHOPPING
 ' ---------------------------------------------------
 
-amazon|amz
+amazon|amz|store1
 http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
-ebay|eby
+ebay|eby|store2
 http://www.ebay.com/sch/i.html?_nkw={search\%20}
-tigerdirect|tgd
-http://www.tigerdirect.com/applications/SearchTools/search.asp?keywords={search\+}
+jet|store3
+https://jet.com/search?term={search\%20}
 
-'Ex.: Search all three commerce websites at once.
+'Ex.: Search multiple commerce websites at once.
 shopping|shp
 http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
 http://www.ebay.com/sch/i.html?_nkw={search\%20}
-http://www.tigerdirect.com/applications/SearchTools/search.asp?keywords={search\+}
+https://jet.com/search?term={search\%20}
 
 ' ---------------------------------------------------
 '   STORE/BUSINESS LOCATORS
@@ -160,7 +158,7 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={s
 
 'Ex.: Search for stores/businesses in multiple cities and dump the output of
 '     each to a terminal window and skip ahead 18 pages. 
-yellowpages-my-cities|ypmc|my-cities|mc %dump+18
+yellowpages-my-cities-stores|ypmc|my-cities-stores|mcs %dump+18
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Minneapolis,+MN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Baltimore,+MD
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Seattle,+WA
@@ -169,7 +167,7 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Na
 
 'Ex.: Same as previous except dump the output of each using terminal browser 3
 '     and open the URL for Austin, TX in GUI browser 1.
-yellowpages-my-cities2|ypmc2|my-cities2|mc2 %dump+10 %browser=term3
+yellowpages-my-cities2-stores|ypmc2s|my-cities2-stores|mc2s %dump+10 %browser=term3
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Phoenix,+AZ
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Austin,+TX %browser=gui1
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Indianapolis,+IN
@@ -177,8 +175,8 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Sa
 
 
 'Ex.: Search for stores/businesses across multiple business locator websites.
-'     (Provides examples for placeholders with placeholder options).
-businesses-all|
+'     (Provides examples for {search\D} placeholder options).
+business-locators|store-locators
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 '      Foursquare.com requires two search queries like other business locator
 '      websites: business and location. They are, however, in the opposite order
@@ -221,12 +219,11 @@ http://www.insiderpages.com/search/search?query={search\+}&location={search!C\+}
 ' 
 ' Helpful notes/tips:
 ' 
-'   Needing other placeholder options:
-'     The current placeholder options were created based on use cases for the
-'     examples above. If others are need, please send an email to
-'     linux_user_base@yahoo.com with the request, however, only the most
-'     commonly asked for options will be added. If needing to add other options
-'     right away, please see and change the source code in
+'   Additional {search\D} placeholder options needed:
+'     The current placeholder options were created based on common use cases. If
+'     others are need, please send an email to linuxshellbase@yahoo.com with the
+'     request, however, only the most commonly asked for options will be added.
+'     To add other options right away, please see and change the source code in
 '     url-search-placeholder-parser.pl. The code for placeholder options start
 '     around the middle of the file.
 ' 

@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 # 
-# URL aliases file parser for webutil. Searches for the given aliases and
-# returns their URLs with all configuration options.
+# URL aliases file parser for webutil. It searches for the given alias(es) and
+# returns its/their URLs with both of their configuration options.
 # 
 # Arguments:
 #   1. Directory where URL aliases files are stored
@@ -39,12 +39,12 @@
 use strict;
 use warnings;
 
-# ======= CONFIGURATIONS ======================
+# ======= CONFIGURATIONS ==============
 
 # Maximum number of URLs allowed per alias.
 my $MAX_URLS_PER_ALIAS = 40;
 
-# ======= ! CONFIGURATIONS ======================
+# ======= ! CONFIGURATIONS ==============
 
 if (scalar @ARGV < 2) {
   print "error: invalid number of arguments: ".@ARGV."\n";
@@ -138,12 +138,11 @@ sub parseOptions {
       }
     }
   }
-
   return $frmtdOpts;
 }
 
 # A URL must contain at least one dot or colon so that all remaining aliases
-# after the one matched will not be interpreted as URLs.
+# after the one matched are not interpreted as URLs.
 my $URL_REGEX = qr/
   [-A-Za-z0-9+&@#\/%?=~_|()\[\]{}\\*\$'"!,;]+[:.]
   [-A-Za-z0-9+&@#\/%?=~_|()\[\]{}\\*\$'"!:,.;]*
@@ -267,3 +266,4 @@ if ($RETURN_STRING) {
   $RETURN_STRING = substr($RETURN_STRING, 0, -3);
   print $RETURN_STRING."\n";
 }
+

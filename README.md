@@ -1,7 +1,9 @@
 
-**packaged-utilities** is an extension of [*linux-shell-base*][linux-shell-base] for utilities made up of two or more files. These utilities conform to the *linux-shell-base* philosophy and a low-level methodology as those in *linux-shell-base*.
+# Packaged-utilities
 
-# Content
+**packaged-utilities** is an extension of [*linux-shell-base*][linux-shell-base] for utilities consisting of more than one file. These utilities conform to the *linux-shell-base* philosophy and a low-level methodology as those in *linux-shell-base*.
+
+Each packaged utility is stored in its own directory.
 
 ## _global/
 
@@ -15,7 +17,7 @@ Locate a file or directory from a database.
 
 ## webutil/
 
-Open one or more URLs by alias in one of multiple browsers.
+Open one or more URLs by alias, search query or directly in one of multiple web browsers.
 
 ## xselwebutil/
 

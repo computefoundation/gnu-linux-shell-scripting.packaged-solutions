@@ -34,14 +34,15 @@ find_out() {
   # findOpts+=" ! -path '*/*\.swp' ! -path '*/*\.swo'"
 
   if [ "${5}" = '--nodot' ]; then
-    find ${4} ${findOpts} ! -path '*/\.*' >> "${3}"
+    find "${4}" ${findOpts} ! -path '*/\.*' >> "${3}"
   else
-    find ${4} ${findOpts} >> "${3}"
+    find "${4}" ${findOpts} >> "${3}"
   fi
 }
 
 # The next two sections are where the file and directory output paths are
-# specified. The function used to output a path is find_out.
+# specified. The file names in the case blocks must match those specified in
+# CONSTANTS.sh.
 
 # =========================================================
 #   File paths
@@ -78,15 +79,15 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
 
     'home-data')
       echo -n '' > "${dest}"
-      find_out 'f' '1' "${dest}" '/home/<username>/documents'
-      find_out 'f' '0' "${dest}" '/home/<username>/.bashrc'
-      find_out 'f' '0' "${dest}" '/home/<username>/.bash_profile'
-      find_out 'f' '0' "${dest}" '/home/<username>/.vimrc'
-      find_out 'f' '0' "${dest}" '/home/<username>/.ssh/config'
-      find_out 'f' '1' "${dest}" '/home/<username>/bin'
-      find_out 'f' '0' "${dest}" '/home/<username>/share/calendar/events.txt'
-      find_out 'f' '2' "${dest}" '/home/<username>/pictures'
-      find_out 'f' '1' "${dest}" '/home/<username>/archived_data/backup'
+      find_out 'f' '1' "${dest}" '/home/<user>/documents'
+      find_out 'f' '0' "${dest}" '/home/<user>/.bashrc'
+      find_out 'f' '0' "${dest}" '/home/<user>/.bash_profile'
+      find_out 'f' '0' "${dest}" '/home/<user>/.vimrc'
+      find_out 'f' '0' "${dest}" '/home/<user>/.ssh/config'
+      find_out 'f' '1' "${dest}" '/home/<user>/bin'
+      find_out 'f' '0' "${dest}" '/home/<user>/share/calendar/events.txt'
+      find_out 'f' '2' "${dest}" '/home/<user>/pictures'
+      find_out 'f' '1' "${dest}" '/home/<user>/archived_data/backup'
       ;;
   esac
 done
@@ -120,11 +121,11 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
 
     'home-data')
       echo -n '' > "${dest}"
-      find_out 'd' '0' "${dest}" '/home/<username>/documents'
-      find_out 'd' '0' "${dest}" '/home/<username>/bin'
-      find_out 'd' '0' "${dest}" '/home/<username>/share'
-      find_out 'd' '0' "${dest}" '/home/<username>/pictures'
-      find_out 'd' '0' "${dest}" '/home/<username>/archived_data'
+      find_out 'd' '0' "${dest}" '/home/<user>/documents'
+      find_out 'd' '0' "${dest}" '/home/<user>/bin'
+      find_out 'd' '0' "${dest}" '/home/<user>/share'
+      find_out 'd' '0' "${dest}" '/home/<user>/pictures'
+      find_out 'd' '0' "${dest}" '/home/<user>/archived_data'
       ;;
   esac
 done
@@ -144,3 +145,4 @@ for dbDir in "${FILE_PATHS_DB_DIR}" "${DIR_PATHS_DB_DIR}"; do
     fi
   done
 done
+

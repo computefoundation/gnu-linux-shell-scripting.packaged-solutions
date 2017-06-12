@@ -3,22 +3,22 @@
 # Introduction:
 #   See https://github.com/linux-shell-base/packaged-utilities/tree/master/webutil
 # 
-# Initial set up:
-#   The only set up required is to retrieve the dependencies and assign
-#   preferred browser commands in "User configurations."
+# Set up:
+#   The only set up required is to retrieve the dependencies and assign the
+#   preferred browser commands under "User configurations."
 # 
 # Dependencies:
-#   xterm: Used for opening terminal windows to run terminal browsers. For
-#   quick and easy startup, simply download it. If another terminal emulator is
-#   preferred, please adjust the command in the TERMINAL function in "User
-#   configurations."
+#   xterm (Used for opening terminal windows to run terminal browsers. For quick
+#     and easy startup, simply download it. If another terminal emulator is
+#     preferred, please adjust the command in the TERMINAL function under "User
+#     configurations.")
 # 
-#   url-search-placeholder-parser.pl in directory "_global". It can be retrieved
-#   in two ways:
+#   url-search-placeholder-parser.pl in directory "_global" in
+#   packaged-utilities. It can be retrieved in two ways:
 #   1. Download it to the directory of this script, optionally with the following:
 #      wget -O <path/to/dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
-#   2. Download the "_global" directory and adjust its path in "User
-#      configurations."
+#   2. Create a local copy of the "_global" directory and adjust its path in
+#      "User configurations."
 # 
 #   URI::Escape Perl module; install with command "cpan URI::Escape".
 # 
@@ -38,20 +38,21 @@ readonly URL_ALIASES_FILES=(
   'url-aliases'
 )
 
-# URL search placeholder parser script; use the one in the directory of this
-# script or in the downloaded "_global" directory if it does not exist (path
-# will likely have to be adjusted).
+# URL search placeholder parser script; use the one in this directory or in a
+# local copy of the "_global" directory if it does not exist (path will likely
+# have to be adjusted).
 glblDir="${HERE}/../_global"
 [ -f "${HERE}/url-search-placeholder-parser.pl" ] && \
 readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl" || \
 readonly URL_SRCH_PLH_PARSER_SCRIPT="${glblDir}/url-search-placeholder-parser.pl"
 
-# GUI and terminal web browsers (commands)
-# Webutil will open all URLs for a browser in one command for that browser. To
-# run a browser command for each of its URLs individually, prepend "::" to it
-# (only applies to GUI browsers). To run a command after the browser command has
-# run, append ";;" to it followed by the command (applies to both GUI and
-# terminal browsers).
+# GUI and terminal web browser commands
+# Options:
+# 1. To run a browser command individually for each of the URLs it is to open,
+#    prepend "::" to it (only applies to GUI browsers).
+# 2. To run a command after the browser command has run, append ";;" to it
+#    followed by the command (applies to both GUI and terminal browsers; will
+#    run once even if "::" is prepended to the command).
 readonly BROWSER_GUI1='/usr/bin/chromium'
 readonly BROWSER_GUI2='/usr/bin/chromium --incognito'
 readonly BROWSER_GUI3='/usr/bin/firefox -new-tab'
@@ -69,18 +70,14 @@ readonly BROWSER_TERM5=''
 readonly BROWSER_TERM6=''
 readonly BROWSER_TERM7=''
 
-# Whether or not to use all arguments for a search query with the default search
-# URL if the URL alias was not found; will exit otherwise.
+# Whether or not to use all arguments as a search query with the default search
+# URL if the first argument does not match any alias; will exit otherwise.
 readonly SEARCH_IF_ALIAS_NOT_FOUND=true
 
-# Default search URL (must contain a {search\D} placeholder)
+# Default search URL (must contain a {search\D} placeholder).
 readonly DEFAULT_SEARCH_URL='http://www.google.com/search?q={search\+}'
 
-# Terminal emulator command used for opening terminal windows.
-# (Note: A command is executed for it, being a terminal browser command, and it
-# exits immediately after the command finishes. The browser's exit status is
-# checked to prevent the terminal window from closing immediately if it
-# encounters an error (e.g. no internet connection)).
+# Terminal emulator used for opening terminal windows.
 TERMINAL() {
   startX=50; startY=100; width=110; height=44
   geometry="${width}x${height}+${startX}+${startY}"
@@ -91,11 +88,12 @@ TERMINAL() {
 }
 
 # Whether or not to open all URLs for a terminal browser in their own individual
-# terminal windows; they will be opened in the same terminal window for their
-# browser otherwise. (The latter works well for browsers like w3m which uses
-# buffers that can be switched using "s"). (This does not apply to the dump
-# option as each URL is always dumped to its own terminal window).
-readonly OPEN_TERM_BRWSR_URLS_IN_MULT_WIND=false
+# terminal windows; if not, they will be opened in the same terminal window for
+# their browser. (The latter works well with browsers that use buffers that can
+# be switched, like w3m; if a browser does not support multiple buffers, it will
+# not work well. This configuration will not apply if the dump option is used as
+# each URL will always be dumped to its own terminal window).
+readonly OPEN_TERM_BRWSR_URLS_IN_INDV_WIND=false
 
 # Default less options used for the less command when dumping a webpage.
 readonly DUMP_LESS_OPTS='-IFRXMc'
@@ -105,31 +103,30 @@ readonly DUMP_LESS_OPTS='-IFRXMc'
 # ===========================================================
 
 printHelpMessage() {
-  if [ "${1}" = 'full' ]; then
-    echo -e "${SCRIPT_NAME}: Utility app to make using the web easier"
-  fi
-  helpMsg="
+  [ "${1}" = 'full' ] && echo -e "${SCRIPT_NAME} - Utility app to make using" \
+      'the web easier.\n'
+
+  msg="\
 Usage:
   webutil [options] <url alias> [search queries]
   webutil [options] <websites/URLs...>
   webutil [options] <search query for default search url>
 
 Options:
-  -<1-9>  -g<1-9>    open in GUI browser of the given number
-          -t<1-7>    open in terminal browser of the given
+  -g<1-9>  -<1-9>    open in GUI browser of the given number
+  -t<1-7>            open in terminal browser of the given
                      number
   -d  -dump[+NUM_PAGES]
-                     dump output of each URL to a
-                     terminal window (using terminal
-                     browser 1 by default);
-                     optionally, jump forward the
-                     given number of pages.
-  -s                 override URL alias matching and search
-                     with the default search URL using all
-                     arguments as a search query
-  -a                 use all arguments for URL aliases
-                     (all arguments after the last matching
-                     alias will be used for search queries)
+                     dump output of each URL to a terminal
+                     window (using terminal browser 1 by
+                     default); optionally, jump forward the
+                     given number of pages
+  -s                 use all arguments as the search query
+                     with the default search URL rather
+                     than matching the first with an alias
+  -a                 use all arguments as aliases and all
+                     after the last matching alias as the
+                     search query/queries
   -l  --list         list current browser commands
   -h  --help         show help message
 
@@ -154,16 +151,15 @@ Third usage:
   configurations\").
 
 Notes:
-  Using any of the browser type or dump option(s)
-  will override all alias and URL configuration
-  options in the URL aliases file.
+  Using any of the browser type or the dump
+  option(s) will override all alias and URL
+  configuration options in the URL aliases file.
   
   Unsafe URL characters in a search query
-  will be encoded. A character can be kept from
-  being encoded by escaping it with two
-  backslashes.\
+  will be encoded. This can be avoided by
+  escaping it with two backslashes.
 "
-  echo -e "${helpMsg}"
+  echo -ne "${msg}"
 }
 
 printBrowserCommands() {
@@ -569,7 +565,7 @@ if [ -n "${urlAliasesParserOut}" ]; then
     else
       if [ -z "${CONFIG_OPT_SET}" ]; then
         ALIAS_OPTS=(${aliasOpts_urls_urlsOpts[0]//'<>'/ })
-        argNum=$((${as_aO_us_usO_indx} + 1))
+        argNum=$((as_aO_us_usO_indx + 1))
         parseAliasCfgOpts "${!argNum}"
       fi
 
@@ -586,7 +582,7 @@ if [ -n "${urlAliasesParserOut}" ]; then
       brwsrType="${brwsr_brwsrType#*'%%'}"
       urls="${BROWSER_URL_HASHES["${brwsr_brwsrType}"]}"
 
-      if [[ ${OPEN_TERM_BRWSR_URLS_IN_MULT_WIND} = 'true' && ${brwsrType} = \
+      if [[ ${OPEN_TERM_BRWSR_URLS_IN_INDV_WIND} = 'true' && ${brwsrType} = \
           'TERM' ]]; then
         for url in ${urls[@]}; do
           finalizeCfgsAndExeBrowser "${brwsr}" ${brwsrType} false 0 "${url}"
@@ -636,3 +632,4 @@ else
   finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
       "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
 fi
+
