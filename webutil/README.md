@@ -5,16 +5,16 @@ Open one or more URLs by alias, search query or directly in one of multiple web 
 
 Four methods of passing arguments are allowed to open URLs:
 
-1. An alias *(first argument)* with one or more optional search queries *(remaining arguments)*. *(The search queries will replace search query placeholders in the aliased URL(s); see [*url-aliases*][url-aliases] for more information).*
-2. Multiple aliases, using all arguments after the last matching alias as the search query/queries (with switch `-a`).
-3. A search query (when the first argument does not match any alias [configurable] or with switch `-s`). *(The search query will be used with the default search URL defined in webutil).*
+1. An alias *(first argument)* with one or more optional search queries *(remaining arguments)*.
+2. Multiple aliases *(first N arguments)* with one or more optional search queries *(all arguments after the last matching alias)*; requires switch `-a`.
+3. A search query (when the first argument does not match any alias [configurable] or if alias matching is overridden with switch `-s`). *The default search URL used for the search query is defined in webutil.*
 4. Strings opened directly as URLs if the first begins with "www.", "http[s]://", "ftp://" or "file://".
 
-Documentation on aliases and URLs is provided at the top of [*url-aliases*][url-aliases].
+Documentation on aliases is provided at the top of [*url-aliases*][url-aliases].
 
 ## Examples
 
-*Note: Quotes are not required for search queries and are used here only for clarity.*
+*Note: Quotes are not required and are used here only for clarity.*
 
 ### Alias
 
@@ -44,7 +44,9 @@ Search "novelty items" in three different online stores aliased by "store1," "st
 webutil store1 store2 store3 novelty items
 ```
 
-*Note: These aliases are predefined in url-aliases and can be used right away.*
+---
+
+*These aliases are predefined in url-aliases and can be used right away.*
 
 ### Default search URL
 

@@ -32,8 +32,9 @@
 #     https://www.codecademy.com/articles/glossary-html
 #     <|>http://www.simplehtmlguide.com/cheatsheet.php
 # 
-#   At least one URL will always be returned for an alias as each requires at
-#   least one.
+# Note:
+#   At least one URL will always be returned for an alias as one is required by
+#   each.
 # 
 
 use strict;

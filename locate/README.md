@@ -3,19 +3,19 @@
 
 Locate a file or directory from a database.
 
-This utility is created entirely with bash and grep, simple and fast.
+This utility is created entirely in bash with grep, simple and fast.
 
 ## Databases
 
-There are two databases, one for files and one for directories consisting of file and directory paths, respectively. The output paths used to populate them are defined in *updatedb*.
+There are two databases, one for files and one for directories consisting of file and directory paths, respectively. They are populated by output paths defined in *updatedb*.
 
 *locate* searches the files database by default and the directories database with switch `-d`.
 
-*Note: The predefined output paths in updatedb and the precreated database directories dirsdb/ and filesdb/ are provided as examples.*
+*Note: The predefined output paths in **updatedb** and the precreated databases **dirsdb** and **filesdb** are provided just as examples.*
 
 ## Set up
 
-Three things have to be done to use locate:
+Three things have to be done to use *locate*:
 
 1. Assign the correct values for the variables in *CONSTANTS.sh*.
 2. Define the output paths in *updatedb*.
@@ -23,7 +23,7 @@ Three things have to be done to use locate:
 
 At this point, *locate* can be used as shown in the examples below.
 
-## Examples (based on the precreated databases)
+## Examples *(based on the precreated databases)*
 
 Locate a file.
 

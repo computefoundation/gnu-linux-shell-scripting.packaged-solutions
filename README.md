@@ -1,7 +1,7 @@
 
 # Packaged-utilities
 
-**packaged-utilities** is an extension of [*linux-shell-base*][linux-shell-base] for utilities consisting of more than one file. These utilities conform to the *linux-shell-base* philosophy and a low-level methodology as those in *linux-shell-base*.
+**Packaged-utilities** is an extension of [*linux-shell-base*][linux-shell-base] for utilities consisting of more than one file. These utilities conform to the *linux-shell-base* philosophy and a low-level methodology as those in *linux-shell-base*.
 
 Each packaged utility is stored in its own directory.
 
