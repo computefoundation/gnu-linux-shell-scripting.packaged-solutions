@@ -3,50 +3,50 @@
 
 Open one or more URLs by alias, search query or directly in one of multiple web browsers.
 
-Four methods of passing arguments are allowed to open URLs:
+Four argument methods are allowed:
 
-1. An alias *(first argument)* with one or more optional search queries *(remaining arguments)*.
-2. Multiple aliases *(first N arguments)* with one or more optional search queries *(all arguments after the last matching alias)*; requires switch `-a`.
-3. A search query (when the first argument does not match any alias [configurable] or if alias matching is overridden with switch `-s`). *The default search URL used for the search query is defined in webutil.*
-4. Strings opened directly as URLs if the first begins with "www.", "http[s]://", "ftp://" or "file://".
+1. An alias (first argument) with one or more optional search queries (remaining arguments).
+2. Multiple aliases (first N arguments) with one or more optional search queries (all arguments after the last matching alias); requires switch `-a`.
+3. A search query with the default search URL *(defined in webutil)* when the first argument does not match any alias *(configurable)* or with switch `-s`. *The default search URL is defined in webutil.*
+4. Strings beginning with "www.", "http[s]://", "ftp://" or "file://".
 
-Documentation on aliases is provided at the top of [*url-aliases*][url-aliases].
+Configurations are defined at the top of [webutil](webutil) and aliases are defined in [url-aliases](url-aliases).
 
 ## Examples
 
-*Note: Quotes are not required and are used here only for clarity.*
-
 ### Alias
 
-Search "currency converter" with a search engine URL aliased by "search".
+Search ...
+
+"ancient egypt" with the URL for wikipedia aliased by "wiki."
 
 ```bash
-webutil "search" "currency converter"
+webutil wiki ancient egypt
 ```
 
-Search "outdoor gear" with multiple business/store locator websites aliased by "business-locators" in GUI browser 3.
+"outdoor gear" in Burlington, Vermont with the store locator URLs aliased by "stores-all."
 
 ```bash
-webutil -3 "business-locators" "outdoor gear"
+webutil stores-all outdoor gear %% burlington, vt
 ```
 
-Search directions from Phoenix, AZ to Seattle, WA with a maps search URL aliased by "dir".
+directions from Phoenix, Arizona to Seattle, Washington with the maps URL aliased by "dir" and open in GUI browser 3.
 
 ```bash
-webutil "dir" "phoenix, az %% seattle, wa"
+webutil -3 dir phoenix, az %% seattle, wa
 ```
 
 ### Multiple aliases
 
-Search "novelty items" in three different online stores aliased by "store1," "store2" and "store3".
+Search "home decor" with three different online store URLs aliased by "amazon," "ebay" and "jet."
 
 ```bash
-webutil store1 store2 store3 novelty items
+webutil -a amazon ebay jet home decor
 ```
 
 ---
 
-*These aliases are predefined in url-aliases and can be used right away.*
+*Note: These aliases are predefined in **url-aliases** and can be used right away. They will be opened in the respective browser defined in **webutil** (the default is GUI browser 1).*
 
 ### Default search URL
 
@@ -56,20 +56,17 @@ Search "How to make tamales" with the default search URL.
 webutil How to make tamales
 ```
 
-### URLs opened directly
+### Direct URLs
 
-Open wikipedia.com and the page for swarm robotics on scholarpedia.org directly.
+Open two URLs directly.
 
 ```bash
-webutil "www.wikipedia.com" "http://www.scholarpedia.org/article/Swarm_robotics"
+webutil "www.blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 ```
 
 ## Features
 
 * Use up to 9 GUI and 7 terminal browsers/brower commands.
 * Dump each URL's output to a terminal window.
-* Specify a configuration option *(e.g. open in GUI browser 3)* per alias or URL (see *url-aliases* for information).
-
-
-
-[url-aliases]: https://github.com/linux-shell-base/packaged-utilities/blob/master/webutil/url-aliases
+* Specify a configuration option *(e.g. open in GUI browser 3)* per alias or URL (see *url-aliases* for more information).
+* Output the parsed URLs to the clipboard.

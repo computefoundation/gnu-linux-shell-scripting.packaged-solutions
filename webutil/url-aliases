@@ -1,4 +1,4 @@
-' url-aliases (documentation and examples on aliases)
+' url-aliases (aliases and documentation on aliases)
 ' 
 ' Format:
 ' 
@@ -19,18 +19,18 @@
 ' 
 ' {search\D} placeholder:
 ' 
-'   URLs requiring a search query may contain a {search\D} placeholder (where D 
-'   is the URL's space delimiter) in its place. It will be replaced by the
+'   URLs requiring a search query may contain a {search\D} placeholder in its
+'   place, where D is the URL's space delimiter. It will be replaced by the
 '   search query passed to webutil.
-'       E.g. webutil "stores" "outdoor gear"
-'       # Opens all URLs aliased by "stores" and replaces each of their
+'       E.g. webutil "stores-all" "outdoor gear"
+'       # Opens all URLs aliased by "stores-all" and replaces each of their
 '       # {search\D} placeholders with "outdoorDgear".
 ' 
 '   A URL may contain multiple {search\D} placeholders to allow multiple search
 '   queries (e.g. start and end locations for travel directions) or to copy them
 '   within itself. The search query used by each placeholder corresponds to its
-'   position in the URL by default. If a search query for a placeholder does not
-'   exist, the placeholder will be replaced with an empty string. (See webutil's
+'   position in the URL. If a search query for a placeholder does not exist, the
+'   placeholder will be replaced with an empty string. (See webutil's
 '   help documentation for information on passing in multiple search queries).
 ' 
 '   Placeholder options can be used to change and modify the search query used
@@ -110,7 +110,7 @@ http://www.abbreviations.com/abbreviation/{search\%20}
 '   REFERENCE AND INFORMATION
 ' ---------------------------------------------------
 
-wikipedia|wikip|wiki|w
+wikipedia|wikip|wiki
 https://en.wikipedia.org/w/index.php?search={search\+}
 
 'Ex.: Dump the output of each HTML reference site to a terminal window.
@@ -134,11 +134,11 @@ https://www.google.com/maps/dir/{search\+}/{search\+}
 '   SHOPPING
 ' ---------------------------------------------------
 
-amazon|amz|store1
+amazon|amz
 http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
-ebay|eby|store2
+ebay|eby
 http://www.ebay.com/sch/i.html?_nkw={search\%20}
-jet|store3
+jet|
 https://jet.com/search?term={search\%20}
 
 'Ex.: Search multiple commerce websites at once.
@@ -154,7 +154,6 @@ https://jet.com/search?term={search\%20}
 'Ex.: Search for stores/businesses in any location.
 yellowpages|yp|businesses|stores
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
-
 
 'Ex.: Search for stores/businesses in multiple cities and dump the output of
 '     each to a terminal window and skip ahead 18 pages. 
@@ -176,33 +175,21 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Sa
 
 'Ex.: Search for stores/businesses across multiple business locator websites.
 '     (Provides examples for {search\D} placeholder options).
-business-locators|store-locators
+businesses-all|stores-all
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
-'      Foursquare.com requires two search queries like other business locator
-'      websites: business and location. They are, however, in the opposite order
-'      order and as a result, switched with the "!<P>" option. Furthermore, the
-'      words for the location search query placeholder are capitalized with
-'      option "!C". To illustrate how the URL is parsed, it will be the
-'      following if opened with search queries "flea market" and
-'      "seattle, wa":
-'      https://foursquare.com/explore?mode=url&near=Seattle%2C%20WA&q=flea%20market
-https://foursquare.com/explore?mode=url&near={search!2!C\%20}&q={search!1\%20}
-'      Judysbook.com also uses placeholder options to change and format its
-'      search queries. Additionally, they appear in the URL twice, requiring two
-'      two additional placeholders. Since these additionaly placeholders will
-'      use the third and fourth search queries by default, they specify the
-'      "!<P>" option to use the first and second, respectively. To illustrate
-'      how the URL is parsed, it will be the following if opened with search
-'      queries "flea market" and "seattle, wa":
-'      https://www.judysbook.com/searchresult/Seattle/WA/p1/s0/t0?q=flea+market
-'      &afsq=flea+market+Seattle+WA&loc=
-'      (Note: For this URL, the state must be passed in using its abbreviation).
-https://www.judysbook.com/searchresult/{search!2!M!C!U2\/}/p1/s0/t0?q={search!1\+}&afsq={search!1\+}+{search!2!M!C!U2\+}&loc=
 http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
+'      Foursquare.com requires two search queries like other business locator
+'      websites: business and location, however, they appear in the opposite
+'      order. As a result, they are switched with the "!<P>" option.
+'      Furthermore, the words for the location search query placeholder are
+'      capitalized with option "!C". To illustrate how the URL is parsed, it
+'      will be the following if opened with search queries "flea market" and
+'      "seattle, wa":
+'          https://foursquare.com/explore?mode=url&near=Seattle%2C%20WA&q=flea%20market
+https://foursquare.com/explore?mode=url&near={search!2!C\%20}&q={search!1\%20}
 https://www.yelp.com/search?find_desc={search\+}&find_loc={search!C\+}
 http://www.merchantcircle.com/search?q={search\+}&qn={search!C\+}
 http://www.local.com/business/results/?keyword={search\%20}&location={search!C\%20}
-http://www.insiderpages.com/search/search?query={search\+}&location={search!C\+}
 
 
 
