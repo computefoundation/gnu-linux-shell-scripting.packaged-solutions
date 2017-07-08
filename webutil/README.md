@@ -1,20 +1,22 @@
 
 # Webutil
 
-Open one or more URLs by alias, search query or directly in one of multiple web browsers.
+Open one or more URLs by alias, search query or directly.
+
+This utility works for multiple web browsers.
 
 Four argument methods are allowed:
 
 1. An alias (first argument) with one or more optional search queries (remaining arguments).
 2. Multiple aliases (first N arguments) with one or more optional search queries (all arguments after the last matching alias); requires switch `-a`.
-3. A search query with the default search URL *(defined in webutil)* when the first argument does not match any alias *(configurable)* or with switch `-s`. *The default search URL is defined in webutil.*
-4. Strings beginning with "www.", "http[s]://", "ftp://" or "file://".
+3. A search query with the default search URL *(defined in webutil)* when the first argument does not match any alias *(configurable in webutil)* or with switch `-s`.
+4. Strings beginning with "http[s]://", "ftp://" or "file://" or ending with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(configurable in webutil)*.
 
-Configurations are defined at the top of [webutil](webutil) and aliases are defined in [url-aliases](url-aliases).
+Configurations are defined in [webutil](webutil) and aliases are defined in [url-aliases](url-aliases).
 
 ## Examples
 
-### Alias
+### 1. Alias
 
 Search ...
 
@@ -30,25 +32,25 @@ webutil wiki ancient egypt
 webutil stores-all outdoor gear %% burlington, vt
 ```
 
-directions from Phoenix, Arizona to Seattle, Washington with the maps URL aliased by "dir" and open in GUI browser 3.
+directions from Phoenix, Arizona to Seattle, Washington with the maps URL aliased by "directions" and open in GUI browser 3.
 
 ```bash
-webutil -3 dir phoenix, az %% seattle, wa
+webutil -3 directions phoenix, az %% seattle, wa
 ```
 
-### Multiple aliases
+### 2. Multiple aliases
 
-Search "home decor" with three different online store URLs aliased by "amazon," "ebay" and "jet."
+Search "home goods" with three different online store URLs aliased by "amazon," "ebay" and "jet."
 
 ```bash
-webutil -a amazon ebay jet home decor
+webutil -a amazon ebay jet home goods
 ```
 
 ---
 
 *Note: These aliases are predefined in **url-aliases** and can be used right away. They will be opened in the respective browser defined in **webutil** (the default is GUI browser 1).*
 
-### Default search URL
+### 3. Default search URL
 
 Search "How to make tamales" with the default search URL.
 
@@ -56,12 +58,12 @@ Search "How to make tamales" with the default search URL.
 webutil How to make tamales
 ```
 
-### Direct URLs
+### 4. Direct URLs
 
 Open two URLs directly.
 
 ```bash
-webutil "www.blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
+webutil "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 ```
 
 ## Features

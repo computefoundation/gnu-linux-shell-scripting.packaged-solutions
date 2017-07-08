@@ -206,14 +206,6 @@ http://www.local.com/business/results/?keyword={search\%20}&location={search!C\%
 ' 
 ' Helpful notes/tips:
 ' 
-'   Additional {search\D} placeholder options needed:
-'     The current placeholder options were created based on common use cases. If
-'     others are need, please send an email to linuxshellbase@yahoo.com with the
-'     request, however, only the most commonly asked for options will be added.
-'     To add other options right away, please see and change the source code in
-'     url-search-placeholder-parser.pl. The code for placeholder options start
-'     around the middle of the file.
-' 
 '   Search query not appearing in URL:
 '     This means the website sends them using the request's body, form fields or
 '     another method. Webutil does not modify requests so the {search\D}
@@ -224,3 +216,4 @@ http://www.local.com/business/results/?keyword={search\%20}&location={search!C\%
 '     from it. Query parameters are separated by an ampersand ("&"). This could
 '     cause the URL to break however so it should be tested if altered.
 ' 
+

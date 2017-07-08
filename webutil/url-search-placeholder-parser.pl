@@ -32,16 +32,16 @@
 # Multiple URLs:
 #   Multiple URLs can be passed in at once. They must be passed in the first
 #   argument and delimited by "<|>". Each of their {search\D} placeholders will
-#   be replaced with the same search queries (exepct those using the !<P>
-#   option). The parsed URLs will be returned as a single string in the same
-#   format (delimited by "<|>").
+#   be replaced with the same search queries (exepct those that changed their
+#   search query to another with the !<P> option). The parsed URLs will be
+#   returned as a single string in the same format (delimited by "<|>").
 # 
 # "<>" delimiters:
 #   This script was created mainly as a utility for other scripts. For this
 #   reason, it takes into account "<>" delimiters in between the URL "<|>"
 #   delimiters which can be used to pass important data with the URLs.
 #   Everything after the first occurrence of a "<>" delimiter is left as is and
-#   the string befor is considered the URL. The return string will be in the
+#   the string before it is considered the URL. The return string will be in the
 #   same format (i.e. "url1[<>data1<>data2...]<|>url2[<>data1<>data2...]<|>
 #   url3...").
 # 

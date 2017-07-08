@@ -5,7 +5,7 @@
 # 
 # Set up:
 #   Retrieve the dependencies and assign the preferred browser commands under
-#   CONFIGURATIONS to use webutil.
+#   CONFIGURATIONS.
 # 
 # Dependencies:
 #   1. URI::Escape perl module (install with command "cpan URI::Escape").
@@ -59,6 +59,10 @@ readonly SEARCH_IF_ALIAS_NOT_FOUND=true
 
 # Default search URL.
 readonly DEFAULT_SEARCH_URL='http://www.google.com/search?q={search\+}'
+
+# Top level domains matched against arguments to determine if they should be
+# opened as URLs.
+readonly URL_MATCH_TOP_LEVEL_DOMAINS='.com .org .edu .gov .uk .net'
 
 # Terminal emulator used for opening terminal windows.
 TERMINAL() {
@@ -197,19 +201,17 @@ printMsgForBrwsrVarNotDef() {
 # configuration options. If their values are changed, they will be applied
 # everytime a URL is opened unless changed by argument or alias/URL
 # configuration options).
-
-# Initial/default browser
+# Initial/default browser.
 BROWSER="${BROWSER_GUI1}"
 # Whether or not to dump the page (it is likely not preferrable to set this to
-# true by default)
+# true by default).
 DUMP=false
-# Number of pages to skip forward after dumping a URL's output
+# Number of pages to skip forward after dumping a URL's output.
 DUMP_PG_FWD=0
 
 # UTILITY VARIABLES
-
 BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
-                   # browser is changed
+                   # browser is changed.
 
 # ============================================
 #   Prerequisites
@@ -278,7 +280,7 @@ while true; do
     --list|-l) printBrowserCommands; exit;;
     --help|-h) printHelpMessage full; exit;;
     --) shift; break;;
-    * ) break;;
+    *) break;;
   esac
   shift
 done
@@ -465,8 +467,13 @@ finalizeCfgsAndExeBrowser() {
 #   Open all URL arguments and exit if any are.
 # ===================================================
 
+rgxTopLvlDomains="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
+rgx='((http[s]?|ftp|file):\/\/)\S+'         # prefix matches
+rgx+='|'                                    # or
+rgx+="\S+(${rgxTopLvlDomains// /|})"        # suffix matches
+
 URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne \
-    "while(m/((www\.|((http[s]?|ftp|file):\/\/))\S+)/g) { print \"'\$1' \"; }"))
+    "while(m/(${rgx})/g) { print \"'\$1' \"; }"))
 
 if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
   if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then

@@ -46,3 +46,8 @@ Locate a directory.
 locate -d pic
 # returns /home/<user>/pictures
 ```
+
+## Notes
+
+* This utility does not support file names with spaces.
+

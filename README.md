@@ -1,9 +1,14 @@
 
-# Packaged-utilities
+<p align='center'>
+  <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='32%' alt='logo-light.png'>
+</p>
+</br>
 
-**Packaged-utilities** is an extension of [*linux-shell-base*][linux-shell-base] for utilities consisting of more than one file. These utilities conform to the *linux-shell-base* philosophy and a low-level methodology as those in *linux-shell-base*.
+**Packaged-utilities** is an extension of [linux-shell-base][linux-shell-base] for utilities consisting of more than one file.
 
-Each packaged utility is stored in its own directory.
+These utilities are stable and low-level as those in *linux-shell-base*.
+
+Each utility is stored in its own directory.
 
 ## _global/
 
@@ -15,9 +20,11 @@ Each packaged utility is stored in its own directory.
 
 Locate a file or directory from a database.
 
+<img src='/../images/gold-star.png' width='2.5%' align='right' disabled='true'>
+
 ## webutil/
 
-Open one or more URLs by alias, search query or directly in one of multiple web browsers.
+Open one or more URLs by alias, search query or directly.
 
 ## xselwebutil/
 
