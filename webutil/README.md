@@ -3,12 +3,12 @@
 
 Open one or more URLs by alias, search query or directly.
 
-This utility works for multiple web browsers.
+This utility works with multiple web browsers and any one with a command line interface.
 
 Four argument methods are allowed:
 
 1. An alias (first argument) with one or more optional search queries (remaining arguments).
-2. Multiple aliases (first N arguments) with one or more optional search queries (all arguments after the last matching alias); requires switch `-a`.
+2. Multiple aliases (first N arguments) with one or more optional search queries (remaining arguments after the last matching alias). (Requires switch `-a`).
 3. A search query with the default search URL *(defined in webutil)* when the first argument does not match any alias *(configurable in webutil)* or with switch `-s`.
 4. Strings beginning with "http[s]://", "ftp://" or "file://" or ending with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(configurable in webutil)*.
 
@@ -50,7 +50,7 @@ webutil -a amazon ebay jet home goods
 
 *Note: These aliases are predefined in **url-aliases** and can be used right away. They will be opened in the respective browser defined in **webutil** (the default is GUI browser 1).*
 
-### 3. Default search URL
+### 3. Search query
 
 Search "How to make tamales" with the default search URL.
 

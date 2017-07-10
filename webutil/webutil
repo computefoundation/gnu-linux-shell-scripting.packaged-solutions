@@ -468,9 +468,10 @@ finalizeCfgsAndExeBrowser() {
 # ===================================================
 
 rgxTopLvlDomains="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
-rgx='((http[s]?|ftp|file):\/\/)\S+'         # prefix matches
-rgx+='|'                                    # or
-rgx+="\S+(${rgxTopLvlDomains// /|})"        # suffix matches
+rgxTopLvlDomains="${rgxTopLvlDomains//'.'/'\.'}"
+rgx='((http[s]?|ftp|file):\/\/)\S+'           # prefix matches
+rgx+='|'                                      # or
+rgx+="\S+(${rgxTopLvlDomains// /|})$"         # suffix matches
 
 URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne \
     "while(m/(${rgx})/g) { print \"'\$1' \"; }"))
