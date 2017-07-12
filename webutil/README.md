@@ -3,7 +3,7 @@
 
 Open one or more URLs by alias, search query or directly.
 
-This utility works with multiple web browsers and any one with a command line interface.
+This utility works with multiple web browsers.
 
 Four argument methods are allowed:
 

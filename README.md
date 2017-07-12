@@ -6,8 +6,6 @@
 
 **Packaged-utilities** is an extension of [linux-shell-base][linux-shell-base] for utilities consisting of more than one file.
 
-These utilities are stable and low-level as those in *linux-shell-base*.
-
 Each utility is stored in its own directory.
 
 ## _global/
@@ -16,17 +14,17 @@ Each utility is stored in its own directory.
 
 * [**url-search-placeholder-parser.pl**][url-search-placeholder-parser.pl]: Replace one or more "{search\D}" placeholders in one or more URLs with a search query, where D is the URL's space delimiter.
 
-## locate/
+## Locate/
 
 Locate a file or directory from a database.
 
 <img src='/../images/gold-star.png' width='2.5%' align='right' disabled='true'>
 
-## webutil/
+## Webutil/
 
 Open one or more URLs by alias, search query or directly.
 
-## xselwebutil/
+## Xselwebutil/
 
 Search the selected text in a browser (using a search URL) or open all space separated words within the selected text beginning with "www.", "http[s]://", "ftp://" or "file://" as URLs. This utility should be bound to a keybinding.
 
