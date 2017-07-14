@@ -27,7 +27,8 @@
 #   !M:      Remove all commas in the search query
 # 
 # Unsafe characters in a URL will be encoded. A character can be escaped with
-# two backslashes to keep it from being encoded.
+# two backslashes to keep it from being encoded. This also applies for the
+# delimiter in the search placeholder.
 # 
 # Multiple URLs:
 #   Multiple URLs can be passed in at once. They must be passed in the first
@@ -66,11 +67,14 @@ my $MAX_SEARCH_PLACEHOLDERS_PER_URL = 8;
 
 # ======= ! CONFIGURATIONS ==============
 
-# ASCII escape ranges for search queries; discludes [#$%&=?_\s] (to include
-# these except for \s, use '\x00-\x1F\x21-\x2D\x3B-\x40\x5B-\x60\x7B-\xFF')
-my $SRCH_QRY_ASCII_ESCP_RNGS = '\x00-\x1F\x21\x22\x24\x27-\x2D\x3B\x3C
-    \x3E\x40\x5B-\x5E\x60\x7B-\xFF';
-# ASCII escape ranges for all other parts of the URL
+# ASCII escape ranges for search queries. It includes many unsafe URL characters
+# and discludes [#$%&=?_ ]. (To include these (except for the space), use
+# '\x00-\x1F\x21-\x2D\x3B-\x40\x5B-\x60\x7B-\xFF' instead). Important: Do not
+# include the space character as spaces in a search query will be encoded rather
+# than replaced with the search placeholder delimiter.
+my $SRCH_QRY_ASCII_ESCP_RNGS = '\x00-\x1F\x21\x22\x24\x27-\x2D\x3B\x3C\x3E\x40';
+$SRCH_QRY_ASCII_ESCP_RNGS .= '\x5B-\x5E\x60\x7B-\xFF';
+# ASCII escape ranges for all other parts of the URL.
 my $URI_ASCII_ESCP_RNGS = $SRCH_QRY_ASCII_ESCP_RNGS.'\x20';
 
 if (@ARGV < 1) {
@@ -122,17 +126,6 @@ sub escapeUrlSection {
   return $retStr;
 }
 
-for my $i (0..$MAX_SEARCH_PLACEHOLDERS_PER_URL) {
-  if (defined($SEARCH_QUERIES[$i])) {
-    $SEARCH_QUERIES[$i] = escapeUrlSection(\$SEARCH_QUERIES[$i],
-        \$SRCH_QRY_ASCII_ESCP_RNGS);
-  } else {
-    # Initialize all non-existing search queries to an empty string so that
-    # corresponding {search\D} placeholders can be replaced with one
-    $SEARCH_QUERIES[$i] = '';
-  }
-}
-
 my $RETURN_STRING;
 
 for my $urlWData (@ARG_URLS_W_DATA) {
@@ -150,6 +143,35 @@ for my $urlWData (@ARG_URLS_W_DATA) {
     my $optCptlz;
     my $optRevrs;
     my $optRemCommas;
+
+    $srchPlhNo++;
+
+    # ============================================
+    #   Validate the search placeholder
+    # ============================================
+
+    if ($srchPlhNo == 1 && $txtBefr eq '') {
+      print "error: {search\\D}\n  placeholder cannot be at the very\n ",
+          " beginning of a URL; URL:\n  $url\n";
+      exit 1;
+    } elsif ($spcDelim eq '') {
+      print "error: delimiter D\n  missing for {search\\D} placeholder;\n ",
+          " URL:\n  $url\n";
+      exit 1;
+    } elsif (length($spcDelim) > 7) {
+      print "error: delimiter D\n  for {search\\D} placeholder too long;\n ",
+          " Length: ".length($spcDelim)."\n  Delimiter: \"$spcDelim\"\n ",
+          " URL:\n  $url\n";
+      exit 1;
+    } elsif ($srchPlhNo > $MAX_SEARCH_PLACEHOLDERS_PER_URL) {
+      print "error: cannot use\n  more than $MAX_SEARCH_PLACEHOLDERS_PER_URL",
+          " {search\\D}\n  placeholders; URL:\n  $url\n";
+      exit 1;
+    }
+
+    # ===============================================
+    #   Process options for the search placeholder
+    # ===============================================
 
     if ($opts ne '') {
       if ($opts !~ m/^(!([0-9]{1,2}|[WU][0-9]{0,2}|[CRM]))+$/) {
@@ -194,30 +216,17 @@ for my $urlWData (@ARG_URLS_W_DATA) {
       }
     }
 
-    $srchPlhNo++;
-
-    if ($srchPlhNo == 1 && $txtBefr eq '') {
-      print "error: {search\\D}\n  placeholder cannot be at the very\n ",
-          " beginning of a URL; URL:\n  $url\n";
-      exit 1;
-    } elsif ($spcDelim eq '') {
-      print "error: delimiter D\n  missing for {search\\D} placeholder;\n ",
-          " URL:\n  $url\n";
-      exit 1;
-    } elsif (length($spcDelim) > 7) {
-      print "error: delimiter D\n  for {search\\D} placeholder too long;\n ",
-          " Length: ".length($spcDelim)."\n  Delimiter: \"$spcDelim\"\n ",
-          " URL:\n  $url\n";
-      exit 1;
-    } elsif ($srchPlhNo > $MAX_SEARCH_PLACEHOLDERS_PER_URL) {
-      print "error: cannot use\n  more than $MAX_SEARCH_PLACEHOLDERS_PER_URL",
-          " {search\\D}\n  placeholders; URL:\n  $url\n";
-      exit 1;
-    }
+    # ============================================
+    #   Process the current URL section
+    # ============================================
 
     $urlEndPos = $+[0];
 
     $fnlUrl .= escapeUrlSection(\$txtBefr, \$URI_ASCII_ESCP_RNGS);
+
+    # ============================================
+    #   Process the search query for the the search placeholder
+    # ============================================
 
     my $srchQryIndx;
 
@@ -229,49 +238,53 @@ for my $urlWData (@ARG_URLS_W_DATA) {
 
     my $srchQry = $SEARCH_QUERIES[$srchQryIndx];
 
-    if (@optOnlyWrdsPos) {
-      my @srchQryWrds = $srchQry =~ /\S+\s*/g;
-      $srchQry = '';
-      for my $pos (@optOnlyWrdsPos) {
-        if ($pos > scalar @srchQryWrds - 1) {
-          next;
-        }
-        $srchQry .= $srchQryWrds[$pos];
-      }
-      $srchQry =~ s/\s+$//g;
-    }
-
-    if (@optUpprCaseWrdsPos) {
-      if ($optUpprCaseWrdsPos[0] == -2) {
-        $srchQry = uc($srchQry);
-      } else {
+    if (defined($srchQry)) {
+      if (@optOnlyWrdsPos) {
         my @srchQryWrds = $srchQry =~ /\S+\s*/g;
-        for my $pos (@optUpprCaseWrdsPos) {
+        $srchQry = '';
+        for my $pos (@optOnlyWrdsPos) {
           if ($pos > scalar @srchQryWrds - 1) {
             next;
           }
-          $srchQryWrds[$pos] = uc($srchQryWrds[$pos]);
+          $srchQry .= $srchQryWrds[$pos];
         }
-        $srchQry = join('', @srchQryWrds);
+        $srchQry =~ s/\s+$//g;
       }
+
+      if (@optUpprCaseWrdsPos) {
+        if ($optUpprCaseWrdsPos[0] == -2) {
+          $srchQry = uc($srchQry);
+        } else {
+          my @srchQryWrds = $srchQry =~ /\S+\s*/g;
+          for my $pos (@optUpprCaseWrdsPos) {
+            if ($pos > scalar @srchQryWrds - 1) {
+              next;
+            }
+            $srchQryWrds[$pos] = uc($srchQryWrds[$pos]);
+          }
+          $srchQry = join('', @srchQryWrds);
+        }
+      }
+
+      if ($optCptlz) {
+        $srchQry =~ s/\b(\w)/\U$1/g;
+      }
+
+      if ($optRevrs) {
+        $srchQry = join('', reverse split(/(\s+)/, $srchQry));
+      }
+
+      if ($optRemCommas) {
+        $srchQry =~ s/%2C//g;
+      }
+
+      $srchQry = escapeUrlSection(\$srchQry, \$SRCH_QRY_ASCII_ESCP_RNGS);
+
+      $srchQry =~ s/\s/$spcDelim/g;
+
+      $fnlUrl .= $srchQry;
     }
-
-    if ($optCptlz) {
-      $srchQry =~ s/\b(\w)/\U$1/g;
-    }
-
-    if ($optRevrs) {
-      $srchQry = join('', reverse split(/(\s+)/, $srchQry));
-    }
-
-    if ($optRemCommas) {
-      $srchQry =~ s/%2C//g;
-    }
-
-    $srchQry =~ s/\s/$spcDelim/g;
-
-    $fnlUrl .= $srchQry;
-  }
+  } #!while URL sections and placeholders
 
   my $urlEnd = substr($url, $urlEndPos);
   
@@ -282,7 +295,7 @@ for my $urlWData (@ARG_URLS_W_DATA) {
   my $fnlStr = ($urlData) ? "$fnlUrl$urlData" : $fnlUrl;
 
   $RETURN_STRING .= "$fnlStr<|>";
-}
+} #!while URL
 
 print substr($RETURN_STRING, 0, -3)."\n";
 

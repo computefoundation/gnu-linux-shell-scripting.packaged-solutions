@@ -19,7 +19,7 @@
 #   url-search-placeholder-parser.pl in directory "_global" in
 #   packaged-utilities. It can be retrieved in two ways:
 #   1. Download it to the directory of this script, optionally with the following:
-#      wget -O <path/to/dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
+#      wget -P <path/to/dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
 #   2. Create a local copy of the "_global" directory and adjust its path in
 #      "CONFIURATIONS."
 # 

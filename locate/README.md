@@ -3,47 +3,59 @@
 
 Locate a file or directory from a database.
 
-This utility is created entirely in bash with grep, simple and fast.
+This utility is created entirely in bash, simple and fast.
 
 ## Databases
 
-There are two databases, one for files and one for directories consisting of file and directory paths, respectively. They are populated by output paths defined in *updatedb*.
+There is a file paths database and a directory paths database.
 
-*locate* searches the files database by default and the directories database with switch `-d`.
+These databases are populated by output paths defined in *updatedb*.
 
-*Note: The predefined output paths in **updatedb** and the precreated databases **dirsdb** and **filesdb** are provided just as examples.*
+*(Examples paths are predefined in updatedb and the precreated databases **dirsdb** and **filesdb** are provided as examples).*
+
+*locate* searches the file paths database by default and the directory paths database with switch `-d`.
 
 ## Set up
 
-Three things have to be done to use *locate*:
+To use *locate*, three things have to be done:
 
-1. Assign the correct values for the variables in *CONSTANTS.sh*.
-2. Define the output paths in *updatedb*.
+1. Assign the preferred variable values in *CONSTANTS.sh*.
+2. Define the preferred output paths in *updatedb*.
 3. Run *updatedb*.
 
-At this point, *locate* can be used as shown in the examples below.
+Once completed, *locate* can be used as shown in the examples below.
 
 ## Examples *(based on the precreated databases)*
 
 Locate a file.
 
 ```bash
+locate addr
+# returns /home/<user>/documents/addresses.txt
+```
+
+```bash
 locate book
 # returns /home/<user>/archived_data/backup/bookmarks.html
 ```
 
-Locate a file *(in a mounted drive [assuming the correct one is mounted]; see the *MNTPNT_PATHS* variable description in *CONSTANTS.sh* for more information)*.
+```bash
+locate shr # note: any part of the file/directory name can be used; the first match will be returned
+# returns /home/<user>/.bashrc
+```
+
+*(Locate a file in a mounted drive [assuming it is mounted]; see the MNTPNT_PATHS variable in CONSTANTS.sh for more information).*
 
 ```bash
-locate urls.t
-# returns {MNTPNT_PATH}/general/reference/website_urls.txt where {MNTPNT_PATH} is the mountpoint of
-# the mounted drive
+locate stat
+# returns {MNTPNT_PATH}/records/external/statistics.txt where {MNTPNT_PATH} is the mountpoint of the
+# mounted drive
 ```
 
 Locate a directory.
 
 ```bash
-locate -d pic
+locate -d tur
 # returns /home/<user>/pictures
 ```
 

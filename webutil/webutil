@@ -8,16 +8,16 @@
 #   CONFIGURATIONS.
 # 
 # Dependencies:
-#   1. URI::Escape perl module (install with command "cpan URI::Escape").
+#   URI::Escape perl module (for url-search-placeholder-parser.pl; install with
+#     command "cpan URI::Escape").
 # 
-#   2. xterm (the terminal used for opening terminal windows; for quick and easy
-#      start up, simply download it. If another terminal emulator is preferred,
-#      please adjust the command in the TERMINAL function under CONFIGURATIONS).
+#   xterm (the terminal used for opening terminal windows; for quick and easy
+#     start up, simply download it. If another terminal emulator is preferred,
+#     please adjust the command in the TERMINAL function under CONFIGURATIONS).
 # 
 
 readonly HERE="$(dirname "${0}")"
-readonly SCRIPT_NAME="$(basename ${BASH_SOURCE[0]//.sh})"
-readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl"
+readonly SCRIPT_NAME="$(basename "${BASH_SOURCE[0]//.sh}")"
 
 # ======= CONFIGURATIONS ==============
 
@@ -60,8 +60,7 @@ readonly SEARCH_IF_ALIAS_NOT_FOUND=true
 # Default search URL.
 readonly DEFAULT_SEARCH_URL='http://www.google.com/search?q={search\+}'
 
-# Top level domains matched against arguments to determine if they should be
-# opened as URLs.
+# Top level domains used to match URLs.
 readonly URL_MATCH_TOP_LEVEL_DOMAINS='.com .org .edu .gov .uk .net'
 
 # Terminal emulator used for opening terminal windows.
@@ -88,10 +87,11 @@ readonly DUMP_LESS_OPTS='-IFRXMc'
 # ======= ! CONFIGURATIONS ==============
 
 printHelpMessage() {
-  [ "${1}" = 'full' ] && echo -e "${SCRIPT_NAME} - Utility to make using the" \
-      'web easier.\n'
+  if [ "${1}" = 'full' ]; then
+  	echo -e "${SCRIPT_NAME} - Utility to make using the web easier.\n"
+  fi
 
-  local msg="\
+  echo -ne "\
 Usage:
   webutil [options] <url alias> [search queries]
   webutil [options] <search query for default search url>
@@ -108,9 +108,11 @@ Usage:
     CONFIGURATIONS).
 
   Third usage:
-    If any of the arguments begin with \"www.\",
-    \"http[s]://\", \"ftp://\" or \"file://\", each
-    will be openeded as a URL directly.
+    If any of the arguments begin with \"http[s]://\",
+    \"ftp://\" or \"file://\" or end with any of the top
+    level domains defined by URL_MATCH_TOP_LEVEL_DOMAINS
+    in CONFIGURATIONS, each will be openeded as a URL
+    directly.
 
 Options:
   -g<1-9>  -<1-9>    open in the GUI browser of the given
@@ -139,11 +141,10 @@ Notes:
   option(s) will override all alias and URL
   configuration options in the URL aliases file.
   
-  Unsafe URL characters in a search query
+  An unsafe URL character in a search query
   will be encoded. This can be prevented by
   escaping it with two backslashes.
 "
-  echo -ne "${msg}"
 }
 
 printBrowserCommands() {
@@ -212,30 +213,6 @@ DUMP_PG_FWD=0
 # UTILITY VARIABLES
 BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
                    # browser is changed.
-
-# ============================================
-#   Prerequisites
-# ============================================
-
-if [ ! -f "${URL_SRCH_PLH_PARSER_SCRIPT}" ]; then
-  url='https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/'
-  url+='master/_global/url-search-placeholder-parser.pl'
-  echo -e 'webutil: url-search-placeholder-parser.pl not found.\n'\
-      " Please download it to webutil's directory, optionally\n  with the"\
-      'following:' 1>&2
-  echo -e "     wget -O <path_to_dir> ${url}" 1>&2
-  exit 1
-fi
-
-for urlAliasesFile in "${URL_ALIASES_FILES[@]}"; do
-  path="${URL_ALIASES_FILES_DIR}/${urlAliasesFile}"
-  if [ ! -f "${path}" ]; then
-    echo -e "webutil: URL aliases file not found:\n  '${path}'" 1>&2
-    exit 1
-  fi
-
-  URL_ALIASES_FILES_STR+="${urlAliasesFile}|"
-done
 
 # ============================================
 #   Options and arguments
@@ -310,6 +287,19 @@ if [[ "${DUMP}" = 'true' && "${BROWSER_TYPE}" = 'GUI' ]]; then
   BROWSER="${BROWSER_TERM1}"
   BROWSER_TYPE='TERM'
 fi
+
+# ============================================
+#   Prerequisites
+# ============================================
+
+for urlAliasesFile in "${URL_ALIASES_FILES[@]}"; do
+  path="${URL_ALIASES_FILES_DIR}/${urlAliasesFile}"
+  if [ ! -f "${path}" ]; then
+    echo -e "webutil: URL aliases file not found:\n  '${path}'" 1>&2
+    exit 1
+  fi
+  URL_ALIASES_FILES_STR+="${urlAliasesFile}|"
+done
 
 # ============================================
 #   Main functions
@@ -469,16 +459,15 @@ finalizeCfgsAndExeBrowser() {
 
 rgxTopLvlDomains="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
 rgxTopLvlDomains="${rgxTopLvlDomains//'.'/'\.'}"
-rgx='((http[s]?|ftp|file):\/\/)\S+'           # prefix matches
-rgx+='|'                                      # or
-rgx+="\S+(${rgxTopLvlDomains// /|})$"         # suffix matches
-
-URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne \
-    "while(m/(${rgx})/g) { print \"'\$1' \"; }"))
+rgx='((http[s]?|ftp|file):\/\/)\S+'            # prefix matches
+rgx+='|'                                       # or
+rgx+="\S+(${rgxTopLvlDomains// /|})(?=\s)"     # suffix matches
+URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "while(m/(${rgx})/g) { print \
+    \"'\$1' \"; }"))
 
 if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
   if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
-    echo -e 'webutil: cannot use option -c when opening URLs directly' 1>&2
+    echo -e 'webutil: option -c not allows when opening URLs directly' 1>&2
     exit 1
   fi
   finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
@@ -487,8 +476,8 @@ if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
 fi
 
 # ===================================================
-#   Get and parse URLs for one or more alias(es) any exist; search otherwise if
-#   the respective configuration is set.
+#   Get and parse all URLs for one or more alias(es) if any exist; search
+#   otherwise (if the respective configuration is set).
 # ===================================================
 
 # If not using all arguments for URL aliases, use the first argument as the
@@ -552,7 +541,7 @@ if [ -n "${urlAliasesParserOut}" ]; then
     aliasOpts_urls_urlsOpts=(${alias_aliasOpts_urls_urlsOpts//'<$>'/ })
 
     setUpUrlsUrlsOptsArr() {
-      local urlSrchPlhParserOut="$("${URL_SRCH_PLH_PARSER_SCRIPT}" \
+      local urlSrchPlhParserOut="$("${HERE}/url-search-placeholder-parser.pl" \
           "${aliasOpts_urls_urlsOpts["${1}"]}" \
           ${urlSearchPlaceholderParserArgs})"
       [[ "${urlSrchPlhParserOut}" = 'error:'* ]] && \
@@ -635,15 +624,18 @@ else
     exit
   fi
 
-  dfltSrchUrlPrsd="$("${URL_SRCH_PLH_PARSER_SCRIPT}" \
+  dfltSrchUrlPrsd="$("${HERE}/url-search-placeholder-parser.pl" \
       "${DEFAULT_SEARCH_URL}" "${@}")"
 
-  finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
-      "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
+  if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
+    URLS_FOR_X11_CLIPBOARD=("${dfltSrchUrlPrsd}")
+  else
+    finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
+        "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
+  fi
 fi
 
-if [[ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' && -n \
-    "${URLS_FOR_X11_CLIPBOARD[@]}" ]]; then
+if [ -n "${URLS_FOR_X11_CLIPBOARD[@]}" ]; then
   echo "${URLS_FOR_X11_CLIPBOARD[@]}" | xclip -r -selection c
 fi
 

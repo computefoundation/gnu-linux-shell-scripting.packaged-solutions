@@ -47,8 +47,8 @@
 '     !M:      Remove all commas in the search query
 ' 
 '   Unsafe characters in a URL will be encoded and can be escaped with two
-'   backslashes to not be (this also applies for search queries passed to
-'   webutil).
+'   backslashes to not be. This also applies for the delimiter in the search
+'   placeholder and for characters in the search queries passed to webutil.
 ' 
 '   Instructions on adding a new URL with a {search\D} placeholder are at the
 '   bottom of this file.
