@@ -1,57 +1,52 @@
 #!/usr/bin/env bash
 # 
-# Search the selected text in a browser (using a search URL) or open all space
-# separated words within it beginning with "www.", "http[s]://", "ftp://" or
-# "file://" as URLs. This script should be bound to a keybinding.
+# Search the selected text (using a search URL) or open all URLs in the selected
+# text in a web browser.
 # 
 # Usage:
 #   xselwebutil [options]
 # 
 # Options:
 #   --browser <CMD>      browser (command) to use (e.g. 'firefox -new-tab');
-#                        if not set, the default will be used
+#                        the default will be used if not specified
 #   --search-url <URL>   search URL to use; it must contain a "{search\D}"
-#                        placeholder (see url-search-placeholder-parser.pl in
-#                        directory "_global"); if not set, the default will be
+#                        placeholder (see url-search-placeholder-parser.pl for
+#                        more information); if not set, the default will be
 #                        used
 # 
-# Dependencies:
-#   url-search-placeholder-parser.pl in directory "_global" in
-#   packaged-utilities. It can be retrieved in two ways:
-#   1. Download it to the directory of this script, optionally with the following:
-#      wget -P <path/to/dir> https://github.com/linux-shell-base/packaged-utilities/tree/master/_global/url-search-placeholder-parser.pl
-#   2. Create a local copy of the "_global" directory and adjust its path in
-#      "CONFIURATIONS."
+# Notes:
+#   This utility should be bound to a keybinding.
 # 
-#   URI::Escape Perl module; install with command "cpan URI::Escape".
+#   A URL is matched when it begins with "http[s]://", "ftp://" or "file://" or
+#   ends with one of the top level domains defined by
+#   URL_MATCH_TOP_LEVEL_DOMAINS in CONFIGURATIONS.
+# 
+# Dependencies:
+#   URI::Escape perl module (for url-search-placeholder-parser.pl; install with
+#     command "cpan URI::Escape").
 # 
 
 readonly HERE="$(dirname "${0}")"
 
-# ========== CONFIURATIONS ===========================
+# ======= CONFIGURATIONS ==============
 
-# Default browser
+# Default browser.
 readonly BROWSER='chromium'
 
-# Default search URL
+# Default search URL.
 readonly SEARCH_URL='http://www.google.com/search?q={search\+}'
 
-# URL search placeholder parser script; use the one in this directory or in a
-# local copy of the "_global" directory if it does not exist (path will likely
-# have to be adjusted).
-glblDir="${HERE}/../_global"
-[ -f "${HERE}/url-search-placeholder-parser.pl" ] && \
-readonly URL_SRCH_PLH_PARSER_SCRIPT="${HERE}/url-search-placeholder-parser.pl" || \
-readonly URL_SRCH_PLH_PARSER_SCRIPT="${glblDir}/url-search-placeholder-parser.pl"
+# Top level domains used to match URLs.
+readonly URL_MATCH_TOP_LEVEL_DOMAINS='.com .org .edu .gov .uk .net'
 
-# ========== ! CONFIURATIONS ===========================
+# ======= ! CONFIGURATIONS ==============
 
 OPTS="$(getopt -a -o h --long browser:,search-url:,help -n 'xselwebutil' -- \
     "${@}")"
 if [ "$?" -ne 0 ]; then
-  # output errors as a desktop notification since this script is meant to be
+  # Output errors as a desktop notification since this script is meant to be
   # used with a keybinding and errors printed to stderr will not be seen.
-  msg='xselwebutil (err): unrecognized option or option requires an argument'
+  msg='xselwebutil: unrecognized option or option does not have an argument'
   notify-send "${msg}"
   exit 1
 fi
@@ -66,27 +61,22 @@ while true; do
   shift
 done
 
-if [ ! -f "${URL_SRCH_PLH_PARSER_SCRIPT}" ]; then
-  msg='Must download url-search-placeholder-parser.pl. Please see'
-  msg+=' documentation.'
-  notify-send 'xselwebutil (err)' "${msg}"
-  exit 1
-fi
-
 SEL_TXT="$(xsel)"
 SEL_TXT="$(echo "${SEL_TXT}" | sed 's/^[ \t]*//;s/[ \t]*$//')"
 
 if [ -n "${SEL_TXT}" ]; then
-  SEL_TXT_WORDS=(${SEL_TXT})
+  rgxTopLvlDomains="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
+  rgxTopLvlDomains="${rgxTopLvlDomains//'.'/'\.'}"
+  rgx='((http[s]?|ftp|file):\/\/)\S+'            # prefix matches
+  rgx+='|'                                       # or
+  rgx+="\S+(${rgxTopLvlDomains// /|})(?=\s)"     # suffix matches
+  URLS_FOR_DIRECT_OPEN=($(echo "${SEL_TXT}" | perl -ne "while(m/(${rgx})/g) \
+      { print \"'\$1' \"; }"))
 
-  for selTxtWord in "${SEL_TXT_WORDS[@]}"; do
-    if [[ "${selTxtWord}" =~ ^(((http[s]?|ftp|file)://)|(www\.)).* ]]; then
-      brwsrArgs+=" '${selTxtWord}'"
-    fi
-  done
-
-  if [ -z "${brwsrArgs}" ]; then
-    brwsrArgs="'$("${URL_SRCH_PLH_PARSER_SCRIPT}" "${SEARCH_URL}" \
+  if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
+    brwsrArgs="${URLS_FOR_DIRECT_OPEN[@]}"
+  else
+    brwsrArgs="'$("${HERE}/url-search-placeholder-parser.pl" "${SEARCH_URL}" \
         "${SEL_TXT}")'"
   fi
 

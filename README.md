@@ -1,6 +1,6 @@
 
 <p align='center'>
-  <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='32%' alt='logo-light.png'>
+  <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='30%' alt='logo-light.png'>
 </p>
 </br>
 
@@ -26,7 +26,7 @@ Open one or more URLs by alias, search query or directly.
 
 ## Xselwebutil/
 
-Search the selected text in a browser (using a search URL) or open all space separated words within the selected text beginning with "www.", "http[s]://", "ftp://" or "file://" as URLs. This utility should be bound to a keybinding.
+Search the selected text (using a search URL) or open all URLs in the selected text in a web browser. This utility should be bound to a keybinding.
 
 
 

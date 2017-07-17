@@ -9,9 +9,9 @@ This utility is created entirely in bash, simple and fast.
 
 There is a file paths database and a directory paths database.
 
-These databases are populated by output paths defined in *updatedb*.
+These databases are populated with output paths defined in *updatedb*.
 
-*(Examples paths are predefined in updatedb and the precreated databases **dirsdb** and **filesdb** are provided as examples).*
+*(updatedb contains predefined output paths and the precreated databases **dirsdb** and **filesdb** are provided as examples).*
 
 *locate* searches the file paths database by default and the directory paths database with switch `-d`.
 
