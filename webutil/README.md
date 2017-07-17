@@ -10,7 +10,7 @@ Four argument methods are allowed:
 1. An alias (first argument) with one or more optional search queries (remaining arguments).
 2. Multiple aliases (first N arguments) with one or more optional search queries (remaining arguments after the last matching alias). (Requires switch `-a`).
 3. A search query with the default search URL *(defined in webutil)* when the first argument does not match any alias *(configurable in webutil)* or with switch `-s`.
-4. Strings beginning with "http[s]://", "ftp://" or "file://" or ending with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(configurable in webutil)*.
+4. Strings beginning with "http[s]://", "ftp://" or "file://" or ending with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(these can be changed in webutil)*.
 
 Configurations are defined in [webutil](webutil) and aliases are defined in [url-aliases](url-aliases).
 
@@ -72,3 +72,12 @@ webutil "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 * Dump each URL's output to a terminal window.
 * Specify a configuration option *(e.g. open in GUI browser 3)* per alias or URL (see *url-aliases* for more information).
 * Output the parsed URLs to the clipboard.
+
+## Installation
+
+To install, please download ***install-webutil.sh*** with the following command and run it:
+
+```bash
+wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-webutil.sh && \
+chmod +x install-webutil.sh
+```
