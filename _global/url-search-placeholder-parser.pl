@@ -60,7 +60,7 @@ use URI::Escape;
 # ======= CONFIGURATIONS ==============
 
 # Delimiter used to separate search queries.
-my $SEARCH_QUERY_DELIM='%%';
+my $SEARCH_QUERY_DELIM = '%%';
 
 # Maximum number of {search\D} placeholders allowed per URL.
 my $MAX_SEARCH_PLACEHOLDERS_PER_URL = 8;
@@ -77,7 +77,7 @@ $SRCH_QRY_ASCII_ESCP_RNGS .= '\x5B-\x5E\x60\x7B-\xFF';
 # ASCII escape ranges for all other parts of the URL.
 my $URI_ASCII_ESCP_RNGS = $SRCH_QRY_ASCII_ESCP_RNGS.'\x20';
 
-if (@ARGV < 1) {
+if (scalar @ARGV < 1) {
   # "error" for script errors are followed by an underscore to distinguish them
   # from formatting errors (this distinction is primarily used by other scripts)
   print 'error_: invalid number of arguments: '.scalar @ARGV."\n";
