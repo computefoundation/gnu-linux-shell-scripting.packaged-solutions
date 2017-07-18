@@ -71,4 +71,3 @@ To install, please download ***install-locate.sh*** with the following command a
 wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-locate.sh && \
 chmod +x install-locate.sh
 ```
-

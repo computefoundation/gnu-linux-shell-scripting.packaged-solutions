@@ -1,7 +1,7 @@
 
 # Webutil
 
-Open one or more URLs by alias, search query or directly.
+Open one or more URLs by alias, search query or directly in a web browser.
 
 This utility works with multiple web browsers.
 
