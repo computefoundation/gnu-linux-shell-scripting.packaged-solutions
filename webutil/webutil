@@ -75,10 +75,10 @@ TERMINAL() {
 
 # Whether or not to open all URLs for a terminal browser in their own individual
 # terminal windows; if not, they will be opened in the same terminal window for
-# their browser. (The latter works well with browsers that use buffers that can
-# be switched, like w3m; if a browser does not support multiple buffers, it will
-# not work well. This configuration will not apply if the dump option is used as
-# each URL will always be dumped to its own terminal window).
+# their browser. The latter works well with browsers that use buffers that can
+# be switched, such as w3m; if a browser does not support multiple buffers, it
+# may not work well. Note: This configuration will not apply if the dump option
+# is used as each URL will always be dumped to its own terminal window).
 readonly OPEN_TERM_BRWSR_URLS_IN_INDV_WIND=false
 
 # Default less options used for the less command when dumping a webpage.
@@ -202,6 +202,7 @@ printMsgForBrwsrVarNotDef() {
 # configuration options. If their values are changed, they will be applied
 # everytime a URL is opened unless changed by argument or alias/URL
 # configuration options).
+
 # Initial/default browser.
 BROWSER="${BROWSER_GUI1}"
 # Whether or not to dump the page (it is likely not preferrable to set this to
@@ -211,6 +212,8 @@ DUMP=false
 DUMP_PG_FWD=0
 
 # UTILITY VARIABLES
+
+# Current browser type.
 BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
                    # browser is changed.
 
@@ -305,10 +308,10 @@ done
 #   Main functions
 # ============================================
 
-# parseAliasCfgOpts:
+# processAliasOptions:
 #   Parse configuration options for an alias and assign global configurations
 #   values based on their values.
-parseAliasCfgOpts() {
+processAliasOptions() {
   for aliasOpt in ${ALIAS_OPTS[@]}; do
     case "${aliasOpt}" in
       browser*)
@@ -394,9 +397,9 @@ createBrowserUrlHashes() {
   done
 }
 
-# finalizeCfgsAndExeBrowser:
+# finalizeConfigsAndExecBrowser:
 #   Finalize configurations and execute browser for one or more URLs.
-finalizeCfgsAndExeBrowser() {
+finalizeConfigsAndExecBrowser() {
   local browser="${1}"
   local browserType="${2}" # 'GUI' or 'TERM'
   local dump="${3}"
@@ -467,45 +470,49 @@ URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "while(m/(${rgx})/g) { print \
 
 if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
   if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
-    echo -e 'webutil: option -c not allows when opening URLs directly' 1>&2
+    echo -e 'webutil: option -c not allowed when opening URLs directly' 1>&2
     exit 1
   fi
-  finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
+  finalizeConfigsAndExecBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
       "${DUMP_PG_FWD}" "${URLS_FOR_DIRECT_OPEN[@]}"
   exit
 fi
 
 # ===================================================
-#   Get and parse all URLs for one or more alias(es) if any exist; search
-#   otherwise (if the respective configuration is set).
+#   Get and parse all URLs for one or more alias(es) if the alias(es) exist(s).
 # ===================================================
 
-# If not using all arguments for URL aliases, use the first argument as the
-# alias and if it is found, use the remaining for search queries for the URLs
-# returned for it (which will include at least 1). If the alias was not found,
-# search with the default search URL using all arguments as a search query. If
-# using all arguments for URL aliases, return and open all URLs for all matched
-# aliases. If no aliases were found, exit. (Note: The return string format of
-# url-aliases-parser.pl is given in its documentation).
+# Procedural cases:
+#   First argument only used as alias:
+#     1. If found, use the remaining arguments as search queries with the URLs
+#        returned for it. (Note: There will always be at least one URL returned
+#        for a found alias).
+#     2. If not found, use all arguments as search queries with the default
+#        search URL (if the respective configuration is set).
+#   All arguments used as aliases:
+#     1. If the first is found, find all after it and return their URLs. Use all
+#        arguments after the last found alias as search queries with all of
+#        their URLs.
+#     2. If the first is not found, print a message and exit.
 
 if [ -z "${OPT_OVERRIDE_ALIAS_MATCHING}" ]; then
   if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
-    urlAliasesParserArgs="${@}"
+    urlAliasesFileParserArgs="${@}"
   else
-    urlAliasesParserArgs="${1}"
+    urlAliasesFileParserArgs="${1}"
   fi
 
-  urlAliasesParserOut="$("${HERE}/url-aliases-parser.pl" \
+  urlAliasesFileParserOut="$("${HERE}/url-aliases-file-parser.pl" \
       "${URL_ALIASES_FILES_DIR}" "${URL_ALIASES_FILES_STR}" \
-      ${urlAliasesParserArgs})"
+      ${urlAliasesFileParserArgs})"
 fi
 
-if [ -n "${urlAliasesParserOut}" ]; then
-  if [[ "${urlAliasesParserOut}" = 'error:'* ]]; then
-    echo "error in URL aliases file ${urlAliasesParserOut#'error:'}" 1>&2
+if [ -n "${urlAliasesFileParserOut}" ]; then
+  if [[ "${urlAliasesFileParserOut}" = 'error:'* ]]; then
+    echo "error in URL aliases file ${urlAliasesFileParserOut#'error:'}" 1>&2
     exit 1
-  elif [[ "${urlAliasesParserOut}" = 'error_:'* ]]; then
-    echo "error in arguments: ${urlAliasesParserOut#'error_:'}" 1>&2
+  elif [[ "${urlAliasesFileParserOut}" = 'error_:'* ]]; then
+    echo "error in arguments: ${urlAliasesFileParserOut#'error_:'}" 1>&2
     exit 1
   fi
 
@@ -516,7 +523,7 @@ if [ -n "${urlAliasesParserOut}" ]; then
   declare -gA BROWSER_URL_HASHES
   declare -gA BROWSER_URL_DUMP_HASHES
 
-  aliases_aliasOpts_urls_urlsOpts=(${urlAliasesParserOut//'<&>'/ })
+  aliases_aliasOpts_urls_urlsOpts=(${urlAliasesFileParserOut//'<&>'/ })
 
   numAliasesMtchd="${#aliases_aliasOpts_urls_urlsOpts[@]}"
   urlSearchPlaceholderParserArgs="${@: $((numAliasesMtchd + 1))}"
@@ -556,7 +563,7 @@ if [ -n "${urlAliasesParserOut}" ]; then
       if [ -z "${CONFIG_OPT_SET}" ]; then
         ALIAS_OPTS=(${aliasOpts_urls_urlsOpts[0]//'<>'/ })
         argNum=$((alias_aliasOpts_urls_urlsOpts_indx + 1))
-        parseAliasCfgOpts "${!argNum}"
+        processAliasOptions "${!argNum}"
       fi
 
       setUpUrlsUrlsOptsArr '1' "${@}"
@@ -583,12 +590,12 @@ if [ -n "${urlAliasesParserOut}" ]; then
       if [[ ${OPEN_TERM_BRWSR_URLS_IN_INDV_WIND} = 'true' && ${brwsrType} = \
           'TERM' ]]; then
         for url in ${urls[@]}; do
-          finalizeCfgsAndExeBrowser "${brwsr}" ${brwsrType} false 0 "${url}"
+          finalizeConfigsAndExecBrowser "${brwsr}" ${brwsrType} false 0 "${url}"
         done
       else
         [ "${alias_aliasOpts_urls_urlsOpts_indx}" -eq \
             "$((${#aliases_aliasOpts_urls_urlsOpts[@]} - 1))" ] && 
-            finalizeCfgsAndExeBrowser "${brwsr}" ${brwsrType} false 0 \
+            finalizeConfigsAndExecBrowser "${brwsr}" ${brwsrType} false 0 \
             "${urls[@]}"
       fi
     done
@@ -603,7 +610,7 @@ if [ -n "${urlAliasesParserOut}" ]; then
         [ "${#urls_urlDumpPgFwd[@]}" -gt 1 ] && \
             pgFwd="${urls_urlDumpPgFwd[1]}" || pgFwd='0'
 
-        finalizeCfgsAndExeBrowser "${brwsr}" 'TERM' true "${pgFwd}" \
+        finalizeConfigsAndExecBrowser "${brwsr}" 'TERM' true "${pgFwd}" \
             "${urls_urlDumpPgFwd[0]}"
       done
     done
@@ -630,7 +637,7 @@ else
   if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
     URLS_FOR_X11_CLIPBOARD=("${dfltSrchUrlPrsd}")
   else
-    finalizeCfgsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
+    finalizeConfigsAndExecBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
         "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
   fi
 fi

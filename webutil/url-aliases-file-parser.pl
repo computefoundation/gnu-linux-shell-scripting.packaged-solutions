@@ -1,40 +1,43 @@
 #!/usr/bin/env perl
 # 
-# URL aliases file parser for webutil. It searches for the given alias(es) and
-# returns its/their URLs with both of their configuration options.
+# This is the URL aliases file parser for webutil. It searches for the given
+# alias(es) in the specified URL aliases files and returns the URLs for the
+# found aliases and any configuration options for both.
 # 
-# Arguments:
-#   1. Directory where URL aliases files are stored
-#   2. URL aliases files delimited by a vertical bar ("|")
-#   3. URL aliases to match
+# Usage:
+#   url-aliases-file-parser.pl <URL aliases files directory> <URL aliases files>
+#           <aliases to match>
 # 
-# Return string:
-#   Returns an empty string if none of the aliases were found in the file.
-#   Returns a non-empty string otherwise, being either the final formatted 
-#   string or an error in the url aliases file.
+#   URL aliases files: delimited by a vertical bar ("|")
 # 
-#   Format (double spaces and newlines added just for clarity):
+# Return:
+#   Returns an empty string if none of the aliases are found. Returns either the
+#   final formatted string or an error in one of the url aliases files
+#   otherwise.
+# 
+#   Format string for found alias(es) (spaces and newlines added just for
+#   clarity):
 #     [alias1_opt1[<>alias1_opt2]<$>]URL1[<>opt1[<>opt2]]
 #     [  <|>URL2[<>opt1[<>opt2]]  [<|>URL3[<>opt1[<>opt2]]  ...]  ]
-#     [ <&>
+#     [<&>
 #     (alias 2; everything above the previous line)
 #     ...]
 # 
-#   Example (newlines added just for clarity):
-#     browser=term2<>dump+12<$>
-#     https://en.wikipedia.org/w/index.php?search={search/+}
-#     <|>https://www.washingtonpost.com/newssearch/?query={search/%20}<>dump+20
-#     <|>https://www.wikidata.org/wiki/Wikidata:Main_Page<>broswer=gui1
-#     <&>
-#     browser=gui4<$>
-#     http://www.thefreedictionary.com/{search\+}
-#     <&>
-#     https://www.codecademy.com/articles/glossary-html
-#     <|>http://www.simplehtmlguide.com/cheatsheet.php
+#     Example (newlines added just for clarity):
+#       browser=term2<>dump+12<$>
+#       https://en.wikipedia.org/w/index.php?search={search/+}
+#       <|>https://www.washingtonpost.com/newssearch/?query={search/%20}<>dump+
+#       20<|>https://www.wikidata.org/wiki/Wikidata:Main_Page<>broswer=gui1
+#       <&>
+#       browser=gui4<$>
+#       http://www.thefreedictionary.com/{search\+}
+#       <&>
+#       https://www.codecademy.com/articles/glossary-html
+#       <|>http://www.simplehtmlguide.com/cheatsheet.php
 # 
 # Note:
 #   At least one URL will always be returned for an alias as one is required for
-#   each.
+#   one in a URL aliases file.
 # 
 
 use strict;
@@ -231,7 +234,7 @@ for my $argUrlAlias (@ARG_URL_ALIASES) {
               print "error:\n  $urlAliasesFileName:\n  line $aliasesLineNo:",
                   " too many URLs for\n  alias \"$argUrlAlias\": $urlsCnt",
                   " (max:\n  $MAX_URLS_PER_ALIAS; value can be changed in\n ",
-                  " url-aliases-parser.pl)\n";
+                  " url-aliases-file-parser.pl)\n";
               exit 1;
             }
 
@@ -243,7 +246,7 @@ for my $argUrlAlias (@ARG_URL_ALIASES) {
           }
 
           last FILES_LOOP;
-        } # !if argument alias matches line alias
+        } #!if argument alias matches line alias
 
       } elsif ($_ !~ m/^\s*(?!')(${URL_REGEX})(?:\s+(.*)|$)/) {
         print "error:\n  $urlAliasesFileName:\n  line $lineNo does not contain",
@@ -253,7 +256,7 @@ for my $argUrlAlias (@ARG_URL_ALIASES) {
             " characters include the following:\n    ^ ` < > \n";
         exit 1;
       }
-    } #!while <fh>
+    } #!while each line in URL aliases file
   } #!for URL aliases files
 
   if ($aliasRetStr) {
