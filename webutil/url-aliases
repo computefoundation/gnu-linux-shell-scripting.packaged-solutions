@@ -8,9 +8,7 @@
 '   ...more urls...
 ' 
 '   alias1|alias2|...
-'   url1
-'   url2
-'   ...more urls...
+'   url
 ' 
 ' Aliases:
 ' 
@@ -20,7 +18,7 @@
 ' {search\D} placeholder:
 ' 
 '   URLs requiring a search query may contain a {search\D} placeholder in its
-'   place, where D is the URL's space delimiter. It will be replaced by the
+'   place, where D is the URL's space delimiter. It will be replaced with the
 '   search query passed to webutil.
 '       E.g. webutil "stores-all" "outdoor gear"
 '       # Opens all URLs aliased by "stores-all" and replaces each of their
@@ -28,7 +26,7 @@
 ' 
 '   A URL may contain multiple {search\D} placeholders to allow multiple search
 '   queries (e.g. start and end locations for travel directions) or to copy them
-'   within itself. The search query used by each placeholder corresponds to its
+'   within itself. The search query used for a placeholder corresponds to its
 '   position in the URL. If a search query for a placeholder does not exist, the
 '   placeholder will be replaced with an empty string. (See webutil's
 '   help documentation for information on passing in multiple search queries).

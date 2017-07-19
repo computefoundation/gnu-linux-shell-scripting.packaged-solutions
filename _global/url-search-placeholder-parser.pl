@@ -9,7 +9,7 @@
 # 
 # A URL may contain multiple {search\D} placeholders to allow multiple search
 # queries (e.g. start and end locations for travel directions) or to copy them
-# within itself. The search query used by each placeholder corresponds to its
+# within itself. The search query used for a placeholder corresponds to its
 # position in the URL. If a search query for a placeholder does not exist, the
 # placeholder will be replaced with an empty string.
 # 
