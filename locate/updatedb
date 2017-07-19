@@ -138,9 +138,9 @@ for dbDir in "${FILE_PATHS_DB_DIR}" "${DIR_PATHS_DB_DIR}"; do
   for dbFileName in "${DB_FILE_NAMES[@]}"; do
     dbFile="${dbDir}/${dbFileName}"
     if [ -f "${dbFile}" ]; then
-      for mntpntDir in "${MNTPNT_PATHS[@]}"; do
-        [[ "${mntpntDir}" = *'/' ]] && mntpntDir="${mntpntDir::-1}"
-          sed -i "s,${mntpntDir}/,{MNTPNT_PATH}/," "${dbFile}"
+      for mntpntPath in "${MNTPNT_PATHS[@]}"; do
+        [[ "${mntpntPath}" = *'/' ]] && mntpntPath="${mntpntPath::-1}"
+          sed -i "s,${mntpntPath}/,{MNTPNT_PATH}/," "${dbFile}"
       done
     fi
   done

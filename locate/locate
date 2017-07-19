@@ -55,13 +55,13 @@ fi
 #   Set up mountpoint directories
 # ========================================================
 
-for mntpntDir in "${MNTPNT_PATHS[@]}"; do
-  if [ -d "${mntpntDir}" ] && mountpoint "${mntpntDir}" >/dev/null; then
-    mntpntDirsTmp+=("${mntpntDir}")
+for mntpntPath in "${MNTPNT_PATHS[@]}"; do
+  if [ -d "${mntpntPath}" ] && mountpoint "${mntpntPath}" >/dev/null; then
+    mntpntPathsTmp+=("${mntpntPath}")
   fi
 done
 
-MNTPNT_PATHS=("${mntpntDirsTmp[@]}")
+MNTPNT_PATHS=("${mntpntPathsTmp[@]}")
 
 # ========================================================
 #   Start the search
@@ -83,12 +83,12 @@ do
       "${CURR_DB_DIR}/${dbFileName}"); do
 
     if [[ "${mtch}" = '{MNTPNT_PATH}/'* ]]; then
-      for mntpntDir in "${MNTPNT_PATHS[@]}"; do
-        mntpntDirMtchPrsd="${mtch//'{MNTPNT_PATH}'/"${mntpntDir}"}"
+      for mntpntPath in "${MNTPNT_PATHS[@]}"; do
+        mntpntPathMtchPrsd="${mtch//'{MNTPNT_PATH}'/"${mntpntPath}"}"
 
         if [[ ("${OPT_FIND_DIRECTORIES}" = 'true' && -d \
-            "${mntpntDirMtchPrsd}") || -f "${mntpntDirMtchPrsd}" ]]; then
-          FOUND_MATCHES+=("${mntpntDirMtchPrsd}")
+            "${mntpntPathMtchPrsd}") || -f "${mntpntPathMtchPrsd}" ]]; then
+          FOUND_MATCHES+=("${mntpntPathMtchPrsd}")
           ((CURR_OCCUR_NO++))
           
           [[ "${OPT_FIND_OCCUR_NO}" -eq "${CURR_OCCUR_NO}" ]] && break 3
