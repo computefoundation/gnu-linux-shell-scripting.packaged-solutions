@@ -77,8 +77,8 @@ TERMINAL() {
 # terminal windows; if not, they will be opened in the same terminal window for
 # their browser. The latter works well with browsers that use buffers that can
 # be switched, such as w3m; if a browser does not support multiple buffers, it
-# may not work well. Note: This configuration will not apply if the dump option
-# is used as each URL will always be dumped to its own terminal window).
+# may not work well. (Note: This configuration will not apply when the dump
+# option is used as each URL will always be dumped to its own terminal window).
 readonly OPEN_TERM_BRWSR_URLS_IN_INDV_WIND=false
 
 # Default less options used for the less command when dumping a webpage.
@@ -88,7 +88,7 @@ readonly DUMP_LESS_OPTS='-IFRXMc'
 
 printHelpMessage() {
   if [ "${1}" = 'full' ]; then
-  	echo -e "${SCRIPT_NAME} - Utility to make using the web easier.\n"
+    echo -e "${SCRIPT_NAME} - Utility to make using the web easier.\n"
   fi
 
   echo -ne "\

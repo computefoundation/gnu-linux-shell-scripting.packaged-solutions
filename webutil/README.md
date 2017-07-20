@@ -3,14 +3,14 @@
 
 Open one or more URLs by alias, search query or directly in a web browser.
 
-This utility works with multiple web browsers.
+This utility supports multiple web browsers.
 
 Four argument methods are allowed:
 
 1. An alias (first argument) with one or more optional search queries (remaining arguments).
 2. Multiple aliases (first N arguments) with one or more optional search queries (remaining arguments after the last matching alias). (Requires switch `-a`).
-3. A search query with the default search URL *(defined in webutil)* when the first argument does not match any alias *(configurable in webutil)* or with switch `-s`.
-4. Strings beginning with "http[s]://", "ftp://" or "file://" or ending with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(these can be changed in webutil)*.
+3. A search query with the default search URL *(defined in webutil)* when the first argument does not match any alias *(configurable)* or with switch `-s`.
+4. Strings beginning with "http[s]://", "ftp://" or "file://" or ending with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(can be adjusted)*.
 
 Configurations are defined in [webutil](webutil) and aliases are defined in [url-aliases](url-aliases).
 
