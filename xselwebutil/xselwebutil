@@ -80,6 +80,9 @@ if [ -n "${SEL_TXT}" ]; then
         "${SEL_TXT}")'"
   fi
 
-  nohup ${BROWSER} "${brwsrArgs}" &>/dev/null &
+  # eval is needed here for a quoted URL to be correctly passed as an argument
+  # for a web browser command; if not used, the web browser will interpret the
+  # quotes as part of the URL.
+  eval nohup ${BROWSER} "${brwsrArgs}" &>/dev/null &
 fi
 
