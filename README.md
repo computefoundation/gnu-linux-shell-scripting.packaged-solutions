@@ -1,6 +1,6 @@
 
 <p align='center'>
-  <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='29.5%' alt='logo-light.png'>
+  <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='34.5%' alt='logo-light.png'>
 </p>
 <br>
 
@@ -8,25 +8,23 @@
 
 Each utility is stored in its own directory.
 
-## Locate
-
-Locate a file or directory from a database.
-
-<img src='/../images/gold-star.png' width='2.5%' align='right' disabled='true'>
-
-## Webutil
-
-Open one or more URLs by alias, search query or directly in a web browser.
-
-## Xselwebutil
-
-Search the selected text (using a search URL) or open all URLs in the selected text in a web browser. This utility should be bound to a keybinding.
-
 ## _global
 
 *Dependencies for packaged utilities.*
 
 * [**url-search-placeholder-parser.pl**][url-search-placeholder-parser.pl]: Replace one or more "{search\D}" placeholders in one or more URLs with a search query, where D is the URL's space delimiter.
+
+## [Locate](locate)
+
+Locate a file or directory from a database.
+
+## [Webutil](webutil)
+
+Open one or more URLs by alias, search query or directly in a web browser.
+
+## [Xselwebutil](xselwebutil)
+
+Search the selected text (using a search URL) or open all URLs in the selected text in a web browser. This utility should be bound to a keybinding.
 
 
 

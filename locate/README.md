@@ -3,27 +3,25 @@
 
 Locate a file or directory from a database.
 
-This utility is created entirely in bash, simple and fast.
+This utility is created entirely with bash and grep, simple and fast.
 
 ## Databases
 
-There is a file paths database and a directory paths database.
+*Locate* uses two databases, one containing text files consisting of file paths and one containing text files consisting of directory paths.
 
-These databases are populated with output paths defined in *updatedb*.
+These databases are populated with output paths defined in *updatedb*. *(Note: As examples, updatedb contains predefined output paths and the precreated databases **dirsdb** and **filesdb** are provided).*
 
-*(updatedb contains predefined output paths and the precreated databases **dirsdb** and **filesdb** are provided as examples).*
-
-*locate* searches the file paths database by default and the directory paths database with switch `-d`.
+*Locate* searches the databases for a matching file or directory name and returns its path. It searches the file paths database by default and the directory paths database with switch `-d`.
 
 ## Set up
 
-To use *locate*, three things have to be done:
+Three things have to be done to use *Locate*:
 
-1. Assign the preferred variable values in *CONSTANTS.sh*.
+1. Assign the preferred constant values in *CONSTANTS.sh*.
 2. Define the preferred output paths in *updatedb*.
 3. Run *updatedb*.
 
-Once completed, *locate* can be used as shown in the examples below.
+Once completed, the databases will be set up and *Locate* can be used as shown in the examples below.
 
 ## Examples *(based on the precreated databases)*
 
@@ -65,9 +63,9 @@ locate -d tur
 
 ## Installation
 
-To install, please download ***install-locate.sh*** with the following command and run it:
+To install, please download *install-locate.sh* with the following command and run it:
 
 ```bash
-wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-locate.sh && \
-chmod +x install-locate.sh
+wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-locate.sh \
+&& chmod +x install-locate.sh
 ```

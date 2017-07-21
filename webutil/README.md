@@ -3,16 +3,19 @@
 
 Open one or more URLs by alias, search query or directly in a web browser.
 
-This utility supports multiple web browsers.
+This utility supports all web browsers with a command line interface.
 
 Four argument methods are allowed:
 
 1. An alias (first argument) with one or more optional search queries (remaining arguments).
-2. Multiple aliases (first N arguments) with one or more optional search queries (remaining arguments after the last matching alias). (Requires switch `-a`).
-3. A search query with the default search URL *(defined in webutil)* when the first argument does not match any alias *(configurable)* or with switch `-s`.
-4. Strings beginning with "http[s]://", "ftp://" or "file://" or ending with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(can be adjusted)*.
 
-Configurations are defined in [webutil](webutil) and aliases are defined in [url-aliases](url-aliases).
+2. Multiple aliases (first N arguments) with one or more optional search queries (remaining arguments after the last matching alias). *(This requires switch `-a`).*
+
+3. A search query for use with the default search URL *(defined in webutil)*. *(This applies automatically when the first argument does not match any alias [configurable] or with switch `-s`).*
+
+4. URLs to be opened directly. *(This applies automatically when one or more arguments begin with "http[s]://", "ftp://" or "file://" or end with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" [can be adjusted])*.
+
+Configurations are defined in [webutil](webutil) and aliases and URLs are defined in [url-aliases](url-aliases).
 
 ## Examples
 
@@ -20,27 +23,33 @@ Configurations are defined in [webutil](webutil) and aliases are defined in [url
 
 Search ...
 
-"ancient egypt" with the URL for wikipedia aliased by "wiki."
+for information on ancient egypt with the URL for wikipedia *(aliased by "wiki").*
 
 ```bash
 webutil wiki ancient egypt
 ```
 
-"outdoor gear" in Burlington, Vermont with the store locator URLs aliased by "stores-all."
+directions from Phoenix, AZ to Seattle, WA with the maps URL *(aliased by "dir").*
+
+```bash
+webutil dir phoenix, az %% seattle, wa
+```
+
+abbreviations for the word *exponent* with the abbreviations search URL *(aliased by "abbr")* and open in GUI browser 3.
+
+```bash
+webutil -3 abbr exponent
+```
+
+for outdoor gear stores in Burlington, VT with the (multiple) store search URLs *(aliased by "stores-all")*.
 
 ```bash
 webutil stores-all outdoor gear %% burlington, vt
 ```
 
-directions from Phoenix, Arizona to Seattle, Washington with the maps URL aliased by "directions" and open in GUI browser 3.
-
-```bash
-webutil -3 directions phoenix, az %% seattle, wa
-```
-
 ### 2. Multiple aliases
 
-Search "home goods" with three different online store URLs aliased by "amazon," "ebay" and "jet."
+Search for home goods with the URLs for Amazon, Ebay and Jet *(respectively aliased by "amazon," "ebay" and "jet").*
 
 ```bash
 webutil -a amazon ebay jet home goods
@@ -52,10 +61,10 @@ webutil -a amazon ebay jet home goods
 
 ### 3. Search query
 
-Search "How to make tamales" with the default search URL.
+Search "how to make tamales" with the default search URL.
 
 ```bash
-webutil How to make tamales
+webutil how to make tamales
 ```
 
 ### 4. Direct URLs
@@ -69,15 +78,15 @@ webutil "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 ## Features
 
 * Use up to 9 GUI and 7 terminal browsers/brower commands.
-* Dump each URL's output to a terminal window.
 * Specify a configuration option *(e.g. open in GUI browser 3)* per alias or URL (see *url-aliases* for more information).
+* Dump each URL's output to a terminal window.
 * Output the parsed URLs to the clipboard.
 
 ## Installation
 
-To install, please download ***install-webutil.sh*** with the following command and run it:
+To install, please download *install-webutil.sh* with the following command and run it:
 
 ```bash
-wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-webutil.sh && \
-chmod +x install-webutil.sh
+wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-webutil.sh \
+&& chmod +x install-webutil.sh
 ```
