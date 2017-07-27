@@ -1,14 +1,16 @@
-' url-aliases (aliases and documentation on aliases)
+' url-aliases (aliases and URLs with documentation)
 ' 
 ' Format:
 ' 
 '   alias|
 '   url1
 '   url2
-'   ...more urls...
+'   ...
 ' 
-'   alias1|alias2|...
-'   url
+'   alias1|alias2|alias3|...
+'   url1
+'   url2
+'   ...
 ' 
 ' Aliases:
 ' 
@@ -20,6 +22,7 @@
 '   URLs requiring a search query may contain a {search\D} placeholder in its
 '   place, where D is the URL's space delimiter. It will be replaced with the
 '   search query passed to webutil.
+' 
 '       E.g. webutil "stores-all" "outdoor gear"
 '       # Opens all URLs aliased by "stores-all" and replaces each of their
 '       # {search\D} placeholders with "outdoorDgear".
@@ -45,8 +48,9 @@
 '     !M:      Remove all commas in the search query
 ' 
 '   Unsafe characters in a URL will be encoded and can be escaped with two
-'   backslashes to not be. This also applies for the delimiter in the search
-'   placeholder and for characters in the search queries passed to webutil.
+'   backslashes to not be. This also applies for the delimiter character(s) in
+'   the search placeholder and characters in the search queries passed to
+'   webutil.
 ' 
 '   Instructions on adding a new URL with a {search\D} placeholder are at the
 '   bottom of this file.
@@ -57,22 +61,22 @@
 '   be placed after the last alias on an alias line to apply to multiple URLs,
 '   or after an individual URL. They are the following:
 ' 
-'   %browser=VALUE:  Browser to use; possible values are "gui<1-9>" (for
-'                    graphical browsers) and "term<1-7>" (for terminal
-'                    browsers). (Browsers are defined in webutil under "User
-'                    configurations"; default is GUI 1).
+'     %browser=VALUE:  Browser to use; possible values are "gui<1-9>" (for
+'                      graphical browsers) and "term<1-7>" (for terminal
+'                      browsers). (Browsers are defined in webutil in
+'                      CONFIGURATIONS; default is GUI 1).
 ' 
-'   %dump[+NUM_PAGES]:  Dump the output of each URL to a terminal window (using
-'                       terminal browser 1 by default). Optionally, jump forward
-'                       the given number of pages. (The letter "p" may be
-'                       appended to NUM_PAGES for readability).
+'     %dump[+NUM_PAGES]:  Dump the output of each URL to a terminal window
+'                         (using terminal browser 1 by default). Optionally,
+'                         jump forward the given number of pages. (The letter
+'                         "p" may be appended to NUM_PAGES for readability).
 ' 
 '   Each URL configuration option will override the corresponding one for its
 '   alias.
 ' 
-' Examples:
+' Predefined aliases:
 ' 
-'   Many of the examples below have a comment for explanation marked by "Ex.".
+'   Many of the predefined aliases below have a comment for explanation marked by "Ex.".
 ' 
 
 ' ---------------------------------------------------
@@ -154,7 +158,7 @@ yellowpages|yp|businesses|stores
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 
 'Ex.: Search for stores/businesses in multiple cities and dump the output of
-'     each to a terminal window and skip ahead 18 pages. 
+'     each URL to a terminal window and skip ahead 18 pages. 
 yellowpages-my-cities-stores|ypmc|my-cities-stores|mcs %dump+18
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Minneapolis,+MN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Baltimore,+MD

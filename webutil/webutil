@@ -4,8 +4,9 @@
 #   See https://github.com/linux-shell-base/packaged-utilities/tree/master/webutil
 # 
 # Set up:
-#   Retrieve the dependencies and assign the preferred browser commands under
-#   CONFIGURATIONS.
+#   To use Webutil, simply retrieve the dependencies. It is also likely
+#   preferrable to change at least the browser commands in the CONFIGURATIONS
+#   section.
 # 
 # Dependencies:
 #   URI::Escape perl module (for url-search-placeholder-parser.pl; install with
@@ -13,7 +14,7 @@
 # 
 #   xterm (the terminal used for opening terminal windows; for quick and easy
 #     start up, simply download it. If another terminal emulator is preferred,
-#     please adjust the command in the TERMINAL function under CONFIGURATIONS).
+#     please adjust the command in the TERMINAL function in CONFIGURATIONS).
 # 
 
 readonly HERE="$(dirname "${0}")"
@@ -24,18 +25,20 @@ readonly SCRIPT_NAME="$(basename "${BASH_SOURCE[0]//.sh}")"
 # Directory where URL aliases files are stored.
 readonly URL_ALIASES_FILES_DIR="${HERE}"
 
-# URL aliases files.
+# URL aliases files
 readonly URL_ALIASES_FILES=(
   'url-aliases'
 )
 
-# GUI and terminal web browser commands.
+# GUI and terminal web browser commands
 # Options:
-# 1. To run a browser command individually for each of the URLs it is to open,
-#    prepend "::" to it (only applies to GUI browsers).
+# 1. All URLs for a browser are opened in a single command. To run a browser
+#    command for each its URLs individually, prepend "::" to it (applies only to
+#    GUI browsers).
 # 2. To run a command after the browser command has run, append ";;" to it
-#    followed by the command (applies to both GUI and terminal browsers; will
-#    run once even if "::" is prepended to the command).
+#    followed by the command (applies to both GUI and terminal browsers. Note:
+#    It will run only once regardless if "::" prefix option is used for a
+#    browser command).
 readonly BROWSER_GUI1='/usr/bin/chromium'
 readonly BROWSER_GUI2='/usr/bin/chromium --incognito'
 readonly BROWSER_GUI3='/usr/bin/firefox -new-tab'
@@ -57,7 +60,7 @@ readonly BROWSER_TERM7=''
 # URL if the first argument does not match any alias; will exit otherwise.
 readonly SEARCH_IF_ALIAS_NOT_FOUND=true
 
-# Default search URL.
+# Default search URL
 readonly DEFAULT_SEARCH_URL='http://www.google.com/search?q={search\+}'
 
 # Top level domains used to match URLs.
@@ -78,10 +81,11 @@ TERMINAL() {
 # their browser. The latter works well with browsers that use buffers that can
 # be switched, such as w3m; if a browser does not support multiple buffers, it
 # may not work well. (Note: This configuration will not apply when the dump
-# option is used as each URL will always be dumped to its own terminal window).
+# option is used as all URLs will always be dumped to their own individuals
+# terminal window).
 readonly OPEN_TERM_BRWSR_URLS_IN_INDV_WIND=false
 
-# Default less options used for the less command when dumping a webpage.
+# Default options used for less when dumping a webpage.
 readonly DUMP_LESS_OPTS='-IFRXMc'
 
 # ======= ! CONFIGURATIONS ==============
@@ -123,14 +127,14 @@ Options:
                 terminal window (terminal browser 1 used by
                 default); optionally, jump forward the given
                 number of pages
-  -s            do not match the first argument with an alias
+  -s            void matching the first argument with an alias
                 and use all arguments as the search query with
                 the default search URL
-  -a            use all arguments as aliases, using all after
-                the last matching alias as the search
+  -a            use all arguments as aliases and all after the
+                last matching alias as the search
                 query/queries
-  -c            copy all URLs to the X11 clipboard without
-                running anything
+  -c            copy all URLs to the X11 clipboard and do not
+                run anything
   -l  --list    list current browser commands
   -h  --help    show help message
 
@@ -147,7 +151,7 @@ Notes:
 "
 }
 
-printBrowserCommands() {
+listBrowserCommands() {
   local msg='webutil: Current browser commands:'
   for i in {1..9}; do
     local brwsrVar="BROWSER_GUI${i}"
@@ -203,17 +207,17 @@ printMsgForBrwsrVarNotDef() {
 # everytime a URL is opened unless changed by argument or alias/URL
 # configuration options).
 
-# Initial/default browser.
+# Initial/default browser
 BROWSER="${BROWSER_GUI1}"
 # Whether or not to dump the page (it is likely not preferrable to set this to
-# true by default).
+# true by default)
 DUMP=false
 # Number of pages to skip forward after dumping a URL's output.
 DUMP_PG_FWD=0
 
 # UTILITY VARIABLES
 
-# Current browser type.
+# Current browser type
 BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
                    # browser is changed.
 
@@ -257,7 +261,7 @@ while true; do
     -s) OPT_OVERRIDE_ALIAS_MATCHING=true;;
     -a) OPT_USE_ALL_ARGS_FOR_ALIASES=true;;
     -c) OPT_COPY_URLS_TO_X11_CLIPBOARD=true;;
-    --list|-l) printBrowserCommands; exit;;
+    --list|-l) listBrowserCommands; exit;;
     --help|-h) printHelpMessage full; exit;;
     --) shift; break;;
     *) break;;
@@ -265,7 +269,7 @@ while true; do
   shift
 done
 
-if [[ $# -eq 0 && "${DUMP}" = 'true' ]]; then
+if [ "$#" -eq 0 ] && [ "${DUMP}" = 'true' ]; then
   echo 'webutil: cannot use option "dump" without arguments' 1>&2
   exit 1
 fi
@@ -286,7 +290,7 @@ if [ -z "${BROWSER}" ]; then
   exit 1
 fi
 
-if [[ "${DUMP}" = 'true' && "${BROWSER_TYPE}" = 'GUI' ]]; then
+if [ "${DUMP}" = 'true' ] && [ "${BROWSER_TYPE}" = 'GUI' ]; then
   BROWSER="${BROWSER_TERM1}"
   BROWSER_TYPE='TERM'
 fi
@@ -397,9 +401,9 @@ createBrowserUrlHashes() {
   done
 }
 
-# finalizeConfigsAndExecBrowser:
+# finalizeConfigsAndExeBrowser:
 #   Finalize configurations and execute browser for one or more URLs.
-finalizeConfigsAndExecBrowser() {
+finalizeConfigsAndExeBrowser() {
   local browser="${1}"
   local browserType="${2}" # 'GUI' or 'TERM'
   local dump="${3}"
@@ -473,7 +477,7 @@ if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
     echo -e 'webutil: option -c not allowed when opening URLs directly' 1>&2
     exit 1
   fi
-  finalizeConfigsAndExecBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
+  finalizeConfigsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
       "${DUMP_PG_FWD}" "${URLS_FOR_DIRECT_OPEN[@]}"
   exit
 fi
@@ -489,6 +493,7 @@ fi
 #        for a found alias).
 #     2. If not found, use all arguments as search queries with the default
 #        search URL (if the respective configuration is set).
+# 
 #   All arguments used as aliases:
 #     1. If the first is found, find all after it and return their URLs. Use all
 #        arguments after the last found alias as search queries with all of
@@ -587,15 +592,15 @@ if [ -n "${urlAliasesFileParserOut}" ]; then
       brwsrType="${brwsr_brwsrType#*'%%'}"
       urls="${BROWSER_URL_HASHES["${brwsr_brwsrType}"]}"
 
-      if [[ ${OPEN_TERM_BRWSR_URLS_IN_INDV_WIND} = 'true' && ${brwsrType} = \
-          'TERM' ]]; then
+      if [ "${OPEN_TERM_BRWSR_URLS_IN_INDV_WIND}" = 'true' ] && [ \
+      		"${brwsrType}" = 'TERM' ]; then
         for url in ${urls[@]}; do
-          finalizeConfigsAndExecBrowser "${brwsr}" ${brwsrType} false 0 "${url}"
+          finalizeConfigsAndExeBrowser "${brwsr}" ${brwsrType} false 0 "${url}"
         done
       else
         [ "${alias_aliasOpts_urls_urlsOpts_indx}" -eq \
-            "$((${#aliases_aliasOpts_urls_urlsOpts[@]} - 1))" ] && 
-            finalizeConfigsAndExecBrowser "${brwsr}" ${brwsrType} false 0 \
+            "$(("${#aliases_aliasOpts_urls_urlsOpts[@]}" - 1))" ] && 
+            finalizeConfigsAndExeBrowser "${brwsr}" ${brwsrType} false 0 \
             "${urls[@]}"
       fi
     done
@@ -610,7 +615,7 @@ if [ -n "${urlAliasesFileParserOut}" ]; then
         [ "${#urls_urlDumpPgFwd[@]}" -gt 1 ] && \
             pgFwd="${urls_urlDumpPgFwd[1]}" || pgFwd='0'
 
-        finalizeConfigsAndExecBrowser "${brwsr}" 'TERM' true "${pgFwd}" \
+        finalizeConfigsAndExeBrowser "${brwsr}" 'TERM' true "${pgFwd}" \
             "${urls_urlDumpPgFwd[0]}"
       done
     done
@@ -637,7 +642,7 @@ else
   if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
     URLS_FOR_X11_CLIPBOARD=("${dfltSrchUrlPrsd}")
   else
-    finalizeConfigsAndExecBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
+    finalizeConfigsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
         "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
   fi
 fi

@@ -7,13 +7,17 @@ This utility supports all web browsers with a command line interface.
 
 Four argument methods are allowed:
 
+#### Aliases
+
 1. An alias (first argument) with one or more optional search queries (remaining arguments).
 
-2. Multiple aliases (first N arguments) with one or more optional search queries (remaining arguments after the last matching alias). *(This requires switch `-a`).*
+2. Multiple aliases (first N arguments) with one or more optional search queries (remaining arguments after the last found alias). *(Requires switch `-a`).*
 
-3. A search query for use with the default search URL *(defined in webutil)*. *(This applies automatically when the first argument does not match any alias [configurable] or with switch `-s`).*
+#### Other
 
-4. URLs to be opened directly. *(This applies automatically when one or more arguments begin with "http[s]://", "ftp://" or "file://" or end with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" [can be adjusted])*.
+3. A search query for use with the default search URL *(defined in webutil)*. *(Applies when the first argument does not match an alias [configurable] or with switch `-s`).*
+
+4. URLs to be opened directly. *(Applies when one or more arguments begin with "http[s]://", "ftp://" or "file://" or end with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" [can be adjusted]).*
 
 Configurations are defined in [webutil](webutil) and aliases and URLs are defined in [url-aliases](url-aliases).
 
