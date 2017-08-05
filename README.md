@@ -1,7 +1,9 @@
-
-<p align='center'>
-  <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='34.5%' alt='logo-light.png'>
-</p>
+<br>
+<div align='center'>
+  <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='37.2%' alt='logo-light.png'>
+</div>
+<br>
+<br>
 <br>
 
 **Packaged-utilities** is an extension of [*Linux-shell-base*][linux-shell-base] for utilities consisting of more than one file.
