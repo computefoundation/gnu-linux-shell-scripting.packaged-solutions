@@ -7,11 +7,11 @@ This utility is created entirely with bash and grep, simple and fast.
 
 ## Databases
 
-*Locate* uses two databases, one containing text files consisting of file paths and one containing text files consisting of directory paths.
+*Locate* uses two databases containing text files, one consisting of file paths and one consisting of directory paths.
 
-These databases are populated with output paths defined in *updatedb*. *(Note: As examples, updatedb contains predefined output paths and the precreated databases **dirsdb** and **filesdb** are provided).*
+These text files are populated with output paths defined in *updatedb*. *(Note: The predefined output paths in updatedb and the precreated databases **dirsdb** and **filesdb** are provided just as examples).*
 
-*Locate* searches the databases for a matching file or directory name and returns its path. It searches the file paths database by default and the directory paths database with switch `-d`.
+*Locate* searches the file paths database by default and the the directory paths database with switch `-d` for a file/directory name and returns its path.
 
 ## Set up
 
