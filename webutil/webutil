@@ -4,17 +4,15 @@
 #   See https://github.com/linux-shell-base/packaged-utilities/tree/master/webutil
 # 
 # Set up:
-#   To use Webutil, simply retrieve the dependencies. It is also likely
-#   preferrable to change at least the browser commands in the CONFIGURATIONS
-#   section.
+#   To use Webutil, simply retrieve the dependencies.
 # 
 # Dependencies:
-#   URI::Escape perl module (for url-search-placeholder-parser.pl; install with
+#   URI::Escape Perl module (for url-search-placeholder-parser.pl; install with
 #     command "cpan URI::Escape").
 # 
 #   xterm (the terminal used for opening terminal windows; for quick and easy
 #     start up, simply download it. If another terminal emulator is preferred,
-#     please adjust the command in the TERMINAL function in CONFIGURATIONS).
+#     please adjust the command in the TERMINAL function under CONFIGURATIONS).
 # 
 
 readonly HERE="$(dirname "${0}")"
@@ -32,13 +30,12 @@ readonly URL_ALIASES_FILES=(
 
 # GUI and terminal web browser commands
 # Options:
-# 1. All URLs for a browser are opened in a single command. To run a browser
-#    command for each its URLs individually, prepend "::" to it (applies only to
-#    GUI browsers).
+# 1. All URLs for a browser command are opened in a single run. To open each URL
+#    for a browser command independently, prepend "::" to the browser command
+#    (applies only to GUI browsers).
 # 2. To run a command after the browser command has run, append ";;" to it
-#    followed by the command (applies to both GUI and terminal browsers. Note:
-#    It will run only once regardless if "::" prefix option is used for a
-#    browser command).
+#    followed by the command (applies to both GUI and terminal browsers).
+#    (Note: It will run once regardless if the "::" prefix option is used).
 readonly BROWSER_GUI1='/usr/bin/chromium'
 readonly BROWSER_GUI2='/usr/bin/chromium --incognito'
 readonly BROWSER_GUI3='/usr/bin/firefox -new-tab'
@@ -63,13 +60,14 @@ readonly SEARCH_IF_ALIAS_NOT_FOUND=true
 # Default search URL
 readonly DEFAULT_SEARCH_URL='http://www.google.com/search?q={search\+}'
 
-# Top level domains used to match URLs.
+# Top level domains used to match URLs
 readonly URL_MATCH_TOP_LEVEL_DOMAINS='.com .org .edu .gov .uk .net'
 
-# Terminal emulator used for opening terminal windows.
+# Terminal emulator used for opening terminal windows
 TERMINAL() {
   local startX=50; local startY=100; local width=110; local height=44
   local geometry="${width}x${height}+${startX}+${startY}"
+  
   nohup xterm -xrm 'XTerm.vt100.allowTitleOps: false' -geometry "${geometry}" \
       -fg '#FFFFFF' -bg '#000000' -fa 'size=12:antialias=true' -title "${1}" \
       -e bash -c "eval ${@:2};"' rs=$? && [ $rs -ne 0 ] && sleep 3' \
@@ -85,7 +83,7 @@ TERMINAL() {
 # terminal window).
 readonly OPEN_TERM_BRWSR_URLS_IN_INDV_WIND=false
 
-# Default options used for less when dumping a webpage.
+# Default options used for less when dumping a webpage
 readonly DUMP_LESS_OPTS='-IFRXMc'
 
 # ======= ! CONFIGURATIONS ==============
@@ -115,28 +113,33 @@ Usage:
     If any of the arguments begin with \"http[s]://\",
     \"ftp://\" or \"file://\" or end with any of the top
     level domains defined by URL_MATCH_TOP_LEVEL_DOMAINS
-    in CONFIGURATIONS, each will be openeded as a URL
+    under CONFIGURATIONS, each will be openeded as a URL
     directly.
 
 Options:
-  -g<1-9>  -<1-9>    open in the GUI browser of the given
-                     number
-  -t<1-7>            open in the terminal browser of the given
-                     number
-  -d  -dump[+NUM_PAGES]    dump the output of each URL to a
-                terminal window (terminal browser 1 used by
-                default); optionally, jump forward the given
-                number of pages
-  -s            void matching the first argument with an alias
-                and use all arguments as the search query with
-                the default search URL
-  -a            use all arguments as aliases and all after the
-                last matching alias as the search
-                query/queries
-  -c            copy all URLs to the X11 clipboard and do not
-                run anything
-  -l  --list    list current browser commands
-  -h  --help    show help message
+  Configurations:
+    -g<1-9>  -<1-9>    open in the GUI browser of the given
+                       number
+    -t<1-7>            open in the terminal browser of the
+                       given number
+    -d  -dump[+NUM_PAGES]    dump the output of each URL to
+                       a terminal window (using terminal
+                       browser 1 by default); optionally,
+                       jump forward the given number of
+                       pages
+  Alter usage:
+    -s            do not match the first argument with an
+                  alias and instead use all arguments as
+                  search queries with the default search URL
+    -a            match the first N arguments as aliases and
+                  use all arguments after the last matching
+                  alias as search queries
+  Output:
+    -c            copy all URLs to the X11 clipboard and do
+                  not run anything
+  Other:
+    -l  --list    list current browser commands
+    -h  --help    show help message
 
 Notes:
   Search queries are delimited with \"%%\".
@@ -166,11 +169,11 @@ listBrowserCommands() {
   echo -e "${msg}"
 }
 
-# printMsgForBrwsrVarNotDef:
+# printBrwsrVarNotDefMessage:
 #   Print an error message for the browser variable not being defined. Argument
 #   1 should be how the variable was defined; it must be either "alias", "url"
 #   or empty if it was specified with an argument option.
-printMsgForBrwsrVarNotDef() {
+printBrwsrVarNotDefMessage() {
   if [ $# -ge 3 ]; then
     local brwsrValCaps="$(echo -n "${3}"|tr '[:lower:]' '[:upper:]')"
   fi
@@ -188,7 +191,7 @@ printMsgForBrwsrVarNotDef() {
   fi
 
   read -d '' msg <<-EOF
-    Please define it in CONFIGURATIONS or
+    Please define it under CONFIGURATIONS or
     use a different browser. The value may be
     a new browser command or simply a
     duplicate of another.
@@ -226,7 +229,8 @@ BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
 # ============================================
 
 OPTS="$(getopt -a -o 1,2,3,4,5,6,7,8,9,d::,s,a,c,l,h --long g1,g2,g3,g4,g5,g6 \
-    --long g7,g8,g9,t1,t2,t3,t4,t5,t6,t7,list,help -n "${SCRIPT_NAME}" -- "${@}")"
+    --long g7,g8,g9,t1,t2,t3,t4,t5,t6,t7,list,help -n "${SCRIPT_NAME}" -- \
+    "${@}")"
 [ "$?" -ne 0 ] && exit 1
 eval set -- "${OPTS}" 
 while true; do
@@ -286,7 +290,7 @@ if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
 fi
 
 if [ -z "${BROWSER}" ]; then
-  printMsgForBrwsrVarNotDef '' "${BROWSER_TYPE}${brwsrNum}"
+  printBrwsrVarNotDefMessage '' "${BROWSER_TYPE}${brwsrNum}"
   exit 1
 fi
 
@@ -312,10 +316,10 @@ done
 #   Main functions
 # ============================================
 
-# processAliasOptions:
-#   Parse configuration options for an alias and assign global configurations
-#   values based on their values.
-processAliasOptions() {
+# processAliasConfigOptions:
+#   Assign the global configurations values from the configuration option values
+#   of an alias.
+processAliasConfigOptions() {
   for aliasOpt in ${ALIAS_OPTS[@]}; do
     case "${aliasOpt}" in
       browser*)
@@ -325,7 +329,7 @@ processAliasOptions() {
         BROWSER="${!brwsrVar}"
         BROWSER_TYPE="${brwsrValCaps%[0-9]}"
 
-        [ -z "${BROWSER}" ] && printMsgForBrwsrVarNotDef 'alias' "${1}" \
+        [ -z "${BROWSER}" ] && printBrwsrVarNotDefMessage 'alias' "${1}" \
             "${brwsrVal}" && exit 1
         ;;
       dump*)
@@ -381,7 +385,7 @@ createBrowserUrlHashes() {
       local brwsr="${!brwsrVar}"
       local brwsrType="${brwsrValCaps%[0-9]}"
 
-      [ -z "${brwsr}" ] && printMsgForBrwsrVarNotDef 'url' '' "${brwsrVal}" \
+      [ -z "${brwsr}" ] && printBrwsrVarNotDefMessage 'url' '' "${brwsrVal}" \
           && exit 1
 
       if [[ ( "${hasDumpOpt}" = 'true' || "${DUMP}" = 'true' ) && ${brwsrType} \
@@ -568,7 +572,7 @@ if [ -n "${urlAliasesFileParserOut}" ]; then
       if [ -z "${CONFIG_OPT_SET}" ]; then
         ALIAS_OPTS=(${aliasOpts_urls_urlsOpts[0]//'<>'/ })
         argNum=$((alias_aliasOpts_urls_urlsOpts_indx + 1))
-        processAliasOptions "${!argNum}"
+        processAliasConfigOptions "${!argNum}"
       fi
 
       setUpUrlsUrlsOptsArr '1' "${@}"

@@ -7,19 +7,15 @@ This utility supports all web browsers with a command line interface.
 
 Four argument methods are allowed:
 
-#### Aliases
+1. **An alias** (first argument) with one or more optional search queries (remaining arguments).
 
-1. An alias (first argument) with one or more optional search queries (remaining arguments).
+2. **Multiple aliases** (first N arguments) with one or more optional search queries (all arguments after the last matching alias). *Requires switch `-a`.*
 
-2. Multiple aliases (first N arguments) with one or more optional search queries (remaining arguments after the last found alias). *(Requires switch `-a`).*
+3. **A search query** to be used by the default search URL *(defined in webutil)*. *Applies when the first argument does not match an alias (configurable) or with switch `-s`.*
 
-#### Other
+4. **URLs** to be opened directly. *Applies when one or more arguments begin with "http[s]://", "ftp://" or "file://" or end with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" (configurable).*
 
-3. A search query for use with the default search URL *(defined in webutil)*. *(Applies when the first argument does not match an alias [configurable] or with switch `-s`).*
-
-4. URLs to be opened directly. *(Applies when one or more arguments begin with "http[s]://", "ftp://" or "file://" or end with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" [can be adjusted]).*
-
-Configurations are defined in [webutil](webutil) and aliases and URLs are defined in [url-aliases](url-aliases).
+Aliases and URLs are defined in [url-aliases](url-aliases) and configurations are defined in [webutil](webutil).
 
 ## Examples
 
@@ -33,19 +29,19 @@ for information on ancient egypt with the URL for wikipedia *(aliased by "wiki")
 webutil wiki ancient egypt
 ```
 
-directions from Phoenix, AZ to Seattle, WA with the maps URL *(aliased by "dir").*
+directions from Phoenix, AZ to Seattle, WA with a maps URL *(aliased by "dir").*
 
 ```bash
 webutil dir phoenix, az %% seattle, wa
 ```
 
-abbreviations for the word *exponent* with the abbreviations search URL *(aliased by "abbr")* and open in GUI browser 3.
+abbreviations for the word *exponent* with an abbreviations search URL *(aliased by "abbr")* and open in GUI browser 3.
 
 ```bash
 webutil -3 abbr exponent
 ```
 
-for outdoor gear stores in Burlington, VT with the (multiple) store search URLs *(aliased by "stores-all")*.
+for outdoor gear stores in Burlington, VT with multiple store search URLs *(aliased by "stores-all")*.
 
 ```bash
 webutil stores-all outdoor gear %% burlington, vt
@@ -61,17 +57,17 @@ webutil -a amazon ebay jet home goods
 
 ---
 
-*Note: These aliases are predefined in **url-aliases** and can be used right away. They will be opened in the respective browser defined in **webutil** (the default is GUI browser 1).*
+*Note: These aliases are predefined in **url-aliases** and can be used right away.*
 
 ### 3. Search query
 
-Search "how to make tamales" with the default search URL.
+Search "how to make quinoa tabbouleh" with the default search URL.
 
 ```bash
-webutil how to make tamales
+webutil how to make quinoa tabbouleh
 ```
 
-### 4. Direct URLs
+### 4. URLs
 
 Open two URLs directly.
 
@@ -82,7 +78,7 @@ webutil "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 ## Features
 
 * Use up to 9 GUI and 7 terminal browsers/brower commands.
-* Specify a configuration option *(e.g. open in GUI browser 3)* per alias or URL (see *url-aliases* for more information).
+* Specify a configuration option *(e.g. open in GUI browser 3)* per alias or URL (see [*url-aliases*](url-aliases) for more information).
 * Dump each URL's output to a terminal window.
 * Output the parsed URLs to the clipboard.
 
