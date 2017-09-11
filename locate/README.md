@@ -23,38 +23,36 @@ Three things have to be done to use *Locate*:
 
 Once completed, the databases will be set up and *Locate* can be used as shown in the examples below.
 
-## Examples *(based on the precreated databases)*
+## Examples
+
+The following examples are based on the precreated databases.
 
 Locate a file.
 
 ```bash
-locate addr
-# returns /home/<user>/documents/addresses.txt
+locate addr # returns /home/<user>/documents/addresses.txt
 ```
 
 ```bash
-locate book
-# returns /home/<user>/archived_data/backup/bookmarks.html
+locate book # returns /home/<user>/archived_data/backup/bookmarks.html
 ```
 
 ```bash
 locate shr # note: any part of the file/directory name can be used; the first match will be returned
-# returns /home/<user>/.bashrc
+           # returns /home/<user>/.bashrc
 ```
 
-*(Locate a file in a mounted drive [assuming it is mounted]; see the MNTPNT_PATHS variable in CONSTANTS.sh for more information).*
+*Locate a file in a mounted drive (assuming it is mounted); see the MNTPNT_PATHS variable in CONSTANTS.sh for more information.*
 
 ```bash
-locate stat
-# returns {MNTPNT_PATH}/records/external/statistics.txt where {MNTPNT_PATH} is the mountpoint of the
-# mounted drive
+locate stat # returns {MNTPNT_PATH}/records/external/statistics.txt where "{MNTPNT_PATH}" is the
+            # mountpoint of the mounted drive
 ```
 
 Locate a directory.
 
 ```bash
-locate -d tur
-# returns /home/<user>/pictures
+locate -d tur # returns /home/<user>/pictures
 ```
 
 ## Notes
