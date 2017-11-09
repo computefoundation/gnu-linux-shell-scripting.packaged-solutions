@@ -1,4 +1,4 @@
-<br>
+
 <div align='center'>
   <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='37.2%' alt='logo-light.png'>
 </div>
