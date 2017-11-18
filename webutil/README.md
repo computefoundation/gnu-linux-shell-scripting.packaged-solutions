@@ -55,8 +55,6 @@ Search for home goods with the URLs for Amazon, Ebay and Jet *(respectively alia
 webutil -a amazon ebay jet home goods
 ```
 
----
-
 *Note: These aliases are predefined in **url-aliases** and can be used right away.*
 
 ### 3. Search query
