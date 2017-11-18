@@ -581,7 +581,7 @@ if [ -n "${urlAliasesFileParserOut}" ]; then
     if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
       for url_urlOpts in "${URLS_URLSOPTS[@]}"; do
         url_urlOptsArr=(${url_urlOpts//'<>'/ })
-        URLS_FOR_X11_CLIPBOARD+=("'${url_urlOptsArr[0]}'")
+        URLS_FOR_X11_CLIPBOARD+=("${url_urlOptsArr[0]}")
       done
       continue
     fi
@@ -651,7 +651,7 @@ else
   fi
 fi
 
-if [ -n "${URLS_FOR_X11_CLIPBOARD[@]}" ]; then
+if [[ -n "${URLS_FOR_X11_CLIPBOARD[@]}" ]]; then
   echo "${URLS_FOR_X11_CLIPBOARD[@]}" | xclip -r -selection c
 fi
 
