@@ -1,30 +1,27 @@
 
-<div align='center'>
-  <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='37.2%' alt='logo-light.png'>
-</div>
-<br>
-<br>
-<br>
+<img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='32.2%' align='left' alt='logo-light.png'>
+<br><br><br>
 
-**Packaged-utilities** is an extension of [*Linux-shell-base*][linux-shell-base] for utilities consisting of more than one file.
+**Packaged-utilities** is an extension of [Linux-shell-base][linux-shell-base] for utilities consisting of more than one file.
 
 Each utility is stored in its own directory.
+<br><br><br><br><br>
 
-## _global
+# &#95;global
 
 *Dependencies for packaged utilities.*
 
 * [**url-search-placeholder-parser.pl**][url-search-placeholder-parser.pl]: Replace one or more "{search\D}" placeholders in one or more URLs with a search query, where D is the URL's space delimiter.
 
-## [Locate](locate)
+# [Locate](locate)
 
 Locate a file or directory from a database.
 
-## [Webutil](webutil)
+# [Webutil](webutil)
 
 Open one or more URLs by alias, search query or directly in a web browser.
 
-## [Xselwebutil](xselwebutil)
+# [Xselwebutil](xselwebutil)
 
 Search the selected text (using a search URL) or open all URLs in the selected text in a web browser. This utility should be bound to a keybinding.
 
