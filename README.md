@@ -2,7 +2,7 @@
 <img src='https://raw.githubusercontent.com/linux-shell-base/linux-shell-base/images/logo-light.png' width='32.2%' align='left' alt='logo-light.png'>
 <br><br><br>
 
-**Packaged-utilities** is an extension of [Linux-shell-base][linux-shell-base] for utilities consisting of more than one file.
+**Linux-shell-base-packaged-utilities** is an extension of [Linux-shell-base][linux-shell-base] for utilities consisting of more than one file.
 
 Each utility is stored in its own directory.
 <br><br><br><br><br>
@@ -27,6 +27,6 @@ Search the selected text (using a search URL) or open all URLs in the selected t
 
 
 
-[linux-shell-base]: https://github.com/linux-shell-base/linux-shell-base
+[linux-shell-base]: https://github.com/unix-base/linux-shell-base
 
-[url-search-placeholder-parser.pl]: https://github.com/linux-shell-base/packaged-utilities/blob/master/_global/url-search-placeholder-parser.pl
+[url-search-placeholder-parser.pl]: https://github.com/unix-base/linux-shell-base-packaged-utilities/blob/master/_global/url-search-placeholder-parser.pl
