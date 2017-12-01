@@ -3,31 +3,19 @@
 
 Locate a file or directory from a database.
 
-This utility is created entirely with bash and grep, simple and fast.
-
 ## Databases
 
-*Locate* uses two databases containing text files, one consisting of file paths and one consisting of directory paths.
+*Locate* uses two databases, one for file paths and one for directory paths. They are populated with [updatedb](updatedb).
 
-These text files are populated with output paths defined in *updatedb*. *(Note: The predefined output paths in updatedb and the precreated databases **dirsdb** and **filesdb** are provided just as examples).*
+*Locate* searches the file paths database by default and the the directory paths database with switch `-d`.
 
-*Locate* searches the file paths database by default and the the directory paths database with switch `-d` for a file/directory name and returns its path.
-
-## Set up
-
-Three things have to be done to use *Locate*:
-
-1. Assign the preferred constant values in *CONSTANTS.sh*.
-2. Define the preferred output paths in *updatedb*.
-3. Run *updatedb*.
-
-Once completed, the databases will be set up and *Locate* can be used as shown in the examples below.
+*The precreated databases **dirsdb** and **filesdb** are provided just as examples.*
 
 ## Examples
 
-The following examples are based on the precreated databases.
+The following examples are based on the precreated databases and can be tested.
 
-Locate a file.
+### 1. Locate file
 
 ```bash
 locate addr # returns /home/<user>/documents/addresses.txt
@@ -37,23 +25,30 @@ locate addr # returns /home/<user>/documents/addresses.txt
 locate book # returns /home/<user>/archived_data/backup/bookmarks.html
 ```
 
+*Locate a file using any part of the file name; the first match will be returned.*
+
 ```bash
-locate shr # note: any part of the file/directory name can be used; the first match will be returned
-           # returns /home/<user>/.bashrc
+locate shr # returns /home/<user>/.bashrc
 ```
 
-*Locate a file in a mounted drive (assuming it is mounted); see the MNTPNT_PATHS variable in CONSTANTS.sh for more information.*
+*Locate a file in a mounted drive (see the MNTPNT_PATHS variable in [CONSTANTS.sh](CONSTANTS.sh) for more information).*
 
 ```bash
 locate stat # returns {MNTPNT_PATH}/records/external/statistics.txt where "{MNTPNT_PATH}" is the
             # mountpoint of the mounted drive
 ```
 
-Locate a directory.
+### 2. Locate directory
 
 ```bash
 locate -d tur # returns /home/<user>/pictures
 ```
+
+## Set up
+
+1. Assign the preferred constant values in [CONSTANTS.sh](CONSTANTS.sh).
+2. Define the preferred output paths in [updatedb](updatedb).
+3. Run [updatedb](updatedb).
 
 ## Notes
 
@@ -61,7 +56,7 @@ locate -d tur # returns /home/<user>/pictures
 
 ## Installation
 
-To install, please download *install-locate.sh* with the following command and run it:
+Please download *install-locate.sh* with the following command and run it to install:
 
 ```bash
 wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-locate.sh \
