@@ -5,7 +5,7 @@ Search the selected text (using a search URL) or open all URLs in the selected t
 
 ## Installation
 
-To install, please download *install-xselwebutil.sh* with the following command and run it:
+Please download *install-xselwebutil.sh* with the following command and run it to install:
 
 ```bash
 wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/\
