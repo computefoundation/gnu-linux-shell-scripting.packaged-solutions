@@ -3,7 +3,7 @@
 # Constants for scripts in this directory.
 # 
 # Note:
-#   Variable "HERE" is defined the sourcing scripts.
+#   Variable "HERE" is defined in the sourcing scripts (locate and updatedb).
 # 
 
 # Directory for file paths database files.
