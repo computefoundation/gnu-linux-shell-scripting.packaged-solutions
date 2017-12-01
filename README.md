@@ -1,5 +1,5 @@
 
-**Linux-shell-base-packaged-utilities** is an extension of [Linux-shell-base](https://github.com/unix-base/linux-shell-base) for utilities consisting of more than one file.
+**Linux-shell-base-packaged-utilities** is an extension of [Linux-shell-base](https://github.com/unix-foundation/linux-shell-base) for utilities consisting of more than one file.
 
 ## [Locate](locate)
 
@@ -17,5 +17,5 @@ Search the selected text (using a search URL) or open all URLs in the selected t
 
 Dependencies for packaged utilities.
 
-* [url-search-placeholder-parser.pl](https://github.com/unix-base/linux-shell-base-packaged-utilities/blob/master/_global/url-search-placeholder-parser.pl): Replace one or more "{search\D}" placeholders in one or more URLs with a search query, where D is the URL's space delimiter.
+* [url-search-placeholder-parser.pl](https://github.com/unix-foundation/linux-shell-base-packaged-utilities/blob/master/_global/url-search-placeholder-parser.pl): Replace one or more "{search\D}" placeholders in one or more URLs with a search query, where D is the URL's space delimiter.
 
