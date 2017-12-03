@@ -4,7 +4,7 @@
 # 
 
 readonly HERE="$(dirname "${0}")"
-source "${HERE}/CONSTANTS.sh"
+source "${HERE}/CONFIGURATIONS.bash"
 
 printHelpMessage() {
   echo -ne "\

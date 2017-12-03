@@ -8,7 +8,7 @@
 # 
 
 readonly HERE="$(dirname "${0}")"
-source "${HERE}/CONSTANTS.sh"
+source "${HERE}/CONFIGURATIONS.bash"
 
 # Recursively output the given path to a database file.
 # Arguments:
@@ -42,7 +42,7 @@ find_out() {
 
 # The next two sections are where the file and directory output paths are
 # specified. The file names in the case blocks must match those specified in
-# CONSTANTS.sh.
+# CONFIGURATIONS.bash.
 
 # =========================================================
 #   File paths

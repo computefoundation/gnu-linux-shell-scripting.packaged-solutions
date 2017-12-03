@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # 
-# Constants for scripts in this directory.
+# Configurations for scripts in this directory
 # 
 # Note:
 #   Variable "HERE" is defined in the sourcing scripts (locate and updatedb).
 # 
 
-# Directory for file paths database files.
+# Directory for file paths database files
 FILE_PATHS_DB_DIR="${HERE}/filesdb"
 
-# Directory for directory paths database files.
+# Directory for directory paths database files
 DIR_PATHS_DB_DIR="${HERE}/dirsdb"
 
 # File names to use in both database directories; they will be searched in
-# order.
+# order
 DB_FILE_NAMES=('container1' 'container2' 'home-data')
 
 # Mountpoint paths: Paths of mounted drives containing files and directories to

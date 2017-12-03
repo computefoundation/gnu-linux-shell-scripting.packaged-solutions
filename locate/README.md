@@ -13,7 +13,7 @@ Locate a file or directory from a database.
 
 ## Examples
 
-The following examples are based on the precreated databases and can be tested.
+The following examples are based on the precreated databases.
 
 ### 1. Locate file
 
@@ -31,7 +31,7 @@ locate book # returns /home/<user>/archived_data/backup/bookmarks.html
 locate shr # returns /home/<user>/.bashrc
 ```
 
-*Locate a file in a mounted drive (see the MNTPNT_PATHS variable in [CONSTANTS.sh](CONSTANTS.sh) for more information).*
+*Locate a file in a mounted drive (see the MNTPNT_PATHS variable in [CONFIGURATIONS.bash](CONFIGURATIONS.bash) for more information).*
 
 ```bash
 locate stat # returns {MNTPNT_PATH}/records/external/statistics.txt where "{MNTPNT_PATH}" is the
@@ -46,7 +46,7 @@ locate -d tur # returns /home/<user>/pictures
 
 ## Set up
 
-1. Assign the preferred constant values in [CONSTANTS.sh](CONSTANTS.sh).
+1. Assign the preferred constant values in [CONFIGURATIONS.bash](CONFIGURATIONS.bash).
 2. Define the preferred output paths in [updatedb](updatedb).
 3. Run [updatedb](updatedb).
 
