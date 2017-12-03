@@ -31,7 +31,7 @@ exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 # ============================================
 
 wget -i - <<EOF
-  ${BASE_URL}/CONSTANTS.sh
+  ${BASE_URL}/CONFIGURATIONS.sh
   ${BASE_URL}/locate
   ${BASE_URL}/updatedb
 EOF
