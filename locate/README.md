@@ -5,15 +5,13 @@ Locate a file or directory from a database.
 
 ## Databases
 
-*Locate* uses two databases, one for file paths and one for directory paths. They are populated with [updatedb](updatedb).
+Locate uses two databases, one for file paths and one for directory paths. They are populated with [updatedb](updatedb).
 
-*Locate* searches the file paths database by default and the the directory paths database with switch `-d`.
+Locate searches the file paths database by default and the the directory paths database with switch `-d`.
 
-*The precreated databases **dirsdb** and **filesdb** are provided just as examples.*
+*Note: The precreated databases **filesdb** and **dirsdb** are provided just as examples. The following examples are based on them.*
 
 ## Examples
-
-The following examples are based on the precreated databases.
 
 ### 1. Locate file
 
