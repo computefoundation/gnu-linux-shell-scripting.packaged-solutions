@@ -57,6 +57,6 @@ locate -d tur # returns /home/<user>/pictures
 Please retrieve *download-locate.sh* with the following command and run it to download:
 
 ```bash
-url='https://raw.githubusercontent.com/unix-foundation/shell--packaged-utilities/download'\
+url='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/download'\
 '/download-locate.sh' && wget "${url}" && chmod +x download-locate.sh
 ```
