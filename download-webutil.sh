@@ -11,7 +11,7 @@ readonly DOWNLOAD_DIR="${HOME}"
 
 # ======= ! CONFIGURATIONS ==============
 
-readonly MASTER_URL='https://raw.githubusercontent.com/unix-foundation/shell--packaged-utilities/master'
+readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/master'
 readonly BASE_URL="${MASTER_URL}/webutil"
 readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/webutil"
 
