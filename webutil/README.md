@@ -1,7 +1,7 @@
 
 # Webutil
 
-Open one or more URLs by alias, search query or directly in a web browser.
+Open one or more URLs by alias or search query or directly in a web browser.
 
 Webutil allows four argument methods:
 
