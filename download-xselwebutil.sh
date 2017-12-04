@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
 # 
-# Install script for Webutil packaged utility from packaged-utilities.
+# Download script for the Xselwebutil packaged utility from
+# shell--packaged-utilities
 # 
 
 # ======= CONFIGURATIONS ==============
 
-# Directory where files will be downloaded.
+# Directory where files will be downloaded
 readonly DOWNLOAD_DIR="${HOME}"
 
 # ======= ! CONFIGURATIONS ==============
 
-readonly MASTER_URL='https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/master'
-readonly BASE_URL="${MASTER_URL}/webutil"
-readonly BASE_DIR="${DOWNLOAD_DIR}/packaged-utilities/webutil"
+readonly MASTER_URL='https://raw.githubusercontent.com/unix-foundation/shell--packaged-utilities/master'
+readonly BASE_URL="${MASTER_URL}/xselwebutil"
+readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/xselwebutil"
+
+if [ ! -d "${DOWNLOAD_DIR}/shell--packaged-utilities" ]; then
+  mkdir -p "${DOWNLOAD_DIR}/shell--packaged-utilities"
+fi
 
 echo -e "::Downloading files to ${BASE_DIR}\n  Please wait"
-
-if [ ! -d "${DOWNLOAD_DIR}/packaged-utilities" ]; then
-  mkdir -p "${DOWNLOAD_DIR}/packaged-utilities"
-fi
 
 [ -d "${BASE_DIR}" ] && rm -Rf "${BASE_DIR}"
 mkdir "${BASE_DIR}"
@@ -27,15 +28,11 @@ cd "${BASE_DIR}"
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
 # ============================================
-#   Download files from webutil/
+#   Download files from xselwebutil/
 # ============================================
 
-wget -i - <<EOF
-  ${BASE_URL}/url-aliases
-  ${BASE_URL}/url-aliases-file-parser.pl
-  ${BASE_URL}/webutil
-EOF
-chmod +x url-aliases-file-parser.pl webutil
+wget "${BASE_URL}/xselwebutil"
+chmod +x xselwebutil
 
 # ============================================
 #   Download files from _global/

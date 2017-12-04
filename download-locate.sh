@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 
-# Install script for Local packaged utility from packaged-utilities.
+# Download script for the Local packaged utility from
+# shell--packaged-utilities
 # 
 
 # ======= CONFIGURATIONS ==============
@@ -10,15 +11,15 @@ readonly DOWNLOAD_DIR="${HOME}"
 
 # ======= ! CONFIGURATIONS ==============
 
-readonly MASTER_URL='https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/master'
+readonly MASTER_URL='https://raw.githubusercontent.com/unix-foundation/shell--packaged-utilities/master'
 readonly BASE_URL="${MASTER_URL}/locate"
-readonly BASE_DIR="${DOWNLOAD_DIR}/packaged-utilities/locate"
+readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/locate"
+
+if [ ! -d "${DOWNLOAD_DIR}/shell--packaged-utilities" ]; then
+  mkdir -p "${DOWNLOAD_DIR}/shell--packaged-utilities"
+fi
 
 echo -e "::Downloading files to ${BASE_DIR}\n  Please wait"
-
-if [ ! -d "${DOWNLOAD_DIR}/packaged-utilities" ]; then
-  mkdir -p "${DOWNLOAD_DIR}/packaged-utilities"
-fi
 
 [ -d "${BASE_DIR}" ] && rm -Rf "${BASE_DIR}"
 mkdir "${BASE_DIR}"
