@@ -83,6 +83,6 @@ webutil "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 Please retrieve *download-webutil.sh* with the following command and run it to download:
 
 ```bash
-url='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/download'\
+url='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/download_scripts'\
 '/download-webutil.sh' && wget "${url}" && chmod +x download-webutil.sh
 ```

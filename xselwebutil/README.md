@@ -8,7 +8,7 @@ Search the selected text (using a search URL) or open all URLs in the selected t
 Please retrieve *download-xselwebutil.sh* with the following command and run it to download:
 
 ```bash
-url='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/download'\
+url='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/download_scripts'\
 '/download-xselwebutil.sh' && wget "${url}" && chmod +x download-xselwebutil.sh
 ```
 
