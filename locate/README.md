@@ -52,11 +52,11 @@ locate -d tur # returns /home/<user>/pictures
 
 * This utility does not support file names with spaces.
 
-## Installation
+## Download
 
-Please download *install-locate.sh* with the following command and run it to install:
+Please retrieve *download-locate.sh* with the following command and run it to download:
 
 ```bash
-wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-locate.sh \
-&& chmod +x install-locate.sh
+url='https://raw.githubusercontent.com/unix-foundation/shell--packaged-utilities/download'\
+'/download-locate.sh' && wget "${url}" && chmod +x download-locate.sh
 ```

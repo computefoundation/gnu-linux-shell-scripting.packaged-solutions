@@ -78,11 +78,11 @@ webutil "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 * Dump each URL's output to a terminal window.
 * Output the parsed URLs to the clipboard.
 
-## Installation
+## Download
 
-Please download *install-webutil.sh* with the following command and run it to install:
+Please retrieve *download-webutil.sh* with the following command and run it to download:
 
 ```bash
-wget https://raw.githubusercontent.com/linux-shell-base/packaged-utilities/install/install-webutil.sh \
-&& chmod +x install-webutil.sh
+url='https://raw.githubusercontent.com/unix-foundation/shell--packaged-utilities/download'\
+'/download-webutil.sh' && wget "${url}" && chmod +x download-webutil.sh
 ```
