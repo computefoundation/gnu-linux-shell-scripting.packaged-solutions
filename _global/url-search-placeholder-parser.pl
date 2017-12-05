@@ -67,14 +67,15 @@ my $MAX_SEARCH_PLACEHOLDERS_PER_URL = 8;
 
 # ======= ! CONFIGURATIONS ==============
 
-# ASCII escape ranges for search queries. It includes many unsafe URL characters
-# and discludes [#$%&=?_ ]. (To include these (except for the space), use
-# '\x00-\x1F\x21-\x2D\x3B-\x40\x5B-\x60\x7B-\xFF' instead). Important: Do not
-# include the space character as spaces in a search query will be encoded rather
-# than replaced with the search placeholder delimiter.
-my $SRCH_QRY_ASCII_ESCP_RNGS = '\x00-\x1F\x21\x22\x24\x27-\x2D\x3B\x3C\x3E\x40';
+# These are the ASCII escape ranges for search queries. They include almost all
+# usafe URL characters and disclude [#$%&-=?_ ]. (To include these except for
+# the space, use "\x00-\x1F\x21-\x2C\x3B-\x40\x5B-\x60\x7B-\xFF" instead).
+# Important: Do not include the space character as spaces must be replaced with
+# the search placeholder delimiter.
+my $SRCH_QRY_ASCII_ESCP_RNGS = '\x00-\x1F\x21\x22\x24\x27-\x2C\x3B\x3C\x3E\x40';
 $SRCH_QRY_ASCII_ESCP_RNGS .= '\x5B-\x5E\x60\x7B-\xFF';
-# ASCII escape ranges for all other parts of the URL.
+
+# ASCII escape ranges for all other parts of the URL
 my $URI_ASCII_ESCP_RNGS = $SRCH_QRY_ASCII_ESCP_RNGS.'\x20';
 
 if (scalar @ARGV < 1) {
