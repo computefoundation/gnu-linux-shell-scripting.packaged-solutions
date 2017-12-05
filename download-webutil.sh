@@ -32,18 +32,12 @@ exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 # ============================================
 
 wget -i - <<EOF
+  ${BASE_URL}/search-placeholder-url-parser.pl
   ${BASE_URL}/url-aliases
   ${BASE_URL}/url-aliases-file-parser.pl
   ${BASE_URL}/webutil
 EOF
-chmod +x url-aliases-file-parser.pl webutil
-
-# ============================================
-#   Download files from _global/
-# ============================================
-
-wget "${MASTER_URL}/_global/url-search-placeholder-parser.pl"
-chmod +x url-search-placeholder-parser.pl
+chmod +x search-placeholder-url-parser.pl url-aliases-file-parser.pl webutil
 
 
 exec >&3 2>&4 # redirect all output back to /dev/tty
