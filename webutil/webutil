@@ -7,7 +7,7 @@
 #   To use Webutil, simply retrieve the dependencies.
 # 
 # Dependencies:
-#   URI::Escape Perl module (for url-search-placeholder-parser.pl; install with
+#   URI::Escape Perl module (for search-placeholder-url-parser.pl; install with
 #     command "cpan URI::Escape").
 # 
 #   xterm (the terminal used for opening terminal windows; for quick and easy
@@ -557,7 +557,7 @@ if [ -n "${urlAliasesFileParserOut}" ]; then
     aliasOpts_urls_urlsOpts=(${alias_aliasOpts_urls_urlsOpts//'<$>'/ })
 
     setUpUrlsUrlsOptsArr() {
-      local urlSrchPlhParserOut="$("${HERE}/url-search-placeholder-parser.pl" \
+      local urlSrchPlhParserOut="$("${HERE}/search-placeholder-url-parser.pl" \
           "${aliasOpts_urls_urlsOpts["${1}"]}" \
           ${urlSearchPlaceholderParserArgs})"
       [[ "${urlSrchPlhParserOut}" = 'error:'* ]] && \
@@ -640,7 +640,7 @@ else
     exit
   fi
 
-  dfltSrchUrlPrsd="$("${HERE}/url-search-placeholder-parser.pl" \
+  dfltSrchUrlPrsd="$("${HERE}/search-placeholder-url-parser.pl" \
       "${DEFAULT_SEARCH_URL}" "${@}")"
 
   if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
