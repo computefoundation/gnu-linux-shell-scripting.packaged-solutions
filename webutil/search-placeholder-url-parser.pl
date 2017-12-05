@@ -3,9 +3,11 @@
 # Replace one or more "{search\D}" placeholders in one or more URLs with a
 # search query, where D is the URL's space delimiter.
 # 
-# E.g.:
-#   "https://duckduckgo.com/?q={search\+}&iax=1&ia=images" "earth's biosphere"
-#     => https://duckduckgo.com/?q=earth%27s+biosphere&iax=1&ia=images
+# Example:
+#   search-placeholder-url-parser.pl \
+#       "https://duckduckgo.com/?q={search\+}&iax=1&ia=images" \
+#       "earth's biosphere"
+#   # output: https://duckduckgo.com/?q=earth%27s+biosphere&iax=1&ia=images
 # 
 # A URL may contain multiple {search\D} placeholders to allow multiple search
 # queries (e.g. start and end locations for travel directions) or to copy them
@@ -49,8 +51,8 @@
 # Arguments:
 #   1.   One or more URLs delimited by "<|>"
 #   2-?. One or more search queries delimited by $SEARCH_QUERY_DELIM; they can
-#        be passed in any number of arguments (as all arguments after the first
-#        will be joined).
+#        be passed in any number of arguments as all arguments after the first
+#        are joined.
 # 
 
 use strict;
