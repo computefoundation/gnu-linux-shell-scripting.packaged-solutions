@@ -3,7 +3,7 @@
 
 Open one or more URLs by alias or search query or directly in a web browser.
 
-Webutil allows four argument methods:
+Four argument methods are allowed:
 
 1. **An alias** *(first argument)* with one or more optional search queries *(remaining arguments)*.
 
@@ -33,16 +33,16 @@ directions from Phoenix, AZ to Seattle, WA with alias "dir" (aliasing a maps URL
 webutil dir phoenix, az %% seattle, wa
 ```
 
-abbreviations for the word *exponent* with alias "abbr" (aliasing an abbreviations search URL) and open in GUI browser 3.
-
-```bash
-webutil -3 abbr exponent
-```
-
 for outdoor gear stores in Burlington, VT with alias "stores-all" (aliasing multiple store search URLs).
 
 ```bash
 webutil stores-all outdoor gear %% burlington, vt
+```
+
+abbreviations for the word *exponent* with alias "abbr" (aliasing an abbreviations search URL) and open in GUI browser 3.
+
+```bash
+webutil -3 abbr exponent
 ```
 
 ### 2. Multiple aliases
