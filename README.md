@@ -9,10 +9,6 @@ Locate a file or directory from a database.
 
 Open one or more URLs by alias or search query or directly in a web browser.
 
-## [Xselwebutil](xselwebutil)
-
-Search the selected text (using a search URL) or open all URLs in the selected text in a web browser. This utility should be bound to a keybinding.
-
 ## &#95;global
 
 Dependencies for packaged utilities
