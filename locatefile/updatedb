@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 
-# Update the locate database.
+# Update the locatefile database.
 # 
 # Notes:
 #   The database file names in the case blocks under sections "File paths" and

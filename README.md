@@ -1,9 +1,9 @@
 
 **Shell--packaged-utilities** is an extension of [Shell](https://github.com/unixfoundation/shell) for utilities consisting of more than one file.
 
-## [Locate](locate)
+## [Locatefile](locatefile)
 
-Locate a file or directory in a database.
+Locate a file or directory from a database.
 
 ## [Openurl](openurl)
 

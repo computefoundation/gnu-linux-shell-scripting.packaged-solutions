@@ -1,5 +1,5 @@
 
-# Locate
+# Locatefile
 
 Locate a file or directory from a database.
 
@@ -16,30 +16,30 @@ The file paths database is searched by default and the directory paths database 
 ### 1. Locate file
 
 ```bash
-locate addr # returns /home/<user>/documents/addresses.txt
+locatefile addr # returns /home/<user>/documents/addresses.txt
 ```
 
 ```bash
-locate book # returns /home/<user>/archived_data/backup/bookmarks.html
+locatefile book # returns /home/<user>/archived_data/backup/bookmarks.html
 ```
 
 *Any part of the file or directory name can be used; the first match will be returned.*
 
 ```bash
-locate shr # returns /home/<user>/.bashrc
+locatefile shr # returns /home/<user>/.bashrc
 ```
 
 *A file or directory in a mounted drive can be located (see the MNTPNT_PATHS variable in [CONFIGURATIONS.bash](CONFIGURATIONS.bash) for more information).*
 
 ```bash
-locate stat # returns {MNTPNT_PATH}/records/external/statistics.txt, where "{MNTPNT_PATH}" is the
-            # mountpoint of the mounted drive, if the drive containing the file is mounted
+locatefile stat # returns {MNTPNT_PATH}/records/external/statistics.txt, where "{MNTPNT_PATH}" is the
+                # mountpoint of the mounted drive, if the drive containing the file is mounted
 ```
 
 ### 2. Locate directory
 
 ```bash
-locate -d tur # returns /home/<user>/pictures
+locatefile -d tur # returns /home/<user>/pictures
 ```
 
 ## Set up
@@ -54,9 +54,9 @@ locate -d tur # returns /home/<user>/pictures
 
 ## Download
 
-Please retrieve *download-locate.sh* with the following command and run it to download:
+Please retrieve *download-locatefile.sh* with the following command and run it to download:
 
 ```bash
 url='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/download_scripts'\
-'/download-locate.sh' && wget "${url}" && chmod +x download-locate.sh
+'/download-locatefile.sh' && wget "${url}" && chmod +x download-locatefile.sh
 ```
