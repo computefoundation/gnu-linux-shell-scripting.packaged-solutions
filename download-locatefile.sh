@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 # 
-# Download script for the Local packaged utility from
-# shell--packaged-utilities
+# Download script for utility Locatefile in shell--packaged-utilities
 # 
 
 # ======= CONFIGURATIONS ==============
 
-# Directory where files will be downloaded.
+# Directory where files will be downloaded
 readonly DOWNLOAD_DIR="${HOME}"
 
 # ======= ! CONFIGURATIONS ==============
 
 readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/master'
-readonly BASE_URL="${MASTER_URL}/locate"
-readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/locate"
+readonly BASE_URL="${MASTER_URL}/locatefile"
+readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/locatefile"
 
 if [ ! -d "${DOWNLOAD_DIR}/shell--packaged-utilities" ]; then
   mkdir -p "${DOWNLOAD_DIR}/shell--packaged-utilities"
@@ -28,15 +27,15 @@ cd "${BASE_DIR}"
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
 # ============================================
-#   Download files from locate/
+#   Download files from locatefile/
 # ============================================
 
 wget -i - <<EOF
-  ${BASE_URL}/CONFIGURATIONS.sh
-  ${BASE_URL}/locate
+  ${BASE_URL}/CONFIGURATIONS.bash
+  ${BASE_URL}/locatefile
   ${BASE_URL}/updatedb
 EOF
-chmod +x locate updatedb
+chmod +x locatefile updatedb
 
 path='/dirsdb'
 mkdir "${BASE_DIR}${path}"

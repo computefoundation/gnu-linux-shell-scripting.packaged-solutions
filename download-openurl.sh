@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 # 
-# Download script for the Webutil packaged utility from
-# shell--packaged-utilities
+# Download script for the utility Openurl in shell--packaged-utilities
 # 
 
 # ======= CONFIGURATIONS ==============
 
-# Directory where files will be downloaded.
+# Directory where files will be downloaded
 readonly DOWNLOAD_DIR="${HOME}"
 
 # ======= ! CONFIGURATIONS ==============
 
 readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/master'
-readonly BASE_URL="${MASTER_URL}/webutil"
-readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/webutil"
+readonly BASE_URL="${MASTER_URL}/openurl"
+readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/openurl"
 
 if [ ! -d "${DOWNLOAD_DIR}/shell--packaged-utilities" ]; then
   mkdir -p "${DOWNLOAD_DIR}/shell--packaged-utilities"
@@ -28,16 +27,16 @@ cd "${BASE_DIR}"
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
 # ============================================
-#   Download files from webutil/
+#   Download files from openurl/
 # ============================================
 
 wget -i - <<EOF
   ${BASE_URL}/search-placeholder-url-parser.pl
   ${BASE_URL}/url-aliases
   ${BASE_URL}/url-aliases-file-parser.pl
-  ${BASE_URL}/webutil
+  ${BASE_URL}/openurl
 EOF
-chmod +x search-placeholder-url-parser.pl url-aliases-file-parser.pl webutil
+chmod +x search-placeholder-url-parser.pl url-aliases-file-parser.pl openurl
 
 
 exec >&3 2>&4 # redirect all output back to /dev/tty
