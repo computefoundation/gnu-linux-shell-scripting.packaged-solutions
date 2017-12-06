@@ -5,7 +5,7 @@
 
 Locate a file or directory in a database.
 
-## [Webutil](webutil)
+## [Openurl](openurl)
 
 Open one or more URLs by alias or search query or directly in a web browser.
 

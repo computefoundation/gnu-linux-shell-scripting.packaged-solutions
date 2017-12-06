@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # 
-# This is the URL aliases file parser for webutil. It searches for the given
+# This is the URL aliases file parser for openurl. It searches for the given
 # alias(es) in the specified URL aliases files and returns the URLs for the
 # found aliases and any configuration options for both.
 # 

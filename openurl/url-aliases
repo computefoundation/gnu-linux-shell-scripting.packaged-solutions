@@ -19,11 +19,11 @@
 ' 
 ' {search\D} placeholder:
 ' 
-'   URLs requiring a search query may contain a {search\D} placeholder in its
-'   place, where D is the URL's space delimiter. It will be replaced with the
-'   search query passed to webutil.
+'   A URL with a search query section may use a {search\D} placeholder, where D
+'   is the URL's space delimiter, in place of the search query section. The
+'   placeholder will be replaced with the search query passed to openurl.
 ' 
-'       E.g. webutil "stores-all" "outdoor gear"
+'       E.g. openurl "stores-all" "outdoor gear"
 '       # Opens all URLs aliased by "stores-all" and replaces each of their
 '       # {search\D} placeholders with "outdoorDgear".
 ' 
@@ -31,8 +31,8 @@
 '   queries (e.g. start and end locations for travel directions) or to copy them
 '   within itself. The search query used for a placeholder corresponds to its
 '   position in the URL. If a search query for a placeholder does not exist, the
-'   placeholder will be replaced with an empty string. (See webutil's
-'   help documentation for information on passing in multiple search queries).
+'   placeholder will be replaced with an empty string. (See openurl's help
+'   documentation for information on passing in multiple search queries).
 ' 
 '   Placeholder options can be used to change and modify the search query used
 '   by a placeholder. They are specified with a bang ("!") and placed right
@@ -50,7 +50,7 @@
 '   Unsafe characters in a URL will be encoded and can be escaped with two
 '   backslashes to not be. This also applies for the delimiter character(s) in
 '   the search placeholder and characters in the search queries passed to
-'   webutil.
+'   openurl.
 ' 
 '   Instructions on adding a new URL with a {search\D} placeholder are at the
 '   bottom of this file.
@@ -63,7 +63,7 @@
 ' 
 '     %browser=VALUE:  Browser to use; possible values are "gui<1-9>" (for
 '                      graphical browsers) and "term<1-7>" (for terminal
-'                      browsers). (Browsers are defined in webutil in
+'                      browsers). (Browsers are defined in openurl in
 '                      CONFIGURATIONS; default is GUI 1).
 ' 
 '     %dump[+NUM_PAGES]:  Dump the output of each URL to a terminal window
@@ -199,19 +199,20 @@ http://www.local.com/business/results/?keyword={search\%20}&location={search!C\%
 ' Instructions on adding a new URL with a {search\D} placeholder:
 ' 
 '   1. Go to the search page for the URL of interest.
-'   2. Search for something using at least two search words (space separated).
-'   3. Copy and paste the new loaded URL (from the browser's URL bar) to this
-'      file under an alias.
+'   2. Search for something using at least two (space separated) search words.
+'   3. Copy and paste the loaded URL (in the browser's URL bar) to this file
+'      under an alias.
 '   4. Find the search words in the URL and make note of the character(s) used
-'      as their delimiter.
-'   5. Replace the search words with "{search\D}", where D is the delimiter.
+'      as their space delimiter.
+'   5. Replace the search words with "{search\D}", where D is the space
+'      delimiter.
 ' 
 ' Helpful notes/tips:
 ' 
 '   Search query not appearing in URL:
 '     This means the website sends them using the request's body, form fields or
-'     another method. Webutil does not modify requests so the {search\D}
-'     placeholder cannot be used with the URL.
+'     another method. In this case, the {search\D} placeholder cannot be used
+'     with the URL.
 ' 
 '   URL is very long (e.g. contains a long key of random letters and numbers):
 '     A URL may possibly be shortened by removing some query parameters

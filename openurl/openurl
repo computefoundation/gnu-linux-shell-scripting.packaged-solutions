@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 # 
-# Introduction:
-#   See https://github.com/linux-shell-base/packaged-utilities/tree/master/webutil
-# 
-# Set up:
-#   To use Webutil, simply retrieve the dependencies.
+# See https://github.com/linux-shell-base/packaged-utilities/tree/master/openurl
 # 
 # Dependencies:
 #   URI::Escape Perl module (for search-placeholder-url-parser.pl; install with
@@ -30,12 +26,13 @@ readonly URL_ALIASES_FILES=(
 
 # GUI and terminal web browser commands
 # Options:
-# 1. All URLs for a browser command are opened in a single run. To open each URL
-#    for a browser command independently, prepend "::" to the browser command
-#    (applies only to GUI browsers).
-# 2. To run a command after the browser command has run, append ";;" to it
-#    followed by the command (applies to both GUI and terminal browsers).
-#    (Note: It will run once regardless if the "::" prefix option is used).
+#   1. All URLs for a browser command are opened in a single run. To open each
+#      URL for a browser command independently, prepend two colons ("::") to the
+#      browser command. (Applies only to GUI browsers).
+#   2. To run a command after the browser command has run, append two semicolons
+#      (";;") to the browser command followed by the command to run. (Applies to
+#      both GUI and terminal browsers. Note: The command will run once
+#      regardless if option #1 is used).
 readonly BROWSER_GUI1='/usr/bin/chromium'
 readonly BROWSER_GUI2='/usr/bin/chromium --incognito'
 readonly BROWSER_GUI3='/usr/bin/firefox -new-tab'
@@ -95,13 +92,13 @@ printHelpMessage() {
 
   echo -ne "\
 Usage:
-  webutil [options] <url alias> [search queries]
-  webutil [options] <search query for default search url>
-  webutil [options] <websites/URLs...>
+  openurl [options] <url alias> [search queries]
+  openurl [options] <search query for default search url>
+  openurl [options] <websites/URLs...>
 
   First usage (examples):
-    webutil wikip history of science
-    webutil dir phoenix, az %% seattle, wa
+    openurl wikip history of science
+    openurl dir phoenix, az %% seattle, wa
 
   Second usage:
     If a URL alias is not found, all arguments
@@ -155,7 +152,7 @@ Notes:
 }
 
 listBrowserCommands() {
-  local msg='webutil: Current browser commands:'
+  local msg='openurl: Current browser commands:'
   for i in {1..9}; do
     local brwsrVar="BROWSER_GUI${i}"
     local browser="${!brwsrVar}"
@@ -179,15 +176,15 @@ printBrwsrVarNotDefMessage() {
   fi
 
   if [ "${1}" = 'alias' ]; then
-    echo -e "webutil: Browser \"${3}\" selected for alias\n  \"${2}\""\
+    echo -e "openurl: Browser \"${3}\" selected for alias\n  \"${2}\""\
         "in one of the URL aliases\n  files, however, variable"\
         "BROWSER_${brwsrValCaps} is\n  not defined." 1>&2
   elif [ "${1}" = 'url' ]; then
-    echo -e "webutil: Browser \"${3}\" selected for a URL in\n  one of"\
+    echo -e "openurl: Browser \"${3}\" selected for a URL in\n  one of"\
         "the URL aliases files, however, variable\n  BROWSER_${brwsrValCaps}"\
         "is not defined." 1>&2
   else
-    echo -e "webutil: Browser \"${2}\" is not defined." 1>&2
+    echo -e "openurl: Browser \"${2}\" is not defined." 1>&2
   fi
 
   read -d '' msg <<-EOF
@@ -257,7 +254,7 @@ while true; do
           if [[ "${arg}" =~ ^\+([0-9]{1,3}(\.[0-9])?)$ ]]; then
             DUMP_PG_FWD="${BASH_REMATCH[1]}"
           elif [ -n "${arg}" ]; then
-            echo "webutil: invalid option '${1}${2}'" 1>&2; exit 1;
+            echo "openurl: invalid option '${1}${2}'" 1>&2; exit 1;
           fi
         fi
         shift
@@ -274,17 +271,17 @@ while true; do
 done
 
 if [ "$#" -eq 0 ] && [ "${DUMP}" = 'true' ]; then
-  echo 'webutil: cannot use option "dump" without arguments' 1>&2
+  echo 'openurl: cannot use option "dump" without arguments' 1>&2
   exit 1
 fi
 
 if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
   if [ "${OPT_OVERRIDE_ALIAS_MATCHING}" = 'true' ]; then
-    echo 'webutil: cannot use options -s and -a together' 1>&2
+    echo 'openurl: cannot use options -s and -a together' 1>&2
     exit 1
   fi
   if [ $# -eq 0 ]; then
-    echo -e 'webutil: one or more aliases required\n  with option -a' 1>&2
+    echo -e 'openurl: one or more aliases required\n  with option -a' 1>&2
     exit 1
   fi
 fi
@@ -306,7 +303,7 @@ fi
 for urlAliasesFile in "${URL_ALIASES_FILES[@]}"; do
   path="${URL_ALIASES_FILES_DIR}/${urlAliasesFile}"
   if [ ! -f "${path}" ]; then
-    echo -e "webutil: URL aliases file not found:\n  '${path}'" 1>&2
+    echo -e "openurl: URL aliases file not found:\n  '${path}'" 1>&2
     exit 1
   fi
   URL_ALIASES_FILES_STR+="${urlAliasesFile}|"
@@ -478,7 +475,7 @@ URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "while(m/(${rgx})/g) { print \
 
 if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
   if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
-    echo -e 'webutil: option -c not allowed when opening URLs directly' 1>&2
+    echo -e 'openurl: option -c not allowed when opening URLs directly' 1>&2
     exit 1
   fi
   finalizeConfigsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
@@ -490,19 +487,19 @@ fi
 #   Get and parse all URLs for one or more alias(es) if the alias(es) exist(s).
 # ===================================================
 
-# Procedural cases:
+# Argument cases:
 #   First argument only used as alias:
-#     1. If found, use the remaining arguments as search queries with the URLs
-#        returned for it. (Note: There will always be at least one URL returned
-#        for a found alias).
-#     2. If not found, use all arguments as search queries with the default
-#        search URL (if the respective configuration is set).
+#     Use the first argument as an alias and all remaining arguments as one or
+#     more search queries for the alias's URLs if the alias was found (note:
+#     there will always be at least one URL returned for a found alias). Use all
+#     arguments as one or more search queries with the default search URL
+#     otherwise and if the respective configuration is set respectively.
 # 
-#   All arguments used as aliases:
-#     1. If the first is found, find all after it and return their URLs. Use all
-#        arguments after the last found alias as search queries with all of
-#        their URLs.
-#     2. If the first is not found, print a message and exit.
+#   All arguments used as aliases (switch -a):
+#     Use each argument after the first as an alias until no more aliases are
+#     found and use all remaining arguments as one or more search queries for
+#     the aliases URLs if the first argument is a found alias. Print a message
+#     and exit otherwise.
 
 if [ -z "${OPT_OVERRIDE_ALIAS_MATCHING}" ]; then
   if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
@@ -631,12 +628,12 @@ if [ -n "${urlAliasesFileParserOut}" ]; then
 
 else
   if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
-    echo 'webutil: no aliases found'
+    echo 'openurl: no aliases found'
     exit
   fi
 
   if [ "${SEARCH_IF_ALIAS_NOT_FOUND}" != 'true' ]; then
-    echo "webutil: alias \"${1}\" not found"
+    echo "openurl: alias \"${1}\" not found"
     exit
   fi
 
