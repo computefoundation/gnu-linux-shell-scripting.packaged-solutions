@@ -3,7 +3,7 @@
 
 ## [Locate](locate)
 
-Locate a file or directory from a database.
+Locate a file or directory in a database.
 
 ## [Webutil](webutil)
 

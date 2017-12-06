@@ -5,11 +5,11 @@ Locate a file or directory from a database.
 
 ## Databases
 
-Locate uses two databases, one for file paths and one for directory paths. They are populated with [updatedb](updatedb).
+Locatefile uses a file paths database and a directory paths database. Both databases are populated with [updatedb](updatedb).
 
-Locate searches the file paths database by default and the the directory paths database with switch `-d`.
+The file paths database is searched by default and the directory paths database is searched via switch `-d`.
 
-*Note: The precreated databases **filesdb** and **dirsdb** are provided just as examples. The following examples are based on them.*
+*The precreated databases **filesdb** and **dirsdb** are example databases. The following examples are based on them.*
 
 ## Examples
 
@@ -23,17 +23,17 @@ locate addr # returns /home/<user>/documents/addresses.txt
 locate book # returns /home/<user>/archived_data/backup/bookmarks.html
 ```
 
-*Locate a file using any part of the file name; the first match will be returned.*
+*Any part of the file or directory name can be used; the first match will be returned.*
 
 ```bash
 locate shr # returns /home/<user>/.bashrc
 ```
 
-*Locate a file in a mounted drive (see the MNTPNT_PATHS variable in [CONFIGURATIONS.bash](CONFIGURATIONS.bash) for more information).*
+*A file or directory in a mounted drive can be located (see the MNTPNT_PATHS variable in [CONFIGURATIONS.bash](CONFIGURATIONS.bash) for more information).*
 
 ```bash
-locate stat # returns {MNTPNT_PATH}/records/external/statistics.txt where "{MNTPNT_PATH}" is the
-            # mountpoint of the mounted drive
+locate stat # returns {MNTPNT_PATH}/records/external/statistics.txt, where "{MNTPNT_PATH}" is the
+            # mountpoint of the mounted drive, if the drive containing the file is mounted
 ```
 
 ### 2. Locate directory
