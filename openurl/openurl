@@ -12,7 +12,6 @@
 # 
 
 readonly HERE="$(dirname "${0}")"
-readonly SCRIPT_NAME="$(basename "${BASH_SOURCE[0]//.sh}")"
 
 # ======= CONFIGURATIONS ==============
 
@@ -36,9 +35,9 @@ readonly URL_ALIASES_FILES=(
 readonly BROWSER_GUI1='/usr/bin/chromium'
 readonly BROWSER_GUI2='/usr/bin/chromium --incognito'
 readonly BROWSER_GUI3='/usr/bin/firefox -new-tab'
-readonly BROWSER_GUI4='/usr/bin/firefox -private-window'
-readonly BROWSER_GUI5='/usr/bin/dwb'
-readonly BROWSER_GUI6='::/usr/bin/netsurf'
+readonly BROWSER_GUI4=''
+readonly BROWSER_GUI5=''
+readonly BROWSER_GUI6=''
 readonly BROWSER_GUI7=''
 readonly BROWSER_GUI8=''
 readonly BROWSER_GUI9=''
@@ -55,7 +54,7 @@ readonly BROWSER_TERM7=''
 readonly SEARCH_IF_ALIAS_NOT_FOUND=true
 
 # Default search URL
-readonly DEFAULT_SEARCH_URL='http://www.google.com/search?q={search\+}'
+readonly DEFAULT_SEARCH_URL='https://www.google.com/search?q={search\+}'
 
 # Top level domains used to match URLs
 readonly URL_MATCH_TOP_LEVEL_DOMAINS='.com .org .edu .gov .uk .net'
@@ -85,9 +84,11 @@ readonly DUMP_LESS_OPTS='-IFRXMc'
 
 # ======= ! CONFIGURATIONS ==============
 
+readonly FILE_NAME="$(basename "${BASH_SOURCE[0]//.sh}")"
+
 printHelpMessage() {
   if [ "${1}" = 'full' ]; then
-    echo -e "${SCRIPT_NAME} - Utility to make using the web easier.\n"
+    echo -e "${FILE_NAME} - Utility to make using the web easier.\n"
   fi
 
   echo -ne "\
@@ -201,7 +202,7 @@ printBrwsrVarNotDefMessage() {
 #   Initialization
 # ============================================
 
-# DEFAULT/ALIAS CONFIGURATIONS: Assigned by either argument or alias/URL
+# DEFAULT/ALIAS CONFIGURATIONS (Assigned by either argument or alias/URL
 # configuration options as argument configuration options override all alias
 # configuration options. If their values are changed, they will be applied
 # everytime a URL is opened unless changed by argument or alias/URL
@@ -226,7 +227,7 @@ BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
 # ============================================
 
 OPTS="$(getopt -a -o 1,2,3,4,5,6,7,8,9,d::,s,a,c,l,h --long g1,g2,g3,g4,g5,g6 \
-    --long g7,g8,g9,t1,t2,t3,t4,t5,t6,t7,list,help -n "${SCRIPT_NAME}" -- \
+    --long g7,g8,g9,t1,t2,t3,t4,t5,t6,t7,list,help -n "${FILE_NAME}" -- \
     "${@}")"
 [ "$?" -ne 0 ] && exit 1
 eval set -- "${OPTS}" 
@@ -606,7 +607,7 @@ if [ -n "${urlAliasesFileParserOut}" ]; then
       urls="${BROWSER_URL_HASHES["${brwsr_brwsrType}"]}"
 
       if [ "${OPEN_TERM_BRWSR_URLS_IN_INDV_WIND}" = 'true' ] && [ \
-      		"${brwsrType}" = 'TERM' ]; then
+          "${brwsrType}" = 'TERM' ]; then
         for url in ${urls[@]}; do
           finalizeConfigsAndExeBrowser "${brwsr}" ${brwsrType} false 0 "${url}"
         done
