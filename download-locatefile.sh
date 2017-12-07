@@ -40,17 +40,17 @@ chmod +x locatefile updatedb
 path='/dirsdb'
 mkdir "${BASE_DIR}${path}"
 wget -P "${BASE_DIR}${path}" -i - <<EOF
-  ${BASE_URL}${path}/container1
-  ${BASE_URL}${path}/container2
-  ${BASE_URL}${path}/home-data
+  ${BASE_URL}${path}/mount-drive-1-paths
+  ${BASE_URL}${path}/mount-drive-2-paths
+  ${BASE_URL}${path}/home-paths
 EOF
 
 path='/filesdb'
 mkdir "${BASE_DIR}${path}"
 wget -P "${BASE_DIR}${path}" -i - <<EOF
-  ${BASE_URL}${path}/container1
-  ${BASE_URL}${path}/container2
-  ${BASE_URL}${path}/home-data
+  ${BASE_URL}${path}/mount-drive-1-paths
+  ${BASE_URL}${path}/mount-drive-2-paths
+  ${BASE_URL}${path}/home-paths
 EOF
 
 
