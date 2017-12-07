@@ -1,4 +1,4 @@
-' url-aliases (aliases and URLs with documentation)
+' url-aliases (aliases and their URLs with documentation)
 ' 
 ' Format:
 ' 
@@ -6,33 +6,34 @@
 '   url1
 '   url2
 '   ...
-' 
 '   alias1|alias2|alias3|...
 '   url1
 '   url2
 '   ...
 ' 
-' Aliases:
+' Aliases and URLs:
 ' 
-'   Aliases are defined with a vertical bar ("|") before or after them, used
-'   also to separate and define multiple aliases for one or more URLs.
+'   Aliases for one or more URLs are defined on a single line and identified and
+'   separated by a vertical bar ("|"). Each aliased URL is placed on its own
+'   line under the alias line.
 ' 
-' {search\D} placeholder:
+' URL search query placeholder:
 ' 
 '   A URL with a search query section may use a {search\D} placeholder, where D
-'   is the URL's space delimiter, in place of the search query section. The
-'   placeholder will be replaced with the search query passed to openurl.
+'   is the URL's space delimiter, to be replaced by a search query passed to
+'   openurl.
 ' 
-'       E.g. openurl "stores-all" "outdoor gear"
-'       # Opens all URLs aliased by "stores-all" and replaces each of their
-'       # {search\D} placeholders with "outdoorDgear".
+'     Example:
+'       openurl "stores-all" "outdoor gear"
+'         # opens all URLs aliased by "stores-all" and replaces each of their
+'         # {search\D} placeholders with "outdoorDgear"
 ' 
-'   A URL may contain multiple {search\D} placeholders to allow multiple search
+'   A URL may contain multiple {search\D} placeholders to use multiple search
 '   queries (e.g. start and end locations for travel directions) or to copy them
-'   within itself. The search query used for a placeholder corresponds to its
-'   position in the URL. If a search query for a placeholder does not exist, the
-'   placeholder will be replaced with an empty string. (See openurl's help
-'   documentation for information on passing in multiple search queries).
+'   within itself. The search query used by a placeholder corresponds to the
+'   placeholder's position in the URL. If one's search query does not exist, it
+'   will be replaced with an empty string. (See openurl's help documentation
+'   for information on passing in multiple search queries).
 ' 
 '   Placeholder options can be used to change and modify the search query used
 '   by a placeholder. They are specified with a bang ("!") and placed right
@@ -47,36 +48,38 @@
 '     !R:      Reverse all words in the search query
 '     !M:      Remove all commas in the search query
 ' 
-'   Unsafe characters in a URL will be encoded and can be escaped with two
-'   backslashes to not be. This also applies for the delimiter character(s) in
-'   the search placeholder and characters in the search queries passed to
-'   openurl.
+'   Unsafe URL characters in a URL will be encoded. An unsafe URL character can
+'   be escaped with two backslashes to keep it from being encoded. This also
+'   applies to the delimiter in the search placeholder and the search queries
+'   passed to openurl.
 ' 
 '   Instructions on adding a new URL with a {search\D} placeholder are at the
 '   bottom of this file.
 ' 
 ' Configuration options:
 ' 
-'   Options can be used to configure how one or more URLs are opened. They can
-'   be placed after the last alias on an alias line to apply to multiple URLs,
-'   or after an individual URL. They are the following:
+'   Options can be used to configure how one or more URLs are opened. They are
+'   placed after the last alias on an alias line to apply all aliased URLS or
+'   or an individual URL to apply only to the individual URL. They are the
+'   following:
 ' 
-'     %browser=VALUE:  Browser to use; possible values are "gui<1-9>" (for
-'                      graphical browsers) and "term<1-7>" (for terminal
-'                      browsers). (Browsers are defined in openurl in
-'                      CONFIGURATIONS; default is GUI 1).
+'        %browser=VALUE:  Browser to use; possible values are "gui<1-9>" (for
+'                         graphical browsers) and "term<1-7>" (for terminal
+'                         browsers). Browsers are defined in section
+'                         Configurations of open url; the default is GUI 1.
 ' 
 '     %dump[+NUM_PAGES]:  Dump the output of each URL to a terminal window
 '                         (using terminal browser 1 by default). Optionally,
 '                         jump forward the given number of pages. (The letter
 '                         "p" may be appended to NUM_PAGES for readability).
 ' 
-'   Each URL configuration option will override the corresponding one for its
-'   alias.
+'   A configuration specified for a URL will override the same configuration
+'   specified for an alias.
 ' 
-' Predefined aliases:
+' Examples:
 ' 
-'   Many of the predefined aliases below have a comment for explanation marked by "Ex.".
+'   Many of the examples below have a comment above them marked by "Ex." for
+'   explanation.
 ' 
 
 ' ---------------------------------------------------
