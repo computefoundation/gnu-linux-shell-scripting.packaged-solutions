@@ -15,7 +15,7 @@ DIR_PATHS_DB_DIR="${HERE}/dirsdb"
 
 # File names to use in both database directories; they will be searched in
 # order
-DB_FILE_NAMES=('container1' 'container2' 'home-data')
+DB_FILE_NAMES=('mount-drive-1-paths' 'mount-drive-2-paths' 'home-paths')
 
 # Paths of mounted drives to be used by locatefile
 # When a databse file or directory path begins with "{MNTPNT_PATH}/", these

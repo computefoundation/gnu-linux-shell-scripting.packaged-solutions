@@ -52,7 +52,20 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
   dest="${FILE_PATHS_DB_DIR}/${dbFileName}"
 
   case "${dbFileName}" in
-    'container1')
+    'home-paths')
+      echo -n '' > "${dest}"
+      find_out 'f' '1' "${dest}" '/home/<user>/documents'
+      find_out 'f' '0' "${dest}" '/home/<user>/.bashrc'
+      find_out 'f' '0' "${dest}" '/home/<user>/.bash_profile'
+      find_out 'f' '0' "${dest}" '/home/<user>/.vimrc'
+      find_out 'f' '0' "${dest}" '/home/<user>/.ssh/config'
+      find_out 'f' '1' "${dest}" '/home/<user>/bin'
+      find_out 'f' '0' "${dest}" '/home/<user>/share/calendar/events.txt'
+      find_out 'f' '2' "${dest}" '/home/<user>/pictures'
+      find_out 'f' '1' "${dest}" '/home/<user>/archived_data/backup'
+      ;;
+
+    'mount-drive-1-paths')
       if mountpoint '/mnt/usb2' >/dev/null; then
         echo -n '' > "${dest}"
         find_out 'f' '0' "${dest}" '/mnt/usb2/general/notes/assignment.txt'
@@ -67,7 +80,7 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
       fi
       ;;
 
-    'container2')
+    'mount-drive-2-paths')
       if mountpoint '/mnt/usb2' >/dev/null; then
         echo -n '' > "${dest}"
         find_out 'f' '5' "${dest}" '/mnt/usb3/components/main'
@@ -75,19 +88,6 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
         find_out 'f' '0' "${dest}" '/mnt/usb3/components/main/resources/logo.png'
         find_out 'f' '2' "${dest}" '/mnt/usb3/global'
       fi
-      ;;
-
-    'home-data')
-      echo -n '' > "${dest}"
-      find_out 'f' '1' "${dest}" '/home/<user>/documents'
-      find_out 'f' '0' "${dest}" '/home/<user>/.bashrc'
-      find_out 'f' '0' "${dest}" '/home/<user>/.bash_profile'
-      find_out 'f' '0' "${dest}" '/home/<user>/.vimrc'
-      find_out 'f' '0' "${dest}" '/home/<user>/.ssh/config'
-      find_out 'f' '1' "${dest}" '/home/<user>/bin'
-      find_out 'f' '0' "${dest}" '/home/<user>/share/calendar/events.txt'
-      find_out 'f' '2' "${dest}" '/home/<user>/pictures'
-      find_out 'f' '1' "${dest}" '/home/<user>/archived_data/backup'
       ;;
   esac
 done
@@ -100,7 +100,16 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
   dest="${DIR_PATHS_DB_DIR}/${dbFileName}"
 
   case "${dbFileName}" in
-    'container1')
+    'home-paths')
+      echo -n '' > "${dest}"
+      find_out 'd' '0' "${dest}" '/home/<user>/documents'
+      find_out 'd' '0' "${dest}" '/home/<user>/bin'
+      find_out 'd' '0' "${dest}" '/home/<user>/share'
+      find_out 'd' '0' "${dest}" '/home/<user>/pictures'
+      find_out 'd' '0' "${dest}" '/home/<user>/archived_data'
+      ;;
+      
+    'mount-drive-1-paths')
       if mountpoint '/mnt/usb2' >/dev/null; then
         echo -n '' > "${dest}"
         find_out 'd' '1' "${dest}" '/mnt/usb2/general'
@@ -110,22 +119,13 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
       fi
       ;;
 
-    'container2')
+    'mount-drive-2-paths')
       if mountpoint '/mnt/usb2' >/dev/null; then
         echo -n '' > "${dest}"
         find_out 'd' '5' "${dest}" '/mnt/usb3/components/main'
         find_out 'd' '0' "${dest}" '/mnt/usb3/global'
         find_out 'd' '0' "${dest}" '/mnt/usb3/global/resources'
       fi
-      ;;
-
-    'home-data')
-      echo -n '' > "${dest}"
-      find_out 'd' '0' "${dest}" '/home/<user>/documents'
-      find_out 'd' '0' "${dest}" '/home/<user>/bin'
-      find_out 'd' '0' "${dest}" '/home/<user>/share'
-      find_out 'd' '0' "${dest}" '/home/<user>/pictures'
-      find_out 'd' '0' "${dest}" '/home/<user>/archived_data'
       ;;
   esac
 done
