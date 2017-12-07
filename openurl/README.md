@@ -9,7 +9,7 @@ Four argument methods are allowed:
 
 2. **Multiple aliases** *(first N arguments)* with one or more optional search queries *(all arguments after the last matching alias). Requires switch `-a`.*
 
-3. **A search query** when the first argument does not match any alias *(configurable)*. *The URL used is defined in section Configurations of [openurl](openurl).*
+3. **A search query** when the first argument does not match any alias *(configurable)*. *The default search URL is defined in section Configurations of [openurl](openurl).*
 
 4. **URLs** to be opened directly when one or more arguments begin with "http[s]://", "ftp://" or "file://" or end with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(configurable)*.
 
@@ -21,25 +21,25 @@ Aliases and URLs are defined in [url-aliases](url-aliases) and configurations ar
 
 Search ...
 
-for information on ancient egypt with alias "wiki" (aliasing the URL for Wikipedia).
+for information on ancient egypt with alias "wiki."
 
 ```bash
 openurl wiki ancient egypt
 ```
 
-directions from Phoenix, AZ to Seattle, WA with alias "dir" (aliasing a maps URL).
+directions from Phoenix, AZ to Seattle, WA with alias "dir."
 
 ```bash
 openurl dir phoenix, az %% seattle, wa
 ```
 
-for outdoor gear stores in Burlington, VT with alias "stores-all" (aliasing multiple store search URLs).
+for outdoor gear stores in Burlington, VT with alias "stores-all."
 
 ```bash
 openurl stores-all outdoor gear %% burlington, vt
 ```
 
-abbreviations for the word *exponent* with alias "abbr" (aliasing an abbreviations search URL) and open in GUI browser 3.
+abbreviations for the word *exponent* with alias "abbr" and open in GUI browser 3.
 
 ```bash
 openurl -3 abbr exponent
@@ -47,7 +47,7 @@ openurl -3 abbr exponent
 
 ### 2. Multiple aliases
 
-Search for home goods with aliases "amazon," "ebay" and "jet" (respectively aliasing the URLs for Amazon, eBay and Jet).
+Search for home goods with aliases "amazon," "ebay" and "jet."
 
 ```bash
 openurl -a amazon ebay jet home goods
