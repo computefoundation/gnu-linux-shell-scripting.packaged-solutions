@@ -1,9 +1,9 @@
 
 # Openurl
 
-Open one or more URLs by alias or search query or directly in a web browser.
+Open one or more URLs in a web browser by alias or directly.
 
-Four argument methods are allowed:
+Openurl allows four argument types for opening one or more URLs:
 
 1. **An alias** *(first argument)* with one or more optional search queries *(remaining arguments)*.
 
@@ -13,7 +13,7 @@ Four argument methods are allowed:
 
 4. **URLs** to be opened directly when one or more arguments begin with http[s]://, ftp://, file:// or www. or end with the top level domain .com, .org, .edu, .gov, .uk or .net *(configurable)*.
 
-Aliases and URLs are defined in [url-aliases](url-aliases) and configurations are defined in [openurl](openurl).
+Aliases are defined in [url-aliases](url-aliases) and configurations are defined in [openurl](openurl).
 
 ## Examples
 
@@ -47,7 +47,7 @@ openurl -3 abbr exponent
 
 ### 2. Multiple aliases
 
-Search for home goods with aliases "amazon," "ebay" and "jet."
+Search "home goods" with aliases "amazon," "ebay" and "jet."
 
 ```bash
 openurl -a amazon ebay jet home goods
@@ -73,7 +73,7 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 
 ## Features
 
-* Use up to 9 GUI and 7 terminal browsers/brower commands.
+* Use up to 9 GUI and 7 terminal browser commands.
 * Specify a configuration option (e.g. open in GUI browser 3) per alias or URL (see [url-aliases](url-aliases) for more information).
 * Dump each URL's output to a terminal window.
 * Output the parsed URLs to the clipboard.

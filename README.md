@@ -7,5 +7,5 @@ Locate a file or directory from a database.
 
 ## [Openurl](openurl)
 
-Open one or more URLs by alias or search query or directly in a web browser.
+Open one or more URLs in a web browser by alias or directly.
 
