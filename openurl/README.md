@@ -11,7 +11,7 @@ Four argument methods are allowed:
 
 3. **A search query** when the first argument does not match any alias *(configurable)*. *The default search URL is defined in section Configurations of [openurl](openurl).*
 
-4. **URLs** to be opened directly when one or more arguments begin with "http[s]://", "ftp://" or "file://" or end with the top level domain ".com", ".org", ".edu", ".gov", ".uk" or ".net" *(configurable)*.
+4. **URLs** to be opened directly when one or more arguments begin with http[s]://, ftp://, file:// or www. or end with the top level domain .com, .org, .edu, .gov, .uk or .net *(configurable)*.
 
 Aliases and URLs are defined in [url-aliases](url-aliases) and configurations are defined in [openurl](openurl).
 

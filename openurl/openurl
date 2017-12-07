@@ -3,12 +3,12 @@
 # See https://github.com/linux-shell-base/packaged-utilities/tree/master/openurl
 # 
 # Dependencies:
-#   URI::Escape Perl module (for search-placeholder-url-parser.pl; install with
-#     command "cpan URI::Escape").
+#   Perl module URI::Escape (To install it, run "cpan URI::Escape").
 # 
-#   xterm (the terminal used for opening terminal windows; for quick and easy
-#     start up, simply download it. If another terminal emulator is preferred,
-#     please adjust the command in the TERMINAL function under CONFIGURATIONS).
+#   xterm (The terminal emulator used for opening terminal windows; for quick
+#     and easy start up, simply download it. If another terminal emulator is
+#     preferred, please adjust the command in the TERMINAL function under
+#     CONFIGURATIONS).
 # 
 
 readonly HERE="$(dirname "${0}")"
@@ -465,19 +465,31 @@ finalizeConfigsAndExeBrowser() {
 #   Open all URL arguments and exit if any are.
 # ===================================================
 
-rgxTopLvlDomains="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
-rgxTopLvlDomains="${rgxTopLvlDomains//'.'/'\.'}"
-rgx='((http[s]?|ftp|file):\/\/)\S+'            # prefix matches
-rgx+='|'                                       # or
-rgx+="\S+(${rgxTopLvlDomains// /|})(?=\s)"     # suffix matches
-URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "while(m/(${rgx})/g) { print \
-    \"'\$1' \"; }"))
+topLevlDomnsRegx="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
+topLevlDomnsRegx="${topLevlDomnsRegx//'.'/'\.'}"
+
+regx='('                               # begin prefix matching
+regx+='www\.|'                         # match "www." as a valid prefix
+regx+='(http[s]?|ftp|file):\/\/'       # match schemes
+regx+=')'                              # end prefix matching
+regx+='\S+'           # must be followed by any one or more non-space characters
+regx+='|'                              # or
+regx+='\S+'           # must be preceded by any one or more non-space characters
+regx+='('                              # begin suffix matching
+regx+="${topLevlDomnsRegx// /|}"       # match top level domains
+regx+=')'                              # end suffix matching
+regx+='\S*'                         # include any following non-space characters
+
+URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "
+  while (m/(${regx})/g) { print \"'\$1' \"; }
+"))
 
 if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
   if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
     echo -e 'openurl: option -c not allowed when opening URLs directly' 1>&2
     exit 1
   fi
+
   finalizeConfigsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
       "${DUMP_PG_FWD}" "${URLS_FOR_DIRECT_OPEN[@]}"
   exit
