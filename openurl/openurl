@@ -3,7 +3,7 @@
 # See https://github.com/linux-shell-base/packaged-utilities/tree/master/openurl
 # 
 # Dependencies:
-#   Perl module URI::Escape (To install it, run "cpan URI::Escape").
+#   Perl module URI::Escape (Run "cpan URI::Escape" to install).
 # 
 #   xterm (The terminal emulator used for opening terminal windows; for quick
 #     and easy start up, simply download it. If another terminal emulator is
@@ -20,7 +20,7 @@ readonly URL_ALIASES_FILES_DIR="${HERE}"
 
 # URL aliases files
 readonly URL_ALIASES_FILES=(
-  'url-aliases'
+  'aliases'
 )
 
 # GUI and terminal web browser commands

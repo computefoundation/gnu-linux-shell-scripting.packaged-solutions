@@ -13,7 +13,7 @@ Openurl allows four argument types for opening one or more URLs:
 
 4. **URLs** to be opened directly when one or more arguments begin with http[s]://, ftp://, file:// or www. or end with the top level domain .com, .org, .edu, .gov, .uk or .net *(configurable)*.
 
-Aliases are defined in [url-aliases](url-aliases) and configurations are defined in [openurl](openurl).
+Aliases are defined in [aliases](aliases) and configurations are defined in [openurl](openurl).
 
 ## Examples
 
@@ -53,7 +53,7 @@ Search "home goods" with aliases "amazon," "ebay" and "jet."
 openurl -a amazon ebay jet home goods
 ```
 
-*Note: These aliases are predefined in [url-aliases](url-aliases) and can be used right away. Please note that the respective browser defined in section Configurations of [openurl](openurl) must be installed.*
+*Note: These aliases are predefined in [aliases](aliases) and can be used right away. Please note that the respective browser defined in section Configurations of [openurl](openurl) must be installed.*
 
 ### 3. Search query
 
@@ -74,7 +74,7 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 ## Features
 
 * Use up to 9 GUI and 7 terminal browser commands.
-* Specify a configuration option (e.g. open in GUI browser 3) per alias or URL (see [url-aliases](url-aliases) for more information).
+* Specify a configuration option (e.g. open in GUI browser 3) per alias or URL (see [aliases](aliases) for more information).
 * Dump each URL's output to a terminal window.
 * Output the parsed URLs to the clipboard.
 
