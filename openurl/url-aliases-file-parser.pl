@@ -1,43 +1,42 @@
 #!/usr/bin/env perl
 # 
 # This is the URL aliases file parser for openurl. It searches for the given
-# alias(es) in the specified URL aliases files and returns the URLs for the
-# found aliases and any configuration options for both.
+# alias in the specified URL aliases file and returns its/their URL(s) with any
+# configuration options for both specified in the URL aliases file. It accepts
+# multiple URL aliases and URL aliases files.
 # 
 # Usage:
 #   url-aliases-file-parser.pl <URL aliases files directory> <URL aliases files>
-#           <aliases to match>
+#           <aliases...>
 # 
-#   URL aliases files: delimited by a vertical bar ("|")
+#   <URL aliases files>: delimited by a vertical bar ("|")
 # 
-# Return:
-#   Returns an empty string if none of the aliases are found. Returns either the
-#   final formatted string or an error in one of the url aliases files
-#   otherwise.
+# Returns:
+#   Returns an empty string if no aliases are found. Returns either the final
+#   formatted string or a URL aliases file format error otherwise.
 # 
-#   Format string for found alias(es) (spaces and newlines added just for
-#   clarity):
+#   Format (spaces and newlines added for clarity):
 #     [alias1_opt1[<>alias1_opt2]<$>]URL1[<>opt1[<>opt2]]
 #     [  <|>URL2[<>opt1[<>opt2]]  [<|>URL3[<>opt1[<>opt2]]  ...]  ]
 #     [<&>
 #     (alias 2; everything above the previous line)
 #     ...]
 # 
-#     Example (newlines added just for clarity):
-#       browser=term2<>dump+12<$>
-#       https://en.wikipedia.org/w/index.php?search={search/+}
-#       <|>https://www.washingtonpost.com/newssearch/?query={search/%20}<>dump+
-#       20<|>https://www.wikidata.org/wiki/Wikidata:Main_Page<>broswer=gui1
-#       <&>
-#       browser=gui4<$>
-#       http://www.thefreedictionary.com/{search\+}
-#       <&>
-#       https://www.codecademy.com/articles/glossary-html
-#       <|>http://www.simplehtmlguide.com/cheatsheet.php
+#   Example (newlines added for clarity):
+#     browser=term2<>dump+12<$>
+#     https://en.wikipedia.org/w/index.php?search={search/+}
+#     <|>https://www.washingtonpost.com/newssearch/?query={search/%20}<>dump+
+#     20<|>https://www.wikidata.org/wiki/Wikidata:Main_Page<>broswer=gui1
+#     <&>
+#     browser=gui4<$>
+#     http://www.thefreedictionary.com/{search\+}
+#     <&>
+#     https://www.codecademy.com/articles/glossary-html
+#     <|>http://www.simplehtmlguide.com/cheatsheet.php
 # 
-# Note:
-#   At least one URL will always be returned for an alias as one is required for
-#   one in a URL aliases file.
+# Notes:
+#   At least one URL will always be returned for an alias as each alias requires
+#   one (a format error will be printed otherwise).
 # 
 
 use strict;
@@ -45,7 +44,7 @@ use warnings;
 
 # ======= CONFIGURATIONS ==============
 
-# Maximum number of URLs allowed per alias.
+# Maximum number of URLs allowed per alias
 my $MAX_URLS_PER_ALIAS = 40;
 
 # ======= ! CONFIGURATIONS ==============
