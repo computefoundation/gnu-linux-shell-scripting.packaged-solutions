@@ -84,11 +84,9 @@ readonly DUMP_LESS_OPTS='-IFRXMc'
 
 # ======= ! CONFIGURATIONS ==============
 
-readonly FILE_NAME="$(basename "${BASH_SOURCE[0]//.sh}")"
-
 printHelpMessage() {
   if [ "${1}" = 'full' ]; then
-    echo -e "${FILE_NAME} - Utility to make using the web easier.\n"
+    echo -e "openurl - Utility to make using the web easier.\n"
   fi
 
   echo -ne "\
@@ -227,10 +225,11 @@ BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
 # ============================================
 
 OPTS="$(getopt -a -o 1,2,3,4,5,6,7,8,9,d::,s,a,c,l,h --long g1,g2,g3,g4,g5,g6 \
-    --long g7,g8,g9,t1,t2,t3,t4,t5,t6,t7,list,help -n "${FILE_NAME}" -- \
+    --long g7,g8,g9,t1,t2,t3,t4,t5,t6,t7,list,help -n 'openurl' -- \
     "${@}")"
 [ "$?" -ne 0 ] && exit 1
 eval set -- "${OPTS}" 
+
 while true; do
   case "${1}" in
     --g?|-1|-2|-3|-4|-5|-6|-7|-8|-9)
