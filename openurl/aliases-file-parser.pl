@@ -6,7 +6,7 @@
 # multiple URL aliases and URL aliases files.
 # 
 # Usage:
-#   url-aliases-file-parser.pl <URL aliases files directory> <URL aliases files>
+#   aliases-file-parser.pl <URL aliases files directory> <URL aliases files>
 #           <aliases...>
 # 
 #   <URL aliases files>: delimited by a vertical bar ("|")
@@ -233,7 +233,7 @@ for my $argUrlAlias (@ARG_URL_ALIASES) {
               print "error:\n  $urlAliasesFileName:\n  line $aliasesLineNo:",
                   " too many URLs for\n  alias \"$argUrlAlias\": $urlsCnt",
                   " (max:\n  $MAX_URLS_PER_ALIAS; value can be changed in\n ",
-                  " url-aliases-file-parser.pl)\n";
+                  " aliases-file-parser.pl)\n";
               exit 1;
             }
 

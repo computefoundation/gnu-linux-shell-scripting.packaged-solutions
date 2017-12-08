@@ -515,22 +515,22 @@ fi
 
 if [ -z "${OPT_OVERRIDE_ALIAS_MATCHING}" ]; then
   if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
-    urlAliasesFileParserArgs="${@}"
+    aliasesFileParserArgs="${@}"
   else
-    urlAliasesFileParserArgs="${1}"
+    aliasesFileParserArgs="${1}"
   fi
 
-  urlAliasesFileParserOut="$("${HERE}/url-aliases-file-parser.pl" \
+  aliasesFileParserOut="$("${HERE}/aliases-file-parser.pl" \
       "${URL_ALIASES_FILES_DIR}" "${URL_ALIASES_FILES_STR}" \
-      ${urlAliasesFileParserArgs})"
+      ${aliasesFileParserArgs})"
 fi
 
-if [ -n "${urlAliasesFileParserOut}" ]; then
-  if [[ "${urlAliasesFileParserOut}" = 'error:'* ]]; then
-    echo "error in URL aliases file ${urlAliasesFileParserOut#'error:'}" 1>&2
+if [ -n "${aliasesFileParserOut}" ]; then
+  if [[ "${aliasesFileParserOut}" = 'error:'* ]]; then
+    echo "error in URL aliases file ${aliasesFileParserOut#'error:'}" 1>&2
     exit 1
-  elif [[ "${urlAliasesFileParserOut}" = 'error_:'* ]]; then
-    echo "error in arguments: ${urlAliasesFileParserOut#'error_:'}" 1>&2
+  elif [[ "${aliasesFileParserOut}" = 'error_:'* ]]; then
+    echo "error in arguments: ${aliasesFileParserOut#'error_:'}" 1>&2
     exit 1
   fi
 
@@ -541,7 +541,7 @@ if [ -n "${urlAliasesFileParserOut}" ]; then
   declare -gA BROWSER_URL_HASHES
   declare -gA BROWSER_URL_DUMP_HASHES
 
-  aliases_aliasOpts_urls_urlsOpts=(${urlAliasesFileParserOut//'<&>'/ })
+  aliases_aliasOpts_urls_urlsOpts=(${aliasesFileParserOut//'<&>'/ })
 
   numAliasesMtchd="${#aliases_aliasOpts_urls_urlsOpts[@]}"
   urlSearchPlaceholderParserArgs="${@: $((numAliasesMtchd + 1))}"
