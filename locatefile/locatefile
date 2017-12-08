@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 
-# Locate a file or directory in a database.
+# Locate a file or directory from a database.
 # 
 
 readonly HERE="$(dirname "${0}")"
@@ -14,45 +14,45 @@ Usage:
   locatefile [options] <file or directory>
 
 Options:
-  -o <FIND_OCCURRENCE>
-        find occurrence of file
-  -d    locate a directory instead of a file
-  -h    show help message
+  -o <return occurrence>    return the specified occurrence
+  -d           return a directory instead of a file
+  -h           show help message
 "
 }
 
 while getopts :o:dh OPT; do
   case "${OPT}" in
-    o)
-      if [[ ! "${OPTARG}" =~ ^[0-9]+$ ]]; then
-        echo "locatefile: invalid value \"${OPTARG}\" for option -o" 1>&2
-        exit 1
-      else
-        if [ -z "${OPTARG}" ]; then
-          echo 'locatefile: missing argument for option -o' 1>&2
-          exit 1
-        fi
-        OPT_FIND_OCCUR_NO="${OPTARG}"
-      fi
-      ;;
-    d) OPT_FIND_DIRECTORIES=true;;
-    h) printHelpMessage; exit;;
+    o) if [[ ! "${OPTARG}" =~ ^[0-9]+$ ]]; then
+         echo "locatefile: invalid value \"${OPTARG}\" for option -o" 1>&2
+         exit 1
+       else
+         if [ -z "${OPTARG}" ]; then
+           echo 'locatefile: missing argument for option -o' 1>&2
+           exit 1
+         fi
+         OPT_RET_OCCUR_NO="${OPTARG}"
+       fi
+       ;;
+    d) OPT_RET_DIRS='true'
+       ;;
+    h) printHelpMessage
+       exit
+       ;;
     \?)
-      echo "locatefile: option \"${OPTARG}\" is unknown" 1>&2
-      exit 1
-      ;;
+       echo "locatefile: option \"${OPTARG}\" is unknown" 1>&2
+       exit 1
+       ;;
   esac
 done
 shift $((OPTIND - 1))
 
-
 if [ $# -eq 0 ]; then
-  echo 'locatefile: no file name specified' 1>&2
+  echo 'locatefile: no file or directory name specified' 1>&2
   exit 1
 fi
 
 # ========================================================
-#   Set up mountpoint directories
+#   Get the mounted mountpoint paths defined by MNTPNT_PATHS
 # ========================================================
 
 for mntpntPath in "${MNTPNT_PATHS[@]}"; do
@@ -64,10 +64,10 @@ done
 MNTPNT_PATHS=("${mntpntPathsTmp[@]}")
 
 # ========================================================
-#   Start the search
+#   Search the database
 # ========================================================
 
-if [ "${OPT_FIND_DIRECTORIES}" = 'true' ]; then
+if [ "${OPT_RET_DIRS}" = 'true' ]; then
   CURR_DB_DIR="${DIR_PATHS_DB_DIR}"
 else
   CURR_DB_DIR="${FILE_PATHS_DB_DIR}"
@@ -86,25 +86,32 @@ do
       for mntpntPath in "${MNTPNT_PATHS[@]}"; do
         mntpntPathMtchPrsd="${mtch//'{MNTPNT_PATH}'/"${mntpntPath}"}"
 
-        if [[ ("${OPT_FIND_DIRECTORIES}" = 'true' && -d \
-            "${mntpntPathMtchPrsd}") || -f "${mntpntPathMtchPrsd}" ]]; then
+        if [[ ("${OPT_RET_DIRS}" = 'true' && -d "${mntpntPathMtchPrsd}") || \
+            -f "${mntpntPathMtchPrsd}" ]]
+        then
           FOUND_MATCHES+=("${mntpntPathMtchPrsd}")
           ((CURR_OCCUR_NO++))
           
-          [[ "${OPT_FIND_OCCUR_NO}" -eq "${CURR_OCCUR_NO}" ]] && break 3
+          if [ -n "${OPT_RET_OCCUR_NO}" ] && [ "${OPT_RET_OCCUR_NO}" -eq \
+              "${CURR_OCCUR_NO}" ]; then
+            break 3
+          fi
         fi
       done
     else
       FOUND_MATCHES+=("${mtch}")
       ((CURR_OCCUR_NO++))
 
-      [[ "${OPT_FIND_OCCUR_NO}" -eq "${CURR_OCCUR_NO}" ]] && break 2
+      if [ -n "${OPT_RET_OCCUR_NO}" ] && [ "${OPT_RET_OCCUR_NO}" -eq \
+          "${CURR_OCCUR_NO}" ]; then
+        break 2
+      fi
     fi
   done
 done
 
 if [ "${#FOUND_MATCHES[@]}" -gt 0 ]; then
-  if [ -n "${OPT_FIND_OCCUR_NO}" ]; then
+  if [ -n "${OPT_RET_OCCUR_NO}" ]; then
     echo "${FOUND_MATCHES[$((${#FOUND_MATCHES[@]} - 1))]}"
   else
     echo "${FOUND_MATCHES[0]}"
