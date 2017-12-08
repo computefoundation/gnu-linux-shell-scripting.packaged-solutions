@@ -9,12 +9,19 @@
 #       "earth's biosphere"
 #   # output: https://duckduckgo.com/?q=earth%27s+biosphere&iax=1&ia=images
 # 
-# A URL may contain multiple {search\D} placeholders to allow multiple search
-# queries (e.g. start and end locations for travel directions) or to copy them
-# within itself. The search query used for a placeholder corresponds to its
-# position in the URL. If a search query for a placeholder does not exist, the
-# placeholder will be replaced with an empty string.
+# Usage:
+#   search-placeholder-url-parser.pl <URLs> <search queries...>
 # 
+#   <URLs>: delimited by "<|>"
+#   <search queries...>: delimited by $SEARCH_QUERY_DELIM; can be passed in any
+#       number of arguments as all arguments after the first are joined.
+# 
+# A URL may contain multiple {search\D} placeholders to use multiple search
+# queries (e.g. start and end locations for travel directions) or to copy them
+# within itself. The search query used by a placeholder corresponds to the
+# placeholder's position in the URL. If one's search query does not exist, it
+# will be replaced with an empty string.
+
 # Placeholder options can be used to change and modify the search query used
 # by a placeholder. They are specified with a bang ("!") and placed right
 # before the delimiter specifier. They are the following:
@@ -28,9 +35,9 @@
 #   !R:      Reverse all words in the search query
 #   !M:      Remove all commas in the search query
 # 
-# Unsafe characters in a URL will be encoded. A character can be escaped with
-# two backslashes to keep it from being encoded. This also applies for the
-# delimiter in the search placeholder.
+# Unsafe URL characters in a URL will be encoded. An unsafe URL character can
+# be escaped with two backslashes to keep it from being encoded. This also
+# applies to the delimiter in the search placeholder.
 # 
 # Multiple URLs:
 #   Multiple URLs can be passed in at once. They must be passed in the first
@@ -39,7 +46,7 @@
 #   search query to another with the !<P> option). The parsed URLs will be
 #   returned as a single string in the same format (delimited by "<|>").
 # 
-# "<>" delimiters:
+# URL data delimiters:
 #   This script was created mainly as a utility for other scripts. For this
 #   reason, it takes into account "<>" delimiters in between the URL "<|>"
 #   delimiters which can be used to pass important data with the URLs.
@@ -47,12 +54,6 @@
 #   the string before it is considered the URL. The return string will be in the
 #   same format (i.e. "url1[<>data1<>data2...]<|>url2[<>data1<>data2...]<|>
 #   url3...").
-# 
-# Arguments:
-#   1.   One or more URLs delimited by "<|>"
-#   2-?. One or more search queries delimited by $SEARCH_QUERY_DELIM; they can
-#        be passed in any number of arguments as all arguments after the first
-#        are joined.
 # 
 
 use strict;
@@ -112,14 +113,12 @@ my @SEARCH_QUERIES = split(/\s*$SEARCH_QUERY_DELIM\s*/, $ARG_SEARCH_QUERIES);
 sub escapeUrlSection {
   my $urlSect = ${(shift)};
   my $uriEscpRngs = ${(shift)};
-
   my @urlEscpSects = split(/\\\\/, $urlSect);
   my $retStr = uri_escape($urlEscpSects[0], $uriEscpRngs);
 
   if (scalar @urlEscpSects > 1) {
     for my $indx (1..$#urlEscpSects) {
       my $urlEscpSect = $urlEscpSects[$indx];
-
       my $frstChar = substr($urlEscpSect, 0, 1);
       my $remChars = substr($urlEscpSect, 1, length($urlEscpSect));
 
