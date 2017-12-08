@@ -31,12 +31,12 @@ exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 # ============================================
 
 wget -i - <<EOF
-  ${BASE_URL}/search-placeholder-url-parser.pl
-  ${BASE_URL}/url-aliases
-  ${BASE_URL}/url-aliases-file-parser.pl
+  ${BASE_URL}/aliases
+  ${BASE_URL}/aliases-file-parser.pl
   ${BASE_URL}/openurl
+  ${BASE_URL}/search-placeholder-url-parser.pl
 EOF
-chmod +x search-placeholder-url-parser.pl url-aliases-file-parser.pl openurl
+chmod +x aliases-file-parser.pl openurl search-placeholder-url-parser.pl
 
 
 exec >&3 2>&4 # redirect all output back to /dev/tty
