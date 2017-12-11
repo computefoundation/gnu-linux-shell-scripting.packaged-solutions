@@ -12,6 +12,7 @@ readonly DOWNLOAD_DIR="${HOME}"
 
 readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/master'
 readonly BASE_URL="${MASTER_URL}/openurl"
+
 readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/openurl"
 
 if [ ! -d "${DOWNLOAD_DIR}/shell--packaged-utilities" ]; then
@@ -30,12 +31,8 @@ exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 #   Download files from openurl/
 # ============================================
 
-wget -i - <<EOF
-  ${BASE_URL}/aliases
-  ${BASE_URL}/aliases-file-parser.pl
-  ${BASE_URL}/openurl
-  ${BASE_URL}/search-placeholder-url-parser.pl
-EOF
+curl -O "${BASE_URL}/{aliases,aliases-file-parser.pl,openurl,"\
+'search-placeholder-url-parser.pl}'
 chmod +x aliases-file-parser.pl openurl search-placeholder-url-parser.pl
 
 

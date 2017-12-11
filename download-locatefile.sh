@@ -12,6 +12,7 @@ readonly DOWNLOAD_DIR="${HOME}"
 
 readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/master'
 readonly BASE_URL="${MASTER_URL}/locatefile"
+
 readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/locatefile"
 
 if [ ! -d "${DOWNLOAD_DIR}/shell--packaged-utilities" ]; then
@@ -30,28 +31,20 @@ exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 #   Download files from locatefile/
 # ============================================
 
-wget -i - <<EOF
-  ${BASE_URL}/CONFIGURATIONS.bash
-  ${BASE_URL}/locatefile
-  ${BASE_URL}/updatedb
-EOF
+curl -O "${BASE_URL}/{CONFIGURATIONS.bash,locatefile,updatedb}"
 chmod +x locatefile updatedb
 
 path='/dirsdb'
 mkdir "${BASE_DIR}${path}"
-wget -P "${BASE_DIR}${path}" -i - <<EOF
-  ${BASE_URL}${path}/mount-drive-1-paths
-  ${BASE_URL}${path}/mount-drive-2-paths
-  ${BASE_URL}${path}/home-paths
-EOF
+cd "${BASE_DIR}${path}"
+curl -O "${BASE_URL}${path}/{mount-drive-1-paths,mount-drive-2-paths,"\
+'home-paths}'
 
 path='/filesdb'
 mkdir "${BASE_DIR}${path}"
-wget -P "${BASE_DIR}${path}" -i - <<EOF
-  ${BASE_URL}${path}/mount-drive-1-paths
-  ${BASE_URL}${path}/mount-drive-2-paths
-  ${BASE_URL}${path}/home-paths
-EOF
+cd "${BASE_DIR}${path}"
+curl -O "${BASE_URL}${path}/{mount-drive-1-paths,mount-drive-2-paths,"\
+'home-paths}'
 
 
 exec >&3 2>&4 # redirect all output back to /dev/tty
