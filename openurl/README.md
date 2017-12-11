@@ -3,15 +3,15 @@
 
 Open one or more URLs in a web browser by alias or directly.
 
-Openurl allows four argument types for opening one or more URLs:
+Openurl allows four types of arguments:
 
-1. **An alias** *(first argument)* with one or more optional search queries *(remaining arguments)*.
+1. **An alias** (first argument) with one or more optional search queries (remaining arguments).
 
-2. **Multiple aliases** *(first N arguments)* with one or more optional search queries *(all arguments after the last matching alias). Requires switch `-a`.*
+2. **Multiple aliases** (first N arguments) with one or more optional search queries (all arguments after the last matching alias). *Requires switch `-a`.*
 
-3. **A search query** when the first argument does not match any alias *(configurable)*. *The default search URL is defined in section Configurations of [openurl](openurl).*
+3. **A search query** (when the first argument does not match any alias [configurable]). *The default search URL is defined in section Configurations of [openurl](openurl).*
 
-4. **URLs** to be opened directly when one or more arguments begin with http[s]://, ftp://, file:// or www. or end with the top level domain .com, .org, .edu, .gov, .uk or .net *(configurable)*.
+4. **URLs** (when one or more arguments begin with http[s]://, ftp://, file:// or www. or end with the top level domain .com, .org, .edu, .gov, .uk or .net [configurable]).
 
 Aliases are defined in [aliases](aliases) and configurations are defined in [openurl](openurl).
 
@@ -21,33 +21,27 @@ Aliases are defined in [aliases](aliases) and configurations are defined in [ope
 
 Search ...
 
-for information on ancient egypt with alias "wiki."
+for information on ancient egypt with alias "wiki" (aliasing the URL for wikipedia).
 
 ```bash
 openurl wiki ancient egypt
 ```
 
-directions from Phoenix, AZ to Seattle, WA with alias "dir."
+directions from Phoenix, AZ to Seattle, WA with alias "dir" (aliasing a maps URL).
 
 ```bash
 openurl dir phoenix, az %% seattle, wa
 ```
 
-for outdoor gear stores in Burlington, VT with alias "stores-all."
+for outdoor gear stores in Burlington, VT with alias "stores-all" (aliasing multiple store search URLs) and open in GUI browser 3.
 
 ```bash
-openurl stores-all outdoor gear %% burlington, vt
-```
-
-abbreviations for the word *exponent* with alias "abbr" and open in GUI browser 3.
-
-```bash
-openurl -3 abbr exponent
+openurl -3 stores-all outdoor gear %% burlington, vt
 ```
 
 ### 2. Multiple aliases
 
-Search "home goods" with aliases "amazon," "ebay" and "jet."
+Search "home goods" with aliases "amazon," "ebay" and "jet" (aliasing the URLs for Amazon, eBay and Jet, respectively).
 
 ```bash
 openurl -a amazon ebay jet home goods
@@ -83,6 +77,6 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 Please retrieve *download-openurl.sh* with the following command and run it to download:
 
 ```bash
-url='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/download_scripts'\
-'/download-openurl.sh' && wget "${url}" && chmod +x download-openurl.sh
+curl -O 'https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/'\
+'download_scripts/download-openurl.sh' && chmod +x download-openurl.sh
 ```
