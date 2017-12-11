@@ -9,7 +9,7 @@ Locatefile uses a file paths database and a directory paths database. Both datab
 
 The file paths database is searched by default and the directory paths database is searched via switch `-d`.
 
-*The precreated databases **filesdb** and **dirsdb** are example databases. The following examples are based on them.*
+*The precreated databases **filesdb** and **dirsdb** are example databases. The following examples are based on them and can be tested right away.*
 
 ## Examples
 
@@ -57,6 +57,6 @@ locatefile -d tur # returns /home/<user>/pictures
 Please retrieve *download-locatefile.sh* with the following command and run it to download:
 
 ```bash
-url='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/download_scripts'\
-'/download-locatefile.sh' && wget "${url}" && chmod +x download-locatefile.sh
+curl -O 'https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/'\
+'download_scripts/download-locatefile.sh' && chmod +x download-locatefile.sh
 ```
