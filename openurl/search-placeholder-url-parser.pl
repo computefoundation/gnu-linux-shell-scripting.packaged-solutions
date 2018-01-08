@@ -1,7 +1,11 @@
 #!/usr/bin/env perl
 # 
-# Replace one or more "{search\D}" placeholders in one or more URLs with a
-# search query, where D is the URL's space delimiter.
+# File:
+#   search-placeholder-url-parser.pl
+# 
+# Description:
+#   Replace one or more "{search\D}" placeholders in one or more URLs with a
+#   search query, where D is the URL's space delimiter.
 # 
 # Example:
 #   search-placeholder-url-parser.pl \

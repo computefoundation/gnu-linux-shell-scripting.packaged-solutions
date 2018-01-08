@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # 
-# Locate a file or directory from a database.
+# File:
+#   locatefile
+# 
+# Description:
+#   Locate a file or directory from a database.
 # 
 
 readonly HERE="$(dirname "${0}")"

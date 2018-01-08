@@ -1,9 +1,13 @@
 #!/usr/bin/env perl
 # 
-# This is the URL aliases file parser for openurl. It searches for the given
-# alias in the specified URL aliases file and returns its/their URL(s) with any
-# configuration options for both specified in the URL aliases file. It accepts
-# multiple URL aliases and URL aliases files.
+# File:
+#   aliases-file-parser.pl
+# 
+# Description:
+#   This is the URL aliases file parser for openurl. It searches for the given
+#   alias in the specified URL aliases file and returns its/their URL(s) with
+#   any configuration options for both specified in the URL aliases file. It
+#   accepts multiple URL aliases and URL aliases files.
 # 
 # Usage:
 #   aliases-file-parser.pl <URL aliases files directory> <URL aliases files>

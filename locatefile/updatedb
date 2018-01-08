@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # 
-# Update the locatefile database.
+# File:
+#   updatedb
+# 
+# Description:
+#   Update the locatefile database.
 # 
 # Notes:
 #   The database file names in the case blocks under sections "File paths" and
@@ -10,7 +14,8 @@
 readonly HERE="$(dirname "${0}")"
 source "${HERE}/CONFIGURATIONS.bash"
 
-# Recursively output the given path to a database file.
+# find_out:
+#   Recursively output the given path to a database file.
 # Arguments:
 #   1. Type: "f" for files or "d" for directories
 #   2. Max search depth

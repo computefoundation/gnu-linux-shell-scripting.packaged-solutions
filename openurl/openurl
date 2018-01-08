@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # 
-# See https://github.com/linux-shell-base/packaged-utilities/tree/master/openurl
+# File:
+#   openurl
+# 
+# Description:
+#   See https://github.com/linux-shell-base/packaged-utilities/tree/master/openurl
 # 
 # Dependencies:
 #   Perl module URI::Escape (Run "cpan URI::Escape" to install).

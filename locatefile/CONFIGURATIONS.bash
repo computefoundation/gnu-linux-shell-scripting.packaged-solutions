@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # 
-# Configurations for scripts in this directory
+# File:
+#   CONFIGURATIONS.bash
+# 
+# Description:
+#   Configurations for scripts in this directory
 # 
 # Note:
 #   Variable HERE is defined in the sourcing scripts (locatefile and updatedb)
