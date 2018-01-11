@@ -31,11 +31,11 @@ readonly URL_ALIASES_FILES=(
 # Options:
 #   1. All URLs for a browser command are opened in a single run. To open each
 #      URL for a browser command independently, prepend two colons ("::") to the
-#      browser command. (Applies only to GUI browsers).
+#      browser command. Note: This applies only to GUI browsers.
 #   2. To run a command after the browser command has run, append two semicolons
-#      (";;") to the browser command followed by the command to run. (Applies to
-#      both GUI and terminal browsers. Note: The command will run once
-#      regardless if option #1 is used).
+#      (";;") to the browser command followed by the command to run. Note: This
+#      applies to both GUI and terminal browsers. Note: The command will run
+#      once regardless if option #1 is used).
 readonly BROWSER_GUI1='/usr/bin/chromium'
 readonly BROWSER_GUI2='/usr/bin/chromium --incognito'
 readonly BROWSER_GUI3='/usr/bin/firefox -new-tab'
@@ -472,17 +472,17 @@ finalizeConfigsAndExeBrowser() {
 topLevlDomnsRegx="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
 topLevlDomnsRegx="${topLevlDomnsRegx//'.'/'\.'}"
 
-regx='('                               # begin prefix matching
+regx='('                               # begin prefix group
 regx+='www\.|'                         # match "www." as a valid prefix
 regx+='(http[s]?|ftp|file):\/\/'       # match schemes
-regx+=')'                              # end prefix matching
-regx+='\S+'           # must be followed by any one or more non-space characters
-regx+='|'                              # or
-regx+='\S+'           # must be preceded by any one or more non-space characters
-regx+='('                              # begin suffix matching
+regx+=')'                              # end prefix group
+regx+='\S+'      # ensure prefix is followed by one or more non-space characters
+regx+='|'                              # or match the following
+regx+='\S+'      # ensure suffix is preceded by one or more non-space characters
+regx+='('                              # begin suffix group
 regx+="${topLevlDomnsRegx// /|}"       # match top level domains
-regx+=')'                              # end suffix matching
-regx+='\S*'                         # include any following non-space characters
+regx+=')'                              # end suffix group
+regx+='\S*'                            # include trailing non-space characters
 
 URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "
   while (m/(${regx})/g) { print \"'\$1' \"; }
