@@ -35,11 +35,11 @@ readonly URL_ALIASES_FILES=(
 #   2. To run a command after the browser command has run, append two semicolons
 #      (";;") to the browser command followed by the command to run. Note: This
 #      applies to both GUI and terminal browsers. Note: The command will run
-#      once regardless if option #1 is used).
-readonly BROWSER_GUI1='/usr/bin/chromium'
-readonly BROWSER_GUI2='/usr/bin/chromium --incognito'
-readonly BROWSER_GUI3='/usr/bin/firefox -new-tab'
-readonly BROWSER_GUI4=''
+#      once regardless if option #1 is used.
+readonly BROWSER_GUI1='/usr/bin/firefox'
+readonly BROWSER_GUI2='/usr/bin/firefox -private-window'
+readonly BROWSER_GUI3='/usr/bin/chromium'
+readonly BROWSER_GUI4='/usr/bin/chromium --incognito'
 readonly BROWSER_GUI5=''
 readonly BROWSER_GUI6=''
 readonly BROWSER_GUI7=''
@@ -76,11 +76,10 @@ TERMINAL() {
 
 # Whether or not to open all URLs for a terminal browser in their own individual
 # terminal windows; if not, they will be opened in the same terminal window for
-# their browser. The latter works well with browsers that use buffers that can
-# be switched, such as w3m; if a browser does not support multiple buffers, it
-# may not work well. (Note: This configuration will not apply when the dump
-# option is used as all URLs will always be dumped to their own individuals
-# terminal window).
+# their browser. (The latter works well with browsers that use switchable
+# buffers, such as w3m; if a browser does not support buffers, it may not work
+# well.) Note: This configuration will not apply when the dump option is used
+# as each URL will always be dumped to its own individual terminal window).
 readonly OPEN_TERM_BRWSR_URLS_IN_INDV_WIND=false
 
 # Default options used for less when dumping a webpage
