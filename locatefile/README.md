@@ -53,9 +53,9 @@ This utility...
 
 ## Download
 
-Please retrieve *download-locatefile.sh* with the following command and run it to download:
+Run the following to download:
 
 ```bash
-curl -O 'https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/'\
-'download_scripts/download-locatefile.sh' && chmod +x download-locatefile.sh
+bash <(curl -s 'https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/'\
+'download_scripts/download-locatefile.sh')
 ```
