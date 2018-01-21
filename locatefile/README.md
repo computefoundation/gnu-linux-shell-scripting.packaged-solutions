@@ -16,17 +16,17 @@ It searches the file paths database by default and the directory paths database 
 ### 1. Locate a file
 
 ```bash
-locatefile addr # returns "/home/<user>/documents/addresses.txt"
+locatefile addr # returns "/home/user/documents/addresses.txt"
 ```
 
 ```bash
-locatefile book # returns "/home/<user>/archived_data/backup/bookmarks.html"
+locatefile book # returns "/home/user/archived_data/backup/bookmarks.html"
 ```
 
 *Use any part of the file or directory name; the first match will be returned.*
 
 ```bash
-locatefile shr # returns "/home/<user>/.bashrc"
+locatefile shr # returns "/home/user/.bashrc"
 ```
 
 *Locate a file or directory in a mounted drive (see the MNTPNT_PATHS variable in [CONFIGURATIONS.bash](CONFIGURATIONS.bash) for more information).*
@@ -39,7 +39,7 @@ locatefile stat # returns "MNTPNT_PATH/records/external/statistics.txt" (if the 
 ### 2. Locate a directory
 
 ```bash
-locatefile -d tur # returns "/home/<user>/pictures"
+locatefile -d tur # returns "/home/user/pictures"
 ```
 
 ## Set up

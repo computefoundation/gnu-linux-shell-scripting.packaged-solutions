@@ -59,15 +59,15 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
   case "${dbFileName}" in
     'home-paths')
       echo -n '' > "${dest}"
-      find_out 'f' '1' "${dest}" '/home/<user>/documents'
-      find_out 'f' '0' "${dest}" '/home/<user>/.bashrc'
-      find_out 'f' '0' "${dest}" '/home/<user>/.bash_profile'
-      find_out 'f' '0' "${dest}" '/home/<user>/.vimrc'
-      find_out 'f' '0' "${dest}" '/home/<user>/.ssh/config'
-      find_out 'f' '1' "${dest}" '/home/<user>/bin'
-      find_out 'f' '0' "${dest}" '/home/<user>/share/calendar/events.txt'
-      find_out 'f' '2' "${dest}" '/home/<user>/pictures'
-      find_out 'f' '1' "${dest}" '/home/<user>/archived_data/backup'
+      find_out 'f' '1' "${dest}" '/home/user/documents'
+      find_out 'f' '0' "${dest}" '/home/user/.bashrc'
+      find_out 'f' '0' "${dest}" '/home/user/.bash_profile'
+      find_out 'f' '0' "${dest}" '/home/user/.vimrc'
+      find_out 'f' '0' "${dest}" '/home/user/.ssh/config'
+      find_out 'f' '1' "${dest}" '/home/user/bin'
+      find_out 'f' '0' "${dest}" '/home/user/share/calendar/events.txt'
+      find_out 'f' '2' "${dest}" '/home/user/pictures'
+      find_out 'f' '1' "${dest}" '/home/user/archived_data/backup'
       ;;
 
     'mount-drive-1-paths')
@@ -107,11 +107,11 @@ for dbFileName in "${DB_FILE_NAMES[@]}"; do
   case "${dbFileName}" in
     'home-paths')
       echo -n '' > "${dest}"
-      find_out 'd' '0' "${dest}" '/home/<user>/documents'
-      find_out 'd' '0' "${dest}" '/home/<user>/bin'
-      find_out 'd' '0' "${dest}" '/home/<user>/share'
-      find_out 'd' '0' "${dest}" '/home/<user>/pictures'
-      find_out 'd' '0' "${dest}" '/home/<user>/archived_data'
+      find_out 'd' '0' "${dest}" '/home/user/documents'
+      find_out 'd' '0' "${dest}" '/home/user/bin'
+      find_out 'd' '0' "${dest}" '/home/user/share'
+      find_out 'd' '0' "${dest}" '/home/user/pictures'
+      find_out 'd' '0' "${dest}" '/home/user/archived_data'
       ;;
       
     'mount-drive-1-paths')
