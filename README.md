@@ -3,7 +3,7 @@
 
 ## [Locatefile](locatefile)
 
-Locate a file or directory from a database.
+Locate a file or directory from a file paths database.
 
 ## [Openurl](openurl)
 
