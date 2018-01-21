@@ -16,11 +16,7 @@ It searches the file paths database by default and the directory paths database 
 ### 1. Locate a file
 
 ```bash
-locatefile addr # returns "/home/user/documents/addresses.txt"
-```
-
-```bash
-locatefile book # returns "/home/user/archived_data/backup/bookmarks.html"
+locatefile my-doc # returns "/home/user/documents/my-document.txt"
 ```
 
 *Use any part of the file or directory name; the first match will be returned.*
