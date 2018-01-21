@@ -33,7 +33,7 @@ openurl wiki ancient egypt
 openurl dir phoenix, az %% seattle, wa
 ```
 
-...for outdoor gear stores in Burlington, VT with alias "businesses" (aliases business search URLs) and open in GUI browser 3.
+...for outdoor gear stores in Burlington, VT with alias "businesses" (aliases businesses search URLs) and open in GUI browser 3.
 
 ```bash
 openurl -3 businesses outdoor gear %% burlington, vt
@@ -72,9 +72,10 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 
 ## Download
 
-Run the following to download:
+Run the following command to download:
 
 ```bash
-bash <(curl -s 'https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/'\
+bash <(curl -s 'https://raw.githubusercontent.com/unixfoundation/shell.packaged-utilities/'\
 'download_scripts/download-openurl.sh')
 ```
+

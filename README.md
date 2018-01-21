@@ -1,5 +1,5 @@
 
-**Shell--packaged-utilities** is an extension of [Shell](https://github.com/unixfoundation/shell) for utilities consisting of more than one file.
+**Shell.packaged-utilities** is an extension of [Shell](https://github.com/unixfoundation/shell) for utilities consisting of more than one file.
 
 ## [Locatefile](locatefile)
 

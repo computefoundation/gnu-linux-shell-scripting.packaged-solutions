@@ -41,21 +41,22 @@ locatefile -d tur # returns "/home/user/pictures"
 ## Set up
 
 1. Adjust configurations as needed in [CONFIGURATIONS.bash](CONFIGURATIONS.bash).
-2. Define the databases file/directory output paths in [updatedb](updatedb).
+2. Define the databases file/directory paths in [updatedb](updatedb).
 3. Run [updatedb](updatedb).
 
 ## Notes
 
 This utility...
 
-* accepts regular expressions for the file/directory name.
-* does not support file names containing spaces.
+* ...accepts regular expressions for the file/directory name.
+* ...does not support file names with spaces.
 
 ## Download
 
-Run the following to download:
+Run the following command to download:
 
 ```bash
-bash <(curl -s 'https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/'\
+bash <(curl -s 'https://raw.githubusercontent.com/unixfoundation/shell.packaged-utilities/'\
 'download_scripts/download-locatefile.sh')
 ```
+
