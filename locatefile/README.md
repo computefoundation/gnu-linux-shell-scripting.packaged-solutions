@@ -5,52 +5,55 @@ Locate a file or directory from a database.
 
 ## Databases
 
-Locatefile uses a file paths database and a directory paths database. Both databases are populated with [updatedb](updatedb).
+Locatefile uses two databases consisting of file and directory paths, respectively.
 
-The file paths database is searched by default and the directory paths database is searched via switch `-d`.
+It searches the file paths database by default and the directory paths database via switch `-d`.
 
-*The precreated databases **filesdb** and **dirsdb** are example databases. The following examples are based on them and can be tested right away.*
+*The directories **filesdb** and **dirsdb** are precreated example databases. The following examples are based on them.*
 
 ## Examples
 
-### 1. Locate file
+### 1. Locate a file
 
 ```bash
-locatefile addr # returns /home/<user>/documents/addresses.txt
+locatefile addr # returns "/home/<user>/documents/addresses.txt"
 ```
 
 ```bash
-locatefile book # returns /home/<user>/archived_data/backup/bookmarks.html
+locatefile book # returns "/home/<user>/archived_data/backup/bookmarks.html"
 ```
 
-*Any part of the file or directory name can be used; the first match will be returned.*
+*Use any part of the file or directory name; the first match will be returned.*
 
 ```bash
-locatefile shr # returns /home/<user>/.bashrc
+locatefile shr # returns "/home/<user>/.bashrc"
 ```
 
-*A file or directory in a mounted drive can be located (see the MNTPNT_PATHS variable in [CONFIGURATIONS.bash](CONFIGURATIONS.bash) for more information).*
+*Locate a file or directory in a mounted drive (see the MNTPNT_PATHS variable in [CONFIGURATIONS.bash](CONFIGURATIONS.bash) for more information).*
 
 ```bash
-locatefile stat # returns {MNTPNT_PATH}/records/external/statistics.txt, where "{MNTPNT_PATH}" is the
-                # mountpoint of the mounted drive, if the drive containing the file is mounted
+locatefile stat # returns "MNTPNT_PATH/records/external/statistics.txt" (if the drive containing the
+                # file is mounted), where "MNTPNT_PATH" is the mountpoint of the mounted drive
 ```
 
-### 2. Locate directory
+### 2. Locate a directory
 
 ```bash
-locatefile -d tur # returns /home/<user>/pictures
+locatefile -d tur # returns "/home/<user>/pictures"
 ```
 
 ## Set up
 
-1. Assign the preferred constant values in [CONFIGURATIONS.bash](CONFIGURATIONS.bash).
-2. Define the preferred output paths in [updatedb](updatedb).
+1. Adjust configurations as needed in [CONFIGURATIONS.bash](CONFIGURATIONS.bash).
+2. Define the databases file/directory output paths in [updatedb](updatedb).
 3. Run [updatedb](updatedb).
 
 ## Notes
 
-* This utility does not support file names with spaces.
+This utility...
+
+* accepts regular expressions for the file/directory name.
+* does not support file names containing spaces.
 
 ## Download
 
