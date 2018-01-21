@@ -33,10 +33,10 @@ openurl wiki ancient egypt
 openurl dir phoenix, az %% seattle, wa
 ```
 
-...for outdoor gear stores in Burlington, VT with alias "stores-all" (aliases store search URLs) and open in GUI browser 3.
+...for outdoor gear stores in Burlington, VT with alias "businesses" (aliases business search URLs) and open in GUI browser 3.
 
 ```bash
-openurl -3 stores-all outdoor gear %% burlington, vt
+openurl -3 businesses outdoor gear %% burlington, vt
 ```
 
 ### 2. Multiple aliases

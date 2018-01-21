@@ -29,8 +29,8 @@
 '   openurl.
 ' 
 '     Example:
-'       openurl "stores-all" "outdoor gear"
-'         # opens all URLs aliased by "stores-all" and replaces each of their
+'       openurl "businesses" "outdoor gear"
+'         # opens all URLs aliased by "businesses" and replaces each of their
 '         # {search\D} placeholders with "outdoorDgear"
 ' 
 '   A URL may contain multiple {search\D} placeholders to use multiple search
@@ -161,21 +161,22 @@ https://jet.com/search?term={search\%20}
 '   STORE/BUSINESS LOCATORS
 ' ---------------------------------------------------
 
-'Ex.: Search for stores/businesses in any location.
-yellowpages|yp|businesses|stores
+'Ex.: Search for businesses/stores in any location with Yellowpages.com.
+yellowpages|yp
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 
-'Ex.: Search for stores/businesses in multiple cities and dump the output of
-'     each URL to a terminal window and skip ahead 18 pages. 
-yellowpages-my-cities-stores|ypmc|my-cities-stores|mcs %dump+18
+'Ex.: Search for businesses/stores in multiple cities with multiple
+'     Yellowpages.com URLs and dump the output of each to a terminal window
+'     skipping ahead 18 pages.
+yellowpages-my-cities|ypmc %dump+18
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Minneapolis,+MN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Baltimore,+MD
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Seattle,+WA
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Nashville,+TN
 
 
-'Ex.: Same as previous except dump the output of each using terminal browser 3
-'     and open the URL for Austin, TX in GUI browser 1.
+'Ex.: Same as previous except dump the output of each URL using terminal browser
+'     3 and open the URL for Austin, TX in GUI browser 1.
 yellowpages-my-cities2-stores|ypmc2s|my-cities2-stores|mc2s %dump+10 %browser=term3
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Phoenix,+AZ
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Austin,+TX %browser=gui1
@@ -183,9 +184,10 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=In
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Saint+Louis,+MO
 
 
-'Ex.: Search for stores/businesses across multiple business locator websites.
-'     (Provides examples for {search\D} placeholder options).
-businesses-all|stores-all
+'Ex.: Search for businesses/stores across multiple business/store locator
+'     websites. (This example provides examples on {search\D} placeholder
+'     options).
+businesses|stores
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
 '      Foursquare.com requires two search queries like other business locator
