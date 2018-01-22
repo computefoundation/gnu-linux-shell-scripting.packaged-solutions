@@ -4,7 +4,7 @@
 #   openurl
 # 
 # Description:
-#   See https://github.com/linux-shell-base/packaged-utilities/tree/master/openurl
+#   See https://github.com/unixfoundation/general-purpose-computing.packaged-solutions/tree/master/openurl#openurl
 # 
 # Dependencies:
 #   Perl module URI::Escape (Run "cpan URI::Escape" to install).
@@ -116,26 +116,25 @@ Usage:
     directly.
 
 Options:
-  Configurations:
-    -g<1-9>  -<1-9>    open in the GUI browser of the given
-                       number
-    -t<1-7>            open in the terminal browser of the
-                       given number
-    -d  -dump[+NUM_PAGES]    dump the output of each URL to
-                       a terminal window (using terminal
-                       browser 1 by default); optionally,
-                       jump forward the given number of
-                       pages
-  Alter usage:
-    -s            do not match the first argument with an
-                  alias and instead use all arguments as
-                  search queries with the default search URL
-    -a            match the first N arguments as aliases and
-                  use all arguments after the last matching
-                  alias as search queries
-  Output:
-    -c            copy all URLs to the X11 clipboard and do
-                  not run anything
+  Argument processing:
+    -s          do not match the first argument with an
+                alias and instead use all arguments as
+                search queries with the default search URL
+    -a          match the first N arguments as aliases and
+                use all arguments after the last matching
+                alias as search queries
+  Output processing:
+    -g<1-9>  -<1-9>
+                open in the GUI browser of the given number
+    -t<1-7>     open in the terminal browser of the given
+                number
+    -d  -dump[+NUM_PAGES]
+                dump the output of each URL to a terminal
+                window (using terminal browser 1 by
+                default); optionally jump forward the
+                given number of pages
+    -c          copy all URLs to the X11 clipboard and do
+                not run anything
   Other:
     -l  --list    list current browser commands
     -h  --help    show help message
@@ -168,11 +167,11 @@ listBrowserCommands() {
   echo -e "${msg}"
 }
 
-# printBrwsrVarNotDefMessage:
+# printBrowserVariableNotDefinedMessage:
 #   Print an error message for the browser variable not being defined. Argument
 #   1 should be how the variable was defined; it must be either "alias", "url"
 #   or empty if it was specified with an argument option.
-printBrwsrVarNotDefMessage() {
+printBrowserVariableNotDefinedMessage() {
   if [ $# -ge 3 ]; then
     local brwsrValCaps="$(echo -n "${3}"|tr '[:lower:]' '[:upper:]')"
   fi
@@ -264,7 +263,7 @@ while true; do
         ;;
     -s) OPT_OVERRIDE_ALIAS_MATCHING=true;;
     -a) OPT_USE_ALL_ARGS_FOR_ALIASES=true;;
-    -c) OPT_COPY_URLS_TO_X11_CLIPBOARD=true;;
+    -c) OPT_OUTPUT_URLS_TO_X11_CLIPBOARD=true;;
     --list|-l) listBrowserCommands; exit;;
     --help|-h) printHelpMessage full; exit;;
     --) shift; break;;
@@ -290,7 +289,7 @@ if [ "${OPT_USE_ALL_ARGS_FOR_ALIASES}" = 'true' ]; then
 fi
 
 if [ -z "${BROWSER}" ]; then
-  printBrwsrVarNotDefMessage '' "${BROWSER_TYPE}${brwsrNum}"
+  printBrowserVariableNotDefinedMessage '' "${BROWSER_TYPE}${brwsrNum}"
   exit 1
 fi
 
@@ -316,10 +315,9 @@ done
 #   Main functions
 # ============================================
 
-# processAliasConfigOptions:
-#   Assign the global configurations values from the configuration option values
-#   of an alias.
-processAliasConfigOptions() {
+# processAliasConfigurations:
+#   Define the global configurations from the configuration values of an alias.
+processAliasConfigurations() {
   for aliasOpt in ${ALIAS_OPTS[@]}; do
     case "${aliasOpt}" in
       browser*)
@@ -329,8 +327,8 @@ processAliasConfigOptions() {
         BROWSER="${!brwsrVar}"
         BROWSER_TYPE="${brwsrValCaps%[0-9]}"
 
-        [ -z "${BROWSER}" ] && printBrwsrVarNotDefMessage 'alias' "${1}" \
-            "${brwsrVal}" && exit 1
+        [ -z "${BROWSER}" ] && printBrowserVariableNotDefinedMessage 'alias' \
+            "${1}" "${brwsrVal}" && exit 1
         ;;
       dump*)
         DUMP=true
@@ -385,8 +383,8 @@ createBrowserUrlHashes() {
       local brwsr="${!brwsrVar}"
       local brwsrType="${brwsrValCaps%[0-9]}"
 
-      [ -z "${brwsr}" ] && printBrwsrVarNotDefMessage 'url' '' "${brwsrVal}" \
-          && exit 1
+      [ -z "${brwsr}" ] && printBrowserVariableNotDefinedMessage 'url' '' \
+          "${brwsrVal}" && exit 1
 
       if [[ ( "${hasDumpOpt}" = 'true' || "${DUMP}" = 'true' ) && ${brwsrType} \
           != 'GUI' ]]; then
@@ -405,9 +403,9 @@ createBrowserUrlHashes() {
   done
 }
 
-# finalizeConfigsAndExeBrowser:
+# finalizeConfigurationsAndExecuteBrowser:
 #   Finalize configurations and execute browser for one or more URLs.
-finalizeConfigsAndExeBrowser() {
+finalizeConfigurationsAndExecuteBrowser() {
   local browser="${1}"
   local browserType="${2}" # 'GUI' or 'TERM'
   local dump="${3}"
@@ -488,13 +486,13 @@ URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "
 "))
 
 if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
-  if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
+  if [ "${OPT_OUTPUT_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
     echo -e 'openurl: option -c not allowed when opening URLs directly' 1>&2
     exit 1
   fi
 
-  finalizeConfigsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
-      "${DUMP_PG_FWD}" "${URLS_FOR_DIRECT_OPEN[@]}"
+  finalizeConfigurationsAndExecuteBrowser "${BROWSER}" "${BROWSER_TYPE}" \
+      "${DUMP}" "${DUMP_PG_FWD}" "${URLS_FOR_DIRECT_OPEN[@]}"
   exit
 fi
 
@@ -584,13 +582,13 @@ if [ -n "${aliasesFileParserOut}" ]; then
       if [ -z "${CONFIG_OPT_SET}" ]; then
         ALIAS_OPTS=(${aliasOpts_urls_urlsOpts[0]//'<>'/ })
         argNum=$((alias_aliasOpts_urls_urlsOpts_indx + 1))
-        processAliasConfigOptions "${!argNum}"
+        processAliasConfigurations "${!argNum}"
       fi
 
       setUpUrlsUrlsOptsArr '1' "${@}"
     fi
 
-    if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
+    if [ "${OPT_OUTPUT_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
       for url_urlOpts in "${URLS_URLSOPTS[@]}"; do
         url_urlOptsArr=(${url_urlOpts//'<>'/ })
         URLS_FOR_X11_CLIPBOARD+=("${url_urlOptsArr[0]}")
@@ -611,13 +609,14 @@ if [ -n "${aliasesFileParserOut}" ]; then
       if [ "${OPEN_TERM_BRWSR_URLS_IN_INDV_WIND}" = 'true' ] && [ \
           "${brwsrType}" = 'TERM' ]; then
         for url in ${urls[@]}; do
-          finalizeConfigsAndExeBrowser "${brwsr}" ${brwsrType} false 0 "${url}"
+          finalizeConfigurationsAndExecuteBrowser "${brwsr}" ${brwsrType} \
+              false 0 "${url}"
         done
       else
         [ "${alias_aliasOpts_urls_urlsOpts_indx}" -eq \
             "$(("${#aliases_aliasOpts_urls_urlsOpts[@]}" - 1))" ] && 
-            finalizeConfigsAndExeBrowser "${brwsr}" ${brwsrType} false 0 \
-            "${urls[@]}"
+            finalizeConfigurationsAndExecuteBrowser "${brwsr}" ${brwsrType} \
+                false 0 "${urls[@]}"
       fi
     done
 
@@ -631,8 +630,8 @@ if [ -n "${aliasesFileParserOut}" ]; then
         [ "${#urls_urlDumpPgFwd[@]}" -gt 1 ] && \
             pgFwd="${urls_urlDumpPgFwd[1]}" || pgFwd='0'
 
-        finalizeConfigsAndExeBrowser "${brwsr}" 'TERM' true "${pgFwd}" \
-            "${urls_urlDumpPgFwd[0]}"
+        finalizeConfigurationsAndExecuteBrowser "${brwsr}" 'TERM' true \
+            "${pgFwd}" "${urls_urlDumpPgFwd[0]}"
       done
     done
 
@@ -655,11 +654,11 @@ else
   dfltSrchUrlPrsd="$("${HERE}/search-placeholder-url-parser.pl" \
       "${DEFAULT_SEARCH_URL}" "${@}")"
 
-  if [ "${OPT_COPY_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
+  if [ "${OPT_OUTPUT_URLS_TO_X11_CLIPBOARD}" = 'true' ]; then
     URLS_FOR_X11_CLIPBOARD=("${dfltSrchUrlPrsd}")
   else
-    finalizeConfigsAndExeBrowser "${BROWSER}" "${BROWSER_TYPE}" "${DUMP}" \
-        "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
+    finalizeConfigurationsAndExecuteBrowser "${BROWSER}" "${BROWSER_TYPE}" \
+        "${DUMP}" "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
   fi
 fi
 
