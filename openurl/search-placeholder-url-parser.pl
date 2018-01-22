@@ -15,33 +15,29 @@
 # 
 # Usage:
 #   search-placeholder-url-parser.pl <URLs> <search queries...>
+#       <URLs>: delimited by "<|>"
+#       <search queries...>: delimited by $SEARCH_QUERY_DELIM; can be passed in
+#           any number of arguments as all arguments after the first are joined.
 # 
-#   <URLs>: delimited by "<|>"
-#   <search queries...>: delimited by $SEARCH_QUERY_DELIM; can be passed in any
-#       number of arguments as all arguments after the first are joined.
+# The search query placeholder:
+#   A URL may contain multiple {search\D} placeholders to use multiple search
+#   queries (e.g. start and end locations for travel directions) or to copy them
+#   within itself. The search query used by a placeholder corresponds to the
+#   placeholder's position in the URL. If one's search query does not exist, it
+#   will be replaced with an empty string.
 # 
-# A URL may contain multiple {search\D} placeholders to use multiple search
-# queries (e.g. start and end locations for travel directions) or to copy them
-# within itself. The search query used by a placeholder corresponds to the
-# placeholder's position in the URL. If one's search query does not exist, it
-# will be replaced with an empty string.
-
-# Placeholder options can be used to change and modify the search query used
-# by a placeholder. They are specified with a bang ("!") and placed right
-# before the delimiter specifier. They are the following:
+#   Placeholder options can be used to change and modify the search query used
+#   by a placeholder. They are specified with a bang ("!") and placed right
+#   before the delimiter specifier. They are the following:
 # 
-#   !<N>:    Use search query N (e.g. {search!3\D})
-#   !W<P>:   Use word at position P of the search query only; will work for
-#            multiple words (e.g. {search!W2!W5!W6\+})
-#   !U[P]:   Make all letters of word at position P of the search query
-#            uppercase (e.g. {search!U1!U3\+}); omit P for all words
-#   !C:      Capitalize all words in the search query
-#   !R:      Reverse all words in the search query
-#   !M:      Remove all commas in the search query
-# 
-# Unsafe URL characters in a URL will be encoded. An unsafe URL character can
-# be escaped with two backslashes to keep it from being encoded. This also
-# applies to the delimiter in the search placeholder.
+#     !<N>:    Use search query N (e.g. {search!3\D})
+#     !W<P>:   Use word at position P of the search query only; will work for
+#              multiple words (e.g. {search!W2!W5!W6\+})
+#     !U[P]:   Make all letters of word at position P of the search query
+#              uppercase (e.g. {search!U1!U3\+}); omit P for all words
+#     !C:      Capitalize all words in the search query
+#     !R:      Reverse all words in the search query
+#     !M:      Remove all commas in the search query
 # 
 # Multiple URLs:
 #   Multiple URLs can be passed in at once. They must be passed in the first
@@ -49,6 +45,11 @@
 #   be replaced with the same search queries (exepct those that changed their
 #   search query to another with the !<P> option). The parsed URLs will be
 #   returned as a single string in the same format (delimited by "<|>").
+# 
+# Notes:
+#   Unsafe URL characters in all URLs will be encoded. An unsafe URL character
+#   can be escaped with two backslashes to keep it from being encoded. This also
+#   applies to the delimiter in the search placeholder.
 # 
 # URL data delimiters:
 #   This script was created mainly as a utility for other scripts. For this
