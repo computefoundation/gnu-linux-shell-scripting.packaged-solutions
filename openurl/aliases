@@ -3,10 +3,9 @@
 '   aliases
 ' 
 ' Description:
-'   aliases (aliases and their URLs with documentation)
+'   This file contains aliased URLs opened by openurl.
 ' 
 ' Format:
-' 
 '   alias|
 '   url1
 '   url2
@@ -17,15 +16,13 @@
 '   ...
 ' 
 ' Aliases and URLs:
-' 
 '   Aliases for one or more URLs are defined on a single line and identified and
 '   separated by a vertical bar ("|"). Each aliased URL is placed on its own
 '   line under the alias line.
 ' 
-' URL search query placeholder:
-' 
-'   A URL with a search query section may use a {search\D} placeholder, where D
-'   is the URL's space delimiter, to be replaced by a search query passed to
+' The search query placeholder:
+'   A URL with a search query section may use a "{search\D}" placeholder, where
+'   D is the URL's space delimiter, to be replaced by a search query passed to
 '   openurl.
 ' 
 '     Example:
@@ -53,16 +50,7 @@
 '     !R:      Reverse all words in the search query
 '     !M:      Remove all commas in the search query
 ' 
-'   Unsafe URL characters in a URL will be encoded. An unsafe URL character can
-'   be escaped with two backslashes to keep it from being encoded. This also
-'   applies to the delimiter in the search placeholder and the search queries
-'   passed to openurl.
-' 
-'   Instructions on adding a new URL with a {search\D} placeholder are at the
-'   bottom of this file.
-' 
 ' Configuration options:
-' 
 '   Options can be used to configure how one or more URLs are opened. They are
 '   placed after the last alias on an alias line to apply all aliased URLS or
 '   or an individual URL to apply only to the individual URL. They are the
@@ -81,10 +69,18 @@
 '   A configuration specified for a URL will override the same configuration
 '   specified for an alias.
 ' 
-' Examples:
+' Notes:
+'   Unsafe URL characters in all URL will be encoded. An unsafe URL character
+'   can be escaped with two backslashes to keep it from being encoded. This also
+'   applies to the delimiter in the search placeholder and the search queries
+'   passed to openurl.
 ' 
-'   Many of the examples below have a comment above them marked by "Ex." for
-'   explanation.
+'   Instructions on adding a new URL with a {search\D} placeholder are at the
+'   bottom of this file.
+' 
+' Predefined aliases:
+'   Many of the predefined aliases below have a comment above them for
+'   explanation prefixed with "Ex.".
 ' 
 
 ' ---------------------------------------------------
@@ -106,7 +102,7 @@ https://www.youtube.com/results?search_query={search\+}
 dictionary|dict
 http://www.thefreedictionary.com/{search\+}
 
-'Ex.: Open second dictionary in GUI browser 2.
+'Ex.: Open the second dictionary in GUI browser 2.
 dictionary2|dict2 %browser=gui2
 http://www.merriam-webster.com/dictionary/{search\+}
 
@@ -136,7 +132,8 @@ http://www.simplehtmlguide.com/cheatsheet.php
 maps|map
 https://www.google.com/maps/place/{search\+}
 
-'Ex.: Directions (URL accepts two search queries, however, one may be passed)
+'Ex.: Get directions between two locations (this URL accepts two search queries,
+'     however, one or none will also be accepted)
 directions|dir
 https://www.google.com/maps/dir/{search\+}/{search\+}
 
@@ -184,9 +181,9 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=In
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Saint+Louis,+MO
 
 
-'Ex.: Search for businesses/stores across multiple business/store locator
-'     websites. (This example provides examples on {search\D} placeholder
-'     options).
+'Ex.: Search for businesses/stores with multiple business/store locator
+'     websites. (This example provides examples on using the {search\D}
+'     placeholder options).
 businesses|stores
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
