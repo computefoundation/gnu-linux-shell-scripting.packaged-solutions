@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # 
-# Download script for utility Locatefile in shell--packaged-utilities
+# File:
+#   download-locatefile.sh
+# 
+# Description:
+#   Download utility Locatefile in unixfoundation/shell.packaged-utilities
 # 
 
 # ======= CONFIGURATIONS ==============
@@ -10,13 +14,13 @@ readonly DOWNLOAD_DIR="${HOME}"
 
 # ======= ! CONFIGURATIONS ==============
 
-readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/master'
+readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell.packaged-utilities/master'
 readonly BASE_URL="${MASTER_URL}/locatefile"
 
-readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/locatefile"
+readonly BASE_DIR="${DOWNLOAD_DIR}/shell.packaged-utilities/locatefile"
 
-if [ ! -d "${DOWNLOAD_DIR}/shell--packaged-utilities" ]; then
-  mkdir -p "${DOWNLOAD_DIR}/shell--packaged-utilities"
+if [ ! -d "${DOWNLOAD_DIR}/shell.packaged-utilities" ]; then
+  mkdir -p "${DOWNLOAD_DIR}/shell.packaged-utilities"
 fi
 
 echo -e "::Downloading files to ${BASE_DIR}\n  Please wait"

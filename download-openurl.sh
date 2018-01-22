@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # 
-# Download script for the utility Openurl in shell--packaged-utilities
+# File:
+#   download-openurl.sh
+# 
+# Description:
+#   Download utility Openurl in unixfoundation/shell.packaged-utilities
 # 
 
 # ======= CONFIGURATIONS ==============
@@ -10,13 +14,13 @@ readonly DOWNLOAD_DIR="${HOME}"
 
 # ======= ! CONFIGURATIONS ==============
 
-readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell--packaged-utilities/master'
+readonly MASTER_URL='https://raw.githubusercontent.com/unixfoundation/shell.packaged-utilities/master'
 readonly BASE_URL="${MASTER_URL}/openurl"
 
-readonly BASE_DIR="${DOWNLOAD_DIR}/shell--packaged-utilities/openurl"
+readonly BASE_DIR="${DOWNLOAD_DIR}/shell.packaged-utilities/openurl"
 
-if [ ! -d "${DOWNLOAD_DIR}/shell--packaged-utilities" ]; then
-  mkdir -p "${DOWNLOAD_DIR}/shell--packaged-utilities"
+if [ ! -d "${DOWNLOAD_DIR}/shell.packaged-utilities" ]; then
+  mkdir -p "${DOWNLOAD_DIR}/shell.packaged-utilities"
 fi
 
 echo -e "::Downloading files to ${BASE_DIR}\n  Please wait"
