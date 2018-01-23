@@ -111,10 +111,6 @@ Usage:
 
 Options:
   Argument processing:
-    -s, --force-search
-                do not match the first argument with an
-                alias and instead use all arguments as
-                search queries with the default search URL
     -m, --multiple-aliases
                 match each consecutive argument as an alias until the last one
                 is found and use the remaining arguments as search queries
@@ -225,10 +221,10 @@ BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
 #   Process options and arguments
 # ============================================
 
-OPTS="$(getopt -a -o d::,s,m,c,l,h --long gui1,gui2,gui3,gui4,gui5,gui6,gui7 \
+OPTS="$(getopt -a -o d::,m,c,l,h --long gui1,gui2,gui3,gui4,gui5,gui6,gui7 \
     --long gui8,gui9,g1,g2,g3,g4,g5,g6,g7,g8,g9,term1,term2,term3,term4,term5 \
-    --long term6,term7,t1,t2,t3,t4,t5,t6,t7,force-search,multiple-aliases \
-    --long clipboard,list,help -n 'openurl' -- "${@}")"
+    --long term6,term7,t1,t2,t3,t4,t5,t6,t7,multiple-aliases,clipboard,list \
+    --long help -n 'openurl' -- "${@}")"
 [ "$?" -ne 0 ] && exit 1
 eval set -- "${OPTS}"
 
@@ -262,7 +258,6 @@ while true; do
         fi
         shift
         ;;
-    --force-search|-s) OPT_FORCE_SEARCH=true;;
     --multiple-aliases|-m) OPT_MULTIPLE_ALIASES=true;;
     --clipboard|-c) OPT_OUTPUT_TO_CLIPBOARD=true;;
     --list|-l) listBrowserCommands; exit;;
@@ -278,15 +273,9 @@ if [ "$#" -eq 0 ] && [ "${DUMP}" = 'true' ]; then
   exit 1
 fi
 
-if [ "${OPT_MULTIPLE_ALIASES}" = 'true' ]; then
-  if [ "${OPT_FORCE_SEARCH}" = 'true' ]; then
-    echo 'openurl: cannot use options -s and -m together' 1>&2
-    exit 1
-  fi
-  if [ $# -eq 0 ]; then
-    echo -e 'openurl: one or more aliases required\n  with option -m' 1>&2
-    exit 1
-  fi
+if [ "${OPT_MULTIPLE_ALIASES}" = 'true' ] && [ $# -eq 0 ]; then
+  echo -e 'openurl: one or more aliases required\n  with option -m' 1>&2
+  exit 1
 fi
 
 if [ -z "${BROWSER}" ]; then
@@ -515,17 +504,15 @@ fi
 #     the aliases URLs if the first argument is a found alias. Print a message
 #     and exit otherwise.
 
-if [ -z "${OPT_FORCE_SEARCH}" ]; then
-  if [ "${OPT_MULTIPLE_ALIASES}" = 'true' ]; then
-    aliasesFileParserArgs="${@}"
-  else
-    aliasesFileParserArgs="${1}"
-  fi
-
-  aliasesFileParserOut="$("${HERE}/aliases-file-parser.pl" \
-      "${URL_ALIASES_FILES_DIR}" "${URL_ALIASES_FILES_STR}" \
-      ${aliasesFileParserArgs})"
+if [ "${OPT_MULTIPLE_ALIASES}" = 'true' ]; then
+  aliasesFileParserArgs="${@}"
+else
+  aliasesFileParserArgs="${1}"
 fi
+
+aliasesFileParserOut="$("${HERE}/aliases-file-parser.pl" \
+    "${URL_ALIASES_FILES_DIR}" "${URL_ALIASES_FILES_STR}" \
+    ${aliasesFileParserArgs})"
 
 if [ -n "${aliasesFileParserOut}" ]; then
   if [[ "${aliasesFileParserOut}" = 'error:'* ]]; then
