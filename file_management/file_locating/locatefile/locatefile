@@ -4,7 +4,7 @@
 #   locatefile
 # 
 # Description:
-#   Locate a file or directory from a database.
+#   Locate a file or directory from a file paths database.
 # 
 
 readonly HERE="$(dirname "${0}")"
