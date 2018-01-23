@@ -7,7 +7,7 @@ Openurl defines four argument schemas:
 
 1. **An alias** (first argument) with one or more optional search queries (remaining arguments).
 
-2. **Multiple aliases** (first N arguments) with one or more optional search queries (all arguments after the last matching alias). *Requires switch `-a`.*
+2. **Multiple aliases** (first N arguments) with one or more optional search queries (all arguments after the last matching alias). *Requires switch `-m`.*
 
 3. **A search query** (when the first argument does not match any alias). *The default search URL is defined in section Configurations of [openurl](openurl).*
 
@@ -36,7 +36,7 @@ openurl dir phoenix, az %% seattle, wa
 ...for outdoor gear stores in Burlington, VT with alias "businesses" (aliases businesses search URLs) and open in GUI browser 3.
 
 ```bash
-openurl -3 businesses outdoor gear %% burlington, vt
+openurl -g3 businesses outdoor gear %% burlington, vt
 ```
 
 ### 2. Multiple aliases
@@ -44,7 +44,7 @@ openurl -3 businesses outdoor gear %% burlington, vt
 Search "home goods" with aliases "amazon," "ebay" and "jet" (respectively alias the Amazon, eBay and Jet search URLs).
 
 ```bash
-openurl -a amazon ebay jet home goods
+openurl -m amazon ebay jet home goods
 ```
 
 ### 3. Search query
