@@ -75,7 +75,7 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 Run the following command to download:
 
 ```bash
-bash <(curl -s 'https://raw.githubusercontent.com/unixfoundation/shell.packaged-utilities/'\
-'download_scripts/download-openurl.sh')
+bash <(curl -s 'https://raw.githubusercontent.com/unixfoundation/'\
+'general-purpose-computing.packaged-solutions/download_scripts/download-openurl.sh')
 ```
 

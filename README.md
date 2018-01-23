@@ -1,5 +1,5 @@
 
-**Shell.packaged-utilities** is an extension of [Shell](https://github.com/unixfoundation/shell) for utilities consisting of more than one file.
+**General-purpose-computing.packaged-solutions** is an extension of [General-purpose-computing](https://github.com/unixfoundation/general-purpose-computing) for solutions consisting of more than one file.
 
 ## [Locatefile](locatefile)
 
