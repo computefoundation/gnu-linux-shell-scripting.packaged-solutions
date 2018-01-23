@@ -4,15 +4,18 @@
 #   openurl
 # 
 # Description:
-#   See https://github.com/unixfoundation/general-purpose-computing.packaged-solutions/tree/master/openurl#openurl
+#   Open one or more URLs from the terminal directly or using an alias or search
+#   query.
 # 
 # Dependencies:
-#   Perl module URI::Escape (Run "cpan URI::Escape" to install).
+#   Perl module "URI::Escape"
+#       (Run "cpan URI::Escape" to install.)
 # 
-#   xterm (The terminal emulator used for opening terminal windows; for quick
-#     and easy start up, simply download it. If another terminal emulator is
-#     preferred, please adjust the command in the TERMINAL function under
-#     CONFIGURATIONS).
+#   Xterm
+#       Xterm is the terminal emulator program used to open terminal windows for
+#       hosting terminal web browsers processes. For quick and easy start up,
+#       simply download it. If another terminal emulator is preferred, please
+#       adjust the command in the TERMINAL function under CONFIGURATIONS.
 # 
 
 readonly HERE="$(dirname "${0}")"
