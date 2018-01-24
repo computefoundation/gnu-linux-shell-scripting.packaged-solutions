@@ -35,3 +35,6 @@ MOUNTPOINT_PATHS=(
   '/mnt/usb4'
 )
 
+# Remove all databases files before updating databases
+REMOVE_DATABASE_FILES_BEFORE_UPDATING_DATABASES=true
+

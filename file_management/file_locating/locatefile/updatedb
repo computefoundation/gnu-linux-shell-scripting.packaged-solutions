@@ -14,6 +14,10 @@
 readonly HERE="$(dirname "${0}")"
 source "${HERE}/configurations"
 
+# ============================================
+#   Create the main functions
+# ============================================
+
 # find_out:
 #   Recursively output the given path to a database file.
 # Arguments:
@@ -35,9 +39,6 @@ find_out() {
 
   findOpts="-maxdepth ${2} -type ${1}"
 
-  # -- Uncomment to disclude vim swap files in find paths --
-  # findOpts+=" ! -path '*/*\.swp' ! -path '*/*\.swo'"
-
   if [ "${5}" = '--nodot' ]; then
     find "${4}" ${findOpts} ! -path '*/\.*' >> "${3}"
   else
@@ -45,13 +46,32 @@ find_out() {
   fi
 }
 
-# The next two sections are where the file and directory output paths are
-# specified. The file names in the case blocks must match those specified in
-# configurations.
+# ============================================
+#   Prepare the database directories
+# ============================================
 
-# =========================================================
-#   File paths
-# =========================================================
+if [ ! -d "${FILE_PATHS_DATABASE_DIRECTORY}" ]; then
+  mkdir "${FILE_PATHS_DATABASE_DIRECTORY}"
+elif [ "${REMOVE_DATABASE_FILES_BEFORE_UPDATING_DATABASES}" = 'true' ]; then
+  rm -Rf "${FILE_PATHS_DATABASE_DIRECTORY}"/*
+fi
+
+if [ ! -d "${DIRECTORY_PATHS_DATABASE_DIRECTORY}" ]; then
+  mkdir "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"
+elif [ "${REMOVE_DATABASE_FILES_BEFORE_UPDATING_DATABASES}" = 'true' ]; then
+  rm -Rf "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"/*
+fi
+
+# ============================================
+#   Define the database file/directory paths
+# ============================================
+
+# The database file and directory paths are defined in this section. They are
+# defined using the find_out function.
+
+# --------------------------------------------
+#   FILE PATHS
+# --------------------------------------------
 
 for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
   dest="${FILE_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
@@ -97,9 +117,9 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
   esac
 done
 
-# =========================================================
-#   Directory paths
-# =========================================================
+# --------------------------------------------
+#   DIRECTORY PATHS
+# --------------------------------------------
 
 for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
   dest="${DIRECTORY_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
@@ -135,11 +155,12 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
   esac
 done
 
-# =========================================================
-#   Final parsing for the mountpoint directory paths
-# =========================================================
+# ============================================
+#   Process the mountpoint directory paths
+# ============================================
 
-for dbDir in "${FILE_PATHS_DATABASE_DIRECTORY}" "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"; do
+for dbDir in "${FILE_PATHS_DATABASE_DIRECTORY}" \
+    "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"; do
   for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
     dbFile="${dbDir}/${dbFileName}"
     if [ -f "${dbFile}" ]; then
