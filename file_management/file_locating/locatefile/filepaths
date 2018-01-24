@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# 
+# File:
+#   filepaths
+# 
+# Description:
+#   The database file and directory paths
+# 
+# Notes:
+#   The file names in the case blocks must match those defined in the
+#   configurations file.
+# 
+#   A file or directory path for a database is specified using the "find_out"
+#   function. It searches and returns files (or directories) recursively and
+#   has the following five parameters:
+#     1. Type of file to output: "f" for files and "d" for directories
+#     2. Maximum depth to search (e.g. "0" for no depth [and to output just the
+#        file itself] and "1" for the first level subdirectory)
+#     3. Path of file where output will be sent
+#     4. Path of file or directory to search through (note: accepts wildcards)
+#     5. (Optional) Whether or not to disclude dot files; pass "--nodot" to
+#        specify true
+# 
+
+source "${HERE}/configurations"
+
+# FILE PATHS
+
+for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
+  dest="${FILE_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
+
+  case "${dbFileName}" in
+    'home-paths')
+      echo -n '' > "${dest}"
+
+      find_out 'f' '1' "${dest}" '/home/user/documents'
+      find_out 'f' '0' "${dest}" '/home/user/.bashrc'
+      find_out 'f' '0' "${dest}" '/home/user/.bash_profile'
+      find_out 'f' '0' "${dest}" '/home/user/.vimrc'
+      find_out 'f' '0' "${dest}" '/home/user/.ssh/config'
+      find_out 'f' '1' "${dest}" '/home/user/bin'
+      find_out 'f' '0' "${dest}" '/home/user/share/calendar/events.txt'
+      find_out 'f' '2' "${dest}" '/home/user/pictures'
+      find_out 'f' '1' "${dest}" '/home/user/archived_data/backup'
+      ;;
+
+    'mount-drive-1-paths')
+      if mountpoint '/mnt/usb2' >/dev/null; then
+        echo -n '' > "${dest}"
+
+        find_out 'f' '0' "${dest}" '/mnt/usb2/general/notes/assignment.txt'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/general'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/general/reference'
+        find_out 'f' '0' "${dest}" '/mnt/usb2/other/finished_tasks.txt'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/finance'
+        find_out 'f' '9' "${dest}" '/mnt/usb2/current' --nodot
+        find_out 'f' '1' "${dest}" '/mnt/usb2/records/internal'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/records/external'
+        find_out 'f' '1' "${dest}" '/mnt/usb2/bookmarks'
+      fi
+      ;;
+
+    'mount-drive-2-paths')
+      if mountpoint '/mnt/usb3' >/dev/null; then
+        echo -n '' > "${dest}"
+
+        find_out 'f' '5' "${dest}" '/mnt/usb3/components/main'
+        find_out 'f' '0' "${dest}" '/mnt/usb3/components/configurations/default/main_config.sh'
+        find_out 'f' '0' "${dest}" '/mnt/usb3/components/main/resources/logo.png'
+        find_out 'f' '2' "${dest}" '/mnt/usb3/global'
+      fi
+      ;;
+  esac
+done
+
+# DIRECTORY PATHS
+
+for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
+  dest="${DIRECTORY_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
+
+  case "${dbFileName}" in
+    'home-paths')
+      echo -n '' > "${dest}"
+
+      find_out 'd' '0' "${dest}" '/home/user/documents'
+      find_out 'd' '0' "${dest}" '/home/user/bin'
+      find_out 'd' '0' "${dest}" '/home/user/share'
+      find_out 'd' '0' "${dest}" '/home/user/pictures'
+      find_out 'd' '0' "${dest}" '/home/user/archived_data'
+      ;;
+      
+    'mount-drive-1-paths')
+      if mountpoint '/mnt/usb2' >/dev/null; then
+        echo -n '' > "${dest}"
+
+        find_out 'd' '1' "${dest}" '/mnt/usb2/general'
+        find_out 'd' '1' "${dest}" '/mnt/usb2/current'
+        find_out 'd' '1' "${dest}" '/mnt/usb2/records'
+        find_out 'd' '0' "${dest}" '/mnt/usb2/bookmarks'
+      fi
+      ;;
+
+    'mount-drive-2-paths')
+      if mountpoint '/mnt/usb3' >/dev/null; then
+        echo -n '' > "${dest}"
+
+        find_out 'd' '5' "${dest}" '/mnt/usb3/components/main'
+        find_out 'd' '0' "${dest}" '/mnt/usb3/global'
+        find_out 'd' '0' "${dest}" '/mnt/usb3/global/resources'
+      fi
+      ;;
+  esac
+done
+

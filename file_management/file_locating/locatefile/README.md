@@ -41,12 +41,12 @@ locatefile -d tur # returns "/home/user/pictures"
 ## Set up
 
 1. Adjust configurations as needed in [configurations](configurations).
-2. Define the databases file/directory paths in [updatedb](updatedb).
+2. Define the databases file/directory paths in [filepaths](filepaths).
 3. Run [updatedb](updatedb).
 
 ## Notes
 
-This utility...
+Locatefile...
 
 * ...accepts regular expressions for the file/directory name.
 * ...does not support file names with spaces.

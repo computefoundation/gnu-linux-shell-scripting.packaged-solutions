@@ -4,11 +4,7 @@
 #   updatedb
 # 
 # Description:
-#   Update the locatefile database.
-# 
-# Notes:
-#   The database file names in the case blocks under sections "File paths" and
-#   "Directory paths" must match those defined in the DATABASE_FILE_NAMES array.
+#   Update the file and directory paths databases.
 # 
 
 readonly HERE="$(dirname "${0}")"
@@ -19,20 +15,23 @@ source "${HERE}/configurations"
 # ============================================
 
 # find_out:
-#   Recursively output the given path to a database file.
-# Arguments:
-#   1. Type: "f" for files or "d" for directories
-#   2. Max search depth
-#   3. Destination database file
-#   4. Path to output recursively (note: will accept wildcards)
-#   5. (Optional) "--nodot": skip dot files and directories
+#   Recursively search through a file or directory and output all found files or
+#   directories to a file.
+# Parameters:
+#   1. Type of file to output: "f" for files and "d" for directories
+#   2. Maximum depth to search (e.g. "0" for no depth [and to output just the
+#      file itself] and "1" for the first level subdirectory)
+#   3. Path of file where output will be sent
+#   4. Path of file or directory to search through (note: accepts wildcards)
+#   5. (Optional) Whether or not to disclude dot files; pass "--nodot" to
+#      specify true 
 find_out() {
-  if [[ $# -le 3 || $# -ge 6 ]]; then
+  if [ $# -le 3 ] || [ $# -ge 6 ]; then
     echo 'updatedb: invalid number of arguments' 1>&2
     exit 1
   fi
 
-  if [[ ! -f "${4}" && ! -d "${4}" ]]; then
+  if [ ! -f "${4}" ] && [ ! -d "${4}" ]; then
     echo -e "updatedb: ’${4}’: No such file or directory"
     return 1
   fi
@@ -63,97 +62,10 @@ elif [ "${REMOVE_DATABASE_FILES_BEFORE_UPDATING_DATABASES}" = 'true' ]; then
 fi
 
 # ============================================
-#   Define the database file/directory paths
+#   Populate the databases
 # ============================================
 
-# The database file and directory paths are defined in this section. They are
-# defined using the find_out function.
-
-# --------------------------------------------
-#   FILE PATHS
-# --------------------------------------------
-
-for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
-  dest="${FILE_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
-
-  case "${dbFileName}" in
-    'home-paths')
-      echo -n '' > "${dest}"
-      find_out 'f' '1' "${dest}" '/home/user/documents'
-      find_out 'f' '0' "${dest}" '/home/user/.bashrc'
-      find_out 'f' '0' "${dest}" '/home/user/.bash_profile'
-      find_out 'f' '0' "${dest}" '/home/user/.vimrc'
-      find_out 'f' '0' "${dest}" '/home/user/.ssh/config'
-      find_out 'f' '1' "${dest}" '/home/user/bin'
-      find_out 'f' '0' "${dest}" '/home/user/share/calendar/events.txt'
-      find_out 'f' '2' "${dest}" '/home/user/pictures'
-      find_out 'f' '1' "${dest}" '/home/user/archived_data/backup'
-      ;;
-
-    'mount-drive-1-paths')
-      if mountpoint '/mnt/usb2' >/dev/null; then
-        echo -n '' > "${dest}"
-        find_out 'f' '0' "${dest}" '/mnt/usb2/general/notes/assignment.txt'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/general'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/general/reference'
-        find_out 'f' '0' "${dest}" '/mnt/usb2/other/finished_tasks.txt'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/finance'
-        find_out 'f' '9' "${dest}" '/mnt/usb2/current' --nodot
-        find_out 'f' '1' "${dest}" '/mnt/usb2/records/internal'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/records/external'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/bookmarks'
-      fi
-      ;;
-
-    'mount-drive-2-paths')
-      if mountpoint '/mnt/usb2' >/dev/null; then
-        echo -n '' > "${dest}"
-        find_out 'f' '5' "${dest}" '/mnt/usb3/components/main'
-        find_out 'f' '0' "${dest}" '/mnt/usb3/components/configurations/default/main_config.sh'
-        find_out 'f' '0' "${dest}" '/mnt/usb3/components/main/resources/logo.png'
-        find_out 'f' '2' "${dest}" '/mnt/usb3/global'
-      fi
-      ;;
-  esac
-done
-
-# --------------------------------------------
-#   DIRECTORY PATHS
-# --------------------------------------------
-
-for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
-  dest="${DIRECTORY_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
-
-  case "${dbFileName}" in
-    'home-paths')
-      echo -n '' > "${dest}"
-      find_out 'd' '0' "${dest}" '/home/user/documents'
-      find_out 'd' '0' "${dest}" '/home/user/bin'
-      find_out 'd' '0' "${dest}" '/home/user/share'
-      find_out 'd' '0' "${dest}" '/home/user/pictures'
-      find_out 'd' '0' "${dest}" '/home/user/archived_data'
-      ;;
-      
-    'mount-drive-1-paths')
-      if mountpoint '/mnt/usb2' >/dev/null; then
-        echo -n '' > "${dest}"
-        find_out 'd' '1' "${dest}" '/mnt/usb2/general'
-        find_out 'd' '1' "${dest}" '/mnt/usb2/current'
-        find_out 'd' '1' "${dest}" '/mnt/usb2/records'
-        find_out 'd' '0' "${dest}" '/mnt/usb2/bookmarks'
-      fi
-      ;;
-
-    'mount-drive-2-paths')
-      if mountpoint '/mnt/usb2' >/dev/null; then
-        echo -n '' > "${dest}"
-        find_out 'd' '5' "${dest}" '/mnt/usb3/components/main'
-        find_out 'd' '0' "${dest}" '/mnt/usb3/global'
-        find_out 'd' '0' "${dest}" '/mnt/usb3/global/resources'
-      fi
-      ;;
-  esac
-done
+source "${HERE}/filepaths"
 
 # ============================================
 #   Process the mountpoint directory paths
@@ -161,14 +73,17 @@ done
 
 for dbDir in "${FILE_PATHS_DATABASE_DIRECTORY}" \
     "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"; do
+
   for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
     dbFile="${dbDir}/${dbFileName}"
+
     if [ -f "${dbFile}" ]; then
       for mntpntPath in "${MOUNTPOINT_PATHS[@]}"; do
-        [[ "${mntpntPath}" = *'/' ]] && mntpntPath="${mntpntPath::-1}"
-          sed -i "s,${mntpntPath}/,{MNTPNT_PATH}/," "${dbFile}"
+        [ -z "${mntpntPath##*'/'}" ] && mntpntPath="${mntpntPath::-1}"
+        sed -i "s,${mntpntPath}/,{MNTPNT_PATH}/," "${dbFile}"
       done
     fi
   done
+
 done
 
