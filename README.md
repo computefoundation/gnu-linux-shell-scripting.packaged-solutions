@@ -1,3 +1,3 @@
 
-A branch for download scripts
+A branch for helper scripts
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # 
 # File:
-#   uf-gpc.ps-download-openurl.sh
+#   cf-gpc.ps-download-openurl.sh
 # 
 # Description:
 #   Download utility Openurl from
-#   unixfoundation/general-purpose-computing.packaged-utilities.
+#   computingfoundation/general-purpose-computing.packaged-utilities.
 # 
 
 readonly SOLUTION_PATH='web_management/url_parsing_and_opening/openurl'
-readonly SOLUTION_URL='https://raw.githubusercontent.com/unixfoundation'\
+readonly SOLUTION_URL='https://raw.githubusercontent.com/computingfoundation'\
 "/general-purpose-computing.packaged-solutions/master/${SOLUTION_PATH}"
 
 # ======= CONFIGURATIONS ==============
@@ -23,7 +23,7 @@ readonly DOWNLOAD_ROOT_DIRECTORY="${HOME}"
 #   Prepare the download directory
 # ============================================
 
-readonly DOWNLOAD_DIRECTORY="${DOWNLOAD_ROOT_DIRECTORY}/unixfoundation"\
+readonly DOWNLOAD_DIRECTORY="${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation"\
 "/general-purpose-computing.packaged-utilities/${SOLUTION_PATH}"
 
 if [ ! -d "${DOWNLOAD_DIRECTORY}" ]; then
@@ -36,7 +36,7 @@ fi
 
 cd "${DOWNLOAD_DIRECTORY}"
 
-echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIRECTORY}/unixfoundation\
+echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation\
 /general-purpose-computing.packaged-utilities\n  Please wait"
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 

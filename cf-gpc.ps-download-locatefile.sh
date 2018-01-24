@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # 
 # File:
-#   uf-gpc.ps-download-locatefile.sh
+#   cf-gpc.ps-download-locatefile.sh
 # 
 # Description:
 #   Download utility Locatefile from
-#   unixfoundation/general-purpose-computing.packaged-utilities.
+#   computingfoundation/general-purpose-computing.packaged-solutions.
 # 
 
 readonly SOLUTION_PATH='file_management/file_locating/locatefile'
-readonly SOLUTION_URL='https://raw.githubusercontent.com/unixfoundation'\
+readonly SOLUTION_URL='https://raw.githubusercontent.com/computingfoundation'\
 "/general-purpose-computing.packaged-solutions/master/${SOLUTION_PATH}"
 
 # ======= CONFIGURATIONS ==============
@@ -23,8 +23,8 @@ readonly DOWNLOAD_ROOT_DIRECTORY="${HOME}"
 #   Prepare the download directory
 # ============================================
 
-readonly DOWNLOAD_DIRECTORY="${DOWNLOAD_ROOT_DIRECTORY}/unixfoundation"\
-"/general-purpose-computing.packaged-utilities/${SOLUTION_PATH}"
+readonly DOWNLOAD_DIRECTORY="${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation"\
+"/general-purpose-computing.packaged-solutions/${SOLUTION_PATH}"
 
 if [ ! -d "${DOWNLOAD_DIRECTORY}" ]; then
   mkdir -p "${DOWNLOAD_DIRECTORY}"
@@ -36,8 +36,8 @@ fi
 
 cd "${DOWNLOAD_DIRECTORY}"
 
-echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIRECTORY}/unixfoundation\
-/general-purpose-computing.packaged-utilities\n  Please wait"
+echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation\
+/general-purpose-computing.packaged-solutions\n  Please wait"
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
 curl -O "${SOLUTION_URL}/{CONFIGURATIONS.bash,locatefile,updatedb}"
