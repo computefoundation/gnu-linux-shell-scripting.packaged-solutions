@@ -11,11 +11,11 @@
 #   search-placeholder-url-parser.pl \
 #       "https://duckduckgo.com/?q={search\+}&iax=1&ia=images" \
 #       "earth's biosphere"
-#   # output: https://duckduckgo.com/?q=earth%27s+biosphere&iax=1&ia=images
+#   # output: "https://duckduckgo.com/?q=earth%27s+biosphere&iax=1&ia=images"
 # 
 # Usage:
 #   search-placeholder-url-parser.pl <URLs> <search queries...>
-#       <URLs>: delimited by "<|>"
+#       <URLs>: must be in the first argument and delimited by "<|>"
 #       <search queries...>: delimited by $SEARCH_QUERY_DELIM; can be passed in
 #           any number of arguments as all arguments after the first are joined.
 # 
@@ -75,11 +75,12 @@ my $MAX_SEARCH_PLACEHOLDERS_PER_URL = 8;
 
 # ======= ! CONFIGURATIONS ==============
 
-# These are the ASCII escape ranges for search queries. They include almost all
-# usafe URL characters and disclude [#$%&-=?_ ]. (To include these except for
-# the space, use "\x00-\x1F\x21-\x2C\x3B-\x40\x5B-\x60\x7B-\xFF" instead).
-# Important: Do not include the space character as spaces must be replaced with
-# the search placeholder delimiter.
+# These are the ASCII ranges for escaping unsafe URL characters in the URLs and
+# the search queries. (The following ranges include almost all unsafe URL
+# characters and disclude [#$%&-=?_ ]. To include these with the exception of
+# the space, use "\x00-\x1F\x21-\x2C\x3B-\x40\x5B-\x60\x7B-\xFF" instead.)
+# Important note: Do not include the space character as spaces must be replaced
+# with the search placeholder delimiter.
 my $SRCH_QRY_ASCII_ESCP_RNGS = '\x00-\x1F\x21\x22\x24\x27-\x2C\x3B\x3C\x3E\x40';
 $SRCH_QRY_ASCII_ESCP_RNGS .= '\x5B-\x5E\x60\x7B-\xFF';
 
