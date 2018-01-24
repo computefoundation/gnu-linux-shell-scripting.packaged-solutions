@@ -56,7 +56,7 @@ This utility...
 Run the following command to download:
 
 ```bash
-bash <(curl -s 'https://raw.githubusercontent.com/unixfoundation/'\
-'general-purpose-computing.packaged-solutions/download_scripts/uf-gpc.ps-download-locatefile.sh')
+bash <(curl -s 'https://raw.githubusercontent.com/computingfoundation/'\
+'general-purpose-computing.packaged-solutions/helper_scripts/cf-gpc.ps-download-locatefile.sh')
 ```
 
