@@ -5,7 +5,7 @@
 # 
 # Description:
 #   Download utility Openurl from
-#   computingfoundation/general-purpose-computing.packaged-utilities.
+#   computingfoundation/general-purpose-computing.packaged-solutions.
 # 
 
 readonly SOLUTION_PATH='web_management/url_parsing_and_opening/openurl'
@@ -24,7 +24,7 @@ readonly DOWNLOAD_ROOT_DIRECTORY="${HOME}"
 # ============================================
 
 readonly DOWNLOAD_DIRECTORY="${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation"\
-"/general-purpose-computing.packaged-utilities/${SOLUTION_PATH}"
+"/general-purpose-computing.packaged-solutions/${SOLUTION_PATH}"
 
 if [ ! -d "${DOWNLOAD_DIRECTORY}" ]; then
   mkdir -p "${DOWNLOAD_DIRECTORY}"
@@ -37,7 +37,7 @@ fi
 cd "${DOWNLOAD_DIRECTORY}"
 
 echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation\
-/general-purpose-computing.packaged-utilities\n  Please wait"
+/general-purpose-computing.packaged-solutions\n  Please wait"
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
 curl -O "${SOLUTION_URL}/{aliases,aliases-file-parser.pl,openurl,"\
