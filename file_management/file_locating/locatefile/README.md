@@ -9,7 +9,7 @@ Locatefile uses two databases consisting of file and directory paths, respective
 
 It searches the file paths database by default and the directory paths database via switch `-d`.
 
-*The directories **filesdb** and **dirsdb** are precreated example databases. The following examples are based on them.*
+*The directories **file_paths_database** and **directory_paths_database** are precreated example databases. The following examples are based on them.*
 
 ## Examples
 
@@ -25,7 +25,7 @@ locatefile my-doc # returns "/home/user/documents/my-document.txt"
 locatefile shr # returns "/home/user/.bashrc"
 ```
 
-*Locate a file or directory in a mounted drive (see the MNTPNT_PATHS variable in [CONFIGURATIONS.bash](CONFIGURATIONS.bash) for more information).*
+*Locate a file or directory in a mounted drive (see the MNTPNT_PATHS variable in [configurations](configurations) for more information).*
 
 ```bash
 locatefile stat # returns "MNTPNT_PATH/records/external/statistics.txt" (if the drive containing the
@@ -40,7 +40,7 @@ locatefile -d tur # returns "/home/user/pictures"
 
 ## Set up
 
-1. Adjust configurations as needed in [CONFIGURATIONS.bash](CONFIGURATIONS.bash).
+1. Adjust configurations as needed in [configurations](configurations).
 2. Define the databases file/directory paths in [updatedb](updatedb).
 3. Run [updatedb](updatedb).
 

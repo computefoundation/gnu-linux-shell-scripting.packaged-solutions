@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 
 # File:
-#   CONFIGURATIONS.bash
+#   configurations
 # 
 # Description:
 #   Configurations for scripts in this directory
@@ -12,21 +12,21 @@
 # 
 
 # Directory for file paths database files
-FILE_PATHS_DB_DIR="${HERE}/filesdb"
+FILE_PATHS_DB_DIR="${HERE}/file_paths_database"
 
 # Directory for directory paths database files
-DIR_PATHS_DB_DIR="${HERE}/dirsdb"
+DIR_PATHS_DB_DIR="${HERE}/directory_paths_database"
 
 # File names to use in both database directories; note: these files will be
-# searched in the given order in both databases.
+# searched in the given order in both databases
 DB_FILE_NAMES=('mount-drive-1-paths' 'mount-drive-2-paths' 'home-paths')
 
 # Paths of mounted drives containing files to be located
-# When a databse file or directory path begins with "{MNTPNT_PATH}/", these
-# paths will traversed through in place of the "{MNTPNT_PATH}" placeholder until
-# the file or directory is found. Database paths beginning with "{MNTPNT_PATH}/"
-# are created when a database file/directory output path defined in updatedb is
-# prefixed with one of these paths.
+#   When a databse file or directory path begins with "{MNTPNT_PATH}/", these
+#   paths will traversed through in place of the "{MNTPNT_PATH}" placeholder
+#   until the file or directory is found. Database paths beginning with
+#   "{MNTPNT_PATH}/" are created when a database file/directory output path
+#   defined in updatedb is prefixed with one of these paths.
 MNTPNT_PATHS=(
   '/mnt/usb1'
   '/mnt/usb2'

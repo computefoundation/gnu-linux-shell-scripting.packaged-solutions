@@ -12,7 +12,7 @@
 # 
 
 readonly HERE="$(dirname "${0}")"
-source "${HERE}/CONFIGURATIONS.bash"
+source "${HERE}/configurations"
 
 # find_out:
 #   Recursively output the given path to a database file.
@@ -47,7 +47,7 @@ find_out() {
 
 # The next two sections are where the file and directory output paths are
 # specified. The file names in the case blocks must match those specified in
-# CONFIGURATIONS.bash.
+# configurations.
 
 # =========================================================
 #   File paths
