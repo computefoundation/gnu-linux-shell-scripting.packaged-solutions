@@ -34,10 +34,10 @@ while getopts :o:dh OPT; do
            echo 'locatefile: missing argument for option -o' 1>&2
            exit 1
          fi
-         OPT_RET_OCCUR_NO="${OPTARG}"
+         OPT_OCCURRENCE_NUMBER="${OPTARG}"
        fi
        ;;
-    d) OPT_RET_DIRS='true'
+    d) OPT_RETURN_DIRECTORIES='true'
        ;;
     h) printHelpMessage
        exit
@@ -56,69 +56,69 @@ if [ $# -eq 0 ]; then
 fi
 
 # ========================================================
-#   Get the mounted mountpoint paths defined by MNTPNT_PATHS
+#   Get the mounted mountpoint paths defined by MOUNTPOINT_PATHS
 # ========================================================
 
-for mntpntPath in "${MNTPNT_PATHS[@]}"; do
+for mntpntPath in "${MOUNTPOINT_PATHS[@]}"; do
   if [ -d "${mntpntPath}" ] && mountpoint "${mntpntPath}" >/dev/null; then
     mntpntPathsTmp+=("${mntpntPath}")
   fi
 done
 
-MNTPNT_PATHS=("${mntpntPathsTmp[@]}")
+MOUNTPOINT_PATHS=("${mntpntPathsTmp[@]}")
 
 # ========================================================
 #   Search the database
 # ========================================================
 
-if [ "${OPT_RET_DIRS}" = 'true' ]; then
-  CURR_DB_DIR="${DIR_PATHS_DB_DIR}"
+if [ "${OPT_RETURN_DIRECTORIES}" = 'true' ]; then
+  CURRENT_DATABASE_DIRECTORY="${DIRECTORY_PATHS_DATABASE_DIRECTORY}"
 else
-  CURR_DB_DIR="${FILE_PATHS_DB_DIR}"
+  CURRENT_DATABASE_DIRECTORY="${FILE_PATHS_DATABASE_DIRECTORY}"
 fi
 
-for dbFileName in "${DB_FILE_NAMES[@]}"
+for dbFileName in "${DATABASE_FILE_NAMES[@]}"
 do
-  if [ ! -f "${CURR_DB_DIR}/${dbFileName}" ]; then
+  if [ ! -f "${CURRENT_DATABASE_DIRECTORY}/${dbFileName}" ]; then
     continue
   fi
 
   for mtch in $(grep -P "(?<=/)([^/]*)(?=[^/]*${1}[^/]*$)" \
-      "${CURR_DB_DIR}/${dbFileName}"); do
+      "${CURRENT_DATABASE_DIRECTORY}/${dbFileName}"); do
 
     if [[ "${mtch}" = '{MNTPNT_PATH}/'* ]]; then
-      for mntpntPath in "${MNTPNT_PATHS[@]}"; do
+      for mntpntPath in "${MOUNTPOINT_PATHS[@]}"; do
         mntpntPathMtchPrsd="${mtch//'{MNTPNT_PATH}'/"${mntpntPath}"}"
 
-        if [[ ("${OPT_RET_DIRS}" = 'true' && -d "${mntpntPathMtchPrsd}") || \
-            -f "${mntpntPathMtchPrsd}" ]]
+        if [[ ("${OPT_RETURN_DIRECTORIES}" = 'true' && -d \
+            "${mntpntPathMtchPrsd}") || -f "${mntpntPathMtchPrsd}" ]]
         then
-          FOUND_MATCHES+=("${mntpntPathMtchPrsd}")
-          ((CURR_OCCUR_NO++))
+          MATCHES+=("${mntpntPathMtchPrsd}")
+          ((CURRENT_OCCURRENCE_NUMBER++))
           
-          if [ -n "${OPT_RET_OCCUR_NO}" ] && [ "${OPT_RET_OCCUR_NO}" -eq \
-              "${CURR_OCCUR_NO}" ]; then
+          if [ -n "${OPT_OCCURRENCE_NUMBER}" ] && [ "${OPT_OCCURRENCE_NUMBER}" \
+              -eq "${CURRENT_OCCURRENCE_NUMBER}" ]; then
             break 3
           fi
         fi
       done
     else
-      FOUND_MATCHES+=("${mtch}")
-      ((CURR_OCCUR_NO++))
+      MATCHES+=("${mtch}")
+      ((CURRENT_OCCURRENCE_NUMBER++))
 
-      if [ -n "${OPT_RET_OCCUR_NO}" ] && [ "${OPT_RET_OCCUR_NO}" -eq \
-          "${CURR_OCCUR_NO}" ]; then
+      if [ -n "${OPT_OCCURRENCE_NUMBER}" ] && [ "${OPT_OCCURRENCE_NUMBER}" -eq \
+          "${CURRENT_OCCURRENCE_NUMBER}" ]; then
         break 2
       fi
     fi
   done
 done
 
-if [ "${#FOUND_MATCHES[@]}" -gt 0 ]; then
-  if [ -n "${OPT_RET_OCCUR_NO}" ]; then
-    echo "${FOUND_MATCHES[$((${#FOUND_MATCHES[@]} - 1))]}"
+if [ "${#MATCHES[@]}" -gt 0 ]; then
+  if [ -n "${OPT_OCCURRENCE_NUMBER}" ]; then
+    echo "${MATCHES[$((${#MATCHES[@]} - 1))]}"
   else
-    echo "${FOUND_MATCHES[0]}"
+    echo "${MATCHES[0]}"
   fi
 fi
 

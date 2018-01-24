@@ -25,7 +25,7 @@ locatefile my-doc # returns "/home/user/documents/my-document.txt"
 locatefile shr # returns "/home/user/.bashrc"
 ```
 
-*Locate a file or directory in a mounted drive (see the MNTPNT_PATHS variable in [configurations](configurations) for more information).*
+*Locate a file or directory in a mounted drive (see the MOUNTPOINT_PATHS variable in [configurations](configurations) for more information).*
 
 ```bash
 locatefile stat # returns "MNTPNT_PATH/records/external/statistics.txt" (if the drive containing the

@@ -8,7 +8,7 @@
 # 
 # Notes:
 #   The database file names in the case blocks under sections "File paths" and
-#   "Directory paths" must match those defined in the DB_FILE_NAMES array.
+#   "Directory paths" must match those defined in the DATABASE_FILE_NAMES array.
 # 
 
 readonly HERE="$(dirname "${0}")"
@@ -53,8 +53,8 @@ find_out() {
 #   File paths
 # =========================================================
 
-for dbFileName in "${DB_FILE_NAMES[@]}"; do
-  dest="${FILE_PATHS_DB_DIR}/${dbFileName}"
+for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
+  dest="${FILE_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
 
   case "${dbFileName}" in
     'home-paths')
@@ -101,8 +101,8 @@ done
 #   Directory paths
 # =========================================================
 
-for dbFileName in "${DB_FILE_NAMES[@]}"; do
-  dest="${DIR_PATHS_DB_DIR}/${dbFileName}"
+for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
+  dest="${DIRECTORY_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
 
   case "${dbFileName}" in
     'home-paths')
@@ -139,11 +139,11 @@ done
 #   Final parsing for the mountpoint directory paths
 # =========================================================
 
-for dbDir in "${FILE_PATHS_DB_DIR}" "${DIR_PATHS_DB_DIR}"; do
-  for dbFileName in "${DB_FILE_NAMES[@]}"; do
+for dbDir in "${FILE_PATHS_DATABASE_DIRECTORY}" "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"; do
+  for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
     dbFile="${dbDir}/${dbFileName}"
     if [ -f "${dbFile}" ]; then
-      for mntpntPath in "${MNTPNT_PATHS[@]}"; do
+      for mntpntPath in "${MOUNTPOINT_PATHS[@]}"; do
         [[ "${mntpntPath}" = *'/' ]] && mntpntPath="${mntpntPath::-1}"
           sed -i "s,${mntpntPath}/,{MNTPNT_PATH}/," "${dbFile}"
       done
