@@ -90,7 +90,7 @@ readonly LESS_COMMAND_OPTIONS='-IFRXMc'
 # ======= ! CONFIGURATIONS ==============
 
 printHelpMessage() {
-  [ "${1}" = 'full' ] && echo -e 'Openurl help documentation\n'
+  [ "${1}" = 'full' ] && echo -e 'Openurl\n'
   echo -ne "\
 Usage:
   1. openurl [options] <url_alias> [search_queries]
@@ -208,7 +208,7 @@ DUMP_PG_FWD=0
 
 # Current browser type
 BROWSER_COMMAND_BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if
-                           # initial/default browser is changed.
+                                   # initial/default browser is changed.
 
 # ============================================
 #   Process options and arguments
@@ -296,7 +296,7 @@ for urlAliasesFile in "${URL_ALIASES_FILES[@]}"; do
 done
 
 # ============================================
-#   Create main functions
+#   Create the main functions
 # ============================================
 
 # processAliasConfigurations:
@@ -328,10 +328,10 @@ processAliasConfigurations() {
   done
 }
 
-# createBrowserUrlHashes:
-#   Create hashes for URLs using the same browser and URLs that are to dump
-#   their output and process their final configuration values.
-createBrowserUrlHashes() {
+# createBrowserCommandUrlsHashes:
+#   Create hashes for URLs using the same browser command and URLs that are to
+#   dump their output and process their final configuration values.
+createBrowserCommandUrlsHashes() {
   for url_urlOpts in ${URLS_URLSOPTS[@]}; do
     local url_urlOptsArr=(${url_urlOpts//'<>'/ })
     if [[ "${#url_urlOptsArr[@]}" -eq 1 || "${CONFIG_OPT_SET}" = 'true' ]]; then
@@ -447,7 +447,7 @@ finalizeConfigurationsAndExecuteBrowser() {
 }
 
 # ===================================================
-#   Open all URL arguments and exit if any are
+#   Open URL arguments and exit if any are
 # ===================================================
 
 topLevlDomnsRegex="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
@@ -482,7 +482,8 @@ if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
 fi
 
 # ===================================================
-#   Get and parse all URLs for one or more alias(es) if the alias(es) exist(s)
+#   Get and parse the URLs of one or more alias(es) if the arguments match one
+#   or more aliases
 # ===================================================
 
 # Argument cases:
@@ -537,15 +538,15 @@ if [ -n "${aliasesFileParserOut}" ]; then
       ${aliases_aliasOpts_urls_urlsOpts[${alias_aliasOpts_urls_urlsOpts_indx}]}"
 
     # Variable formats quick reference:
-    #   aliasOpts_urls_urlsOpts[0] (will not exist if alias has no options):
+    #   "aliasOpts_urls_urlsOpts[0]" (will not exist if alias has no options):
     #     "[alias_opt1[<>alias_opt2]]"
-    #   aliasOpts_urls_urlsOpts[1] (will always contain at least one URL):
+    #   "aliasOpts_urls_urlsOpts[1]" (will always contain at least one URL):
     #     "URL1[<>opt1[<>opt2]][<|>URL2[<>opt1[<>opt2]][<|>URL3[<>opt1[
     #     <>opt2]]...]]"
-    #   ALIAS_OPTS (array; may be empty):
-    #     (["alias_opt1" "alias_opt2"])
-    #   URLS_URLSOPTS (array; will always contain at least one element):
-    #     ("URL1[<>opt1[<>opt2]]" ["URL2[<>opt1[<>opt2]]" ...])
+    #   "ALIAS_OPTS" (array; may be empty):
+    #     ( [ "alias_opt1" "alias_opt2" ] )
+    #   "URLS_URLSOPTS" (array; will always contain at least one element):
+    #     ( "URL1[<>opt1[<>opt2]]" [ "URL2[<>opt1[<>opt2]]" ... ] )
 
     aliasOpts_urls_urlsOpts=(${alias_aliasOpts_urls_urlsOpts//'<$>'/ })
 
@@ -579,9 +580,9 @@ if [ -n "${aliasesFileParserOut}" ]; then
       continue
     fi
 
-    # Create hashes for URLs using the same browser so they can be opened with
-    # the browser command once rather than individually.
-    createBrowserUrlHashes
+    # Create hashes for URLs using the same browser command so they can be
+    # opened with it once.
+    createBrowserCommandUrlsHashes
 
     for brwsr_brwsrType in "${!BROWSER_URL_HASHES[@]}"
     do
