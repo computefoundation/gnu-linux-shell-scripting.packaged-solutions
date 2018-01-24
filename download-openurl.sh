@@ -4,10 +4,12 @@
 #   download-openurl.sh
 # 
 # Description:
-#   Download utility Openurl in unixfoundation/shell.packaged-utilities.
+#   Download utility Openurl from unixfoundation/general-purpose-computing.packaged-utilities.
 # 
 
-readonly URL='https://raw.githubusercontent.com/unixfoundation/shell.packaged-utilities/master/openurl'
+readonly SOLUTION_PATH='web_management/url_parsing_and_opening/openurl'
+readonly URL='https://raw.githubusercontent.com/unixfoundation'\
+"/general-purpose-computing.packaged-solutions/master/${SOLUTION_PATH}"
 
 # ======= CONFIGURATIONS ==============
 
@@ -16,14 +18,16 @@ readonly DOWNLOAD_ROOT_DIR="${HOME}"
 
 # ======= ! CONFIGURATIONS ==============
 
-readonly DOWNLOAD_DIR="${DOWNLOAD_ROOT_DIR}/unixfoundation/shell.packaged-utilities/openurl"
+readonly DOWNLOAD_DIR="${DOWNLOAD_ROOT_DIR}/unixfoundation"\
+"/general-purpose-computing.packaged-utilities/${SOLUTION_PATH}"
 
 if [ ! -d "${DOWNLOAD_DIR}" ]; then
   mkdir -p "${DOWNLOAD_DIR}"
 fi
 cd "${DOWNLOAD_DIR}"
 
-echo -e "::Downloading files to ${DOWNLOAD_DIR}\n  Please wait"
+echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIR}/unixfoundation\
+/general-purpose-computing.packaged-utilities\n  Please wait"
 
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
