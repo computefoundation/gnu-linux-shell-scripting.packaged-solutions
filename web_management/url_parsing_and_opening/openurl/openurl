@@ -23,7 +23,7 @@ readonly HERE="$(dirname "${0}")"
 # ======= CONFIGURATIONS ==============
 
 # Directory where URL aliases files are stored.
-readonly URL_ALIASES_FILES_DIR="${HERE}"
+readonly URL_ALIASES_FILES_DIRECTORY="${HERE}"
 
 # URL aliases files
 readonly URL_ALIASES_FILES=(
@@ -69,12 +69,11 @@ readonly URL_MATCH_TOP_LEVEL_DOMAINS='.com .org .edu .gov .uk .net'
 # Terminal emulator used for opening terminal windows
 TERMINAL() {
   local startX=50; local startY=100; local width=110; local height=44
-  local geometry="${width}x${height}+${startX}+${startY}"
-  
-  nohup xterm -xrm 'XTerm.vt100.allowTitleOps: false' -geometry "${geometry}" \
-      -fg '#FFFFFF' -bg '#000000' -fa 'size=12:antialias=true' -title "${1}" \
-      -e bash -c "eval ${@:2};"' rs=$? && [ $rs -ne 0 ] && sleep 3' \
-      &>/dev/null &
+
+  nohup xterm -xrm 'XTerm.vt100.allowTitleOps: false' -geometry \
+      "${width}x${height}+${startX}+${startY}" -fg '#FFFFFF' -bg '#000000' -fa \
+      'size=12:antialias=true' -title "${1}" -e bash -c \
+      "eval ${@:2};"' rs=$? && [ $rs -ne 0 ] && sleep 3' &>/dev/null &
 }
 
 # Whether or not to open all URLs for a terminal browser in their own individual
@@ -83,18 +82,15 @@ TERMINAL() {
 # buffers, such as w3m; if a browser does not support buffers, it may not work
 # well.) Note: This configuration will not apply when the dump option is used
 # as each URL will always be dumped to its own individual terminal window).
-readonly OPEN_TERM_BRWSR_URLS_IN_INDV_WIND=false
+readonly OPEN_TERM_BROWSER_URLS_IN_INDIVIDUAL_WINDOWS=false
 
 # Default options used for less when dumping a webpage
-readonly DUMP_LESS_OPTS='-IFRXMc'
+readonly LESS_COMMAND_OPTIONS='-IFRXMc'
 
 # ======= ! CONFIGURATIONS ==============
 
 printHelpMessage() {
-  if [ "${1}" = 'full' ]; then
-    echo -e "openurl - Utility to make using the web easier.\n"
-  fi
-
+  [ "${1}" = 'full' ] && echo -e 'Openurl help documentation\n'
   echo -ne "\
 Usage:
   1. openurl [options] <url_alias> [search_queries]
@@ -148,18 +144,18 @@ Notes:
 }
 
 listBrowserCommands() {
-  local msg='Openurl current browser commands:'
+  local mesg='Openurl current browser commands:'
   for i in {1..9}; do
     local brwsrVar="BROWSER_GUI${i}"
     local browser="${!brwsrVar}"
-    msg+="\nGUI ${i}: ${browser}"
+    mesg+="\nGUI ${i}: ${browser}"
   done
   for i in {1..7}; do
     brwsrVar="BROWSER_TERM${i}"
     browser="${!brwsrVar}"
-    msg+="\nTERM ${i}: ${browser}"
+    mesg+="\nTERM ${i}: ${browser}"
   done
-  echo -e "${msg}"
+  echo -e "${mesg}"
 }
 
 # printBrowserVariableNotDefinedMessage:
@@ -183,28 +179,25 @@ printBrowserVariableNotDefinedMessage() {
     echo -e "openurl: Browser \"${2}\" is not defined." 1>&2
   fi
 
-  read -d '' msg <<-EOF
+  read -d '' mesg <<-EOF
     Please define it under CONFIGURATIONS or
     use a different browser. The value may be
     a new browser command or simply a
     duplicate of another.
 	EOF
   
-  while read -r line; do echo "  ${line}" 1>&2; done <<< "${msg}"
+  while read -r line; do echo "  ${line}" 1>&2; done <<< "${mesg}"
 }
 
 # ============================================
 #   Initialize main variables
 # ============================================
 
-# DEFAULT/ALIAS CONFIGURATIONS (Assigned by either argument or alias/URL
-# configuration options as argument configuration options override all alias
-# configuration options. If their values are changed, they will be applied
-# everytime a URL is opened unless changed by argument or alias/URL
-# configuration options).
+# DEFAULT/ALIAS CONFIGURATIONS: Congiurations for URL opening assigned by either
+# argument or alias/URL configuration options
 
-# Default browser
-BROWSER="${BROWSER_GUI1}"
+# Default browser command
+BROWSER_COMMAND="${BROWSER_GUI1}"
 # Whether or not to dump the page (it is likely not preferrable to set this to
 # true by default)
 DUMP=false
@@ -214,8 +207,8 @@ DUMP_PG_FWD=0
 # UTILITY VARIABLES
 
 # Current browser type
-BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if initial/default
-                   # browser is changed.
+BROWSER_COMMAND_BROWSER_TYPE='GUI' # 'GUI' or 'TERM'; change accordingly if
+                           # initial/default browser is changed.
 
 # ============================================
 #   Process options and arguments
@@ -233,15 +226,15 @@ while true; do
     --gui?|--g?)
         [ -z "${1##'--gui'*}" ] && brwsrNum="${1:5}" || brwsrNum="${1:3}"
         brwsrVar="BROWSER_GUI${brwsrNum}"
-        BROWSER="${!brwsrVar}"
-        BROWSER_TYPE='GUI'
+        BROWSER_COMMAND="${!brwsrVar}"
+        BROWSER_COMMAND_BROWSER_TYPE='GUI'
         CONFIG_OPT_SET=true
         ;;
     --term?|--t?)
         [ -z "${1##'--term'*}" ] && brwsrNum="${1:6}" || brwsrNum="${1:3}"
         brwsrVar="BROWSER_TERM${brwsrNum}"
-        BROWSER="${!brwsrVar}"
-        BROWSER_TYPE='TERM'
+        BROWSER_COMMAND="${!brwsrVar}"
+        BROWSER_COMMAND_BROWSER_TYPE='TERM'
         CONFIG_OPT_SET=true
         ;;
     -dump|-d)
@@ -278,14 +271,15 @@ if [ "${OPT_MULTIPLE_ALIASES}" = 'true' ] && [ $# -eq 0 ]; then
   exit 1
 fi
 
-if [ -z "${BROWSER}" ]; then
-  printBrowserVariableNotDefinedMessage '' "${BROWSER_TYPE}${brwsrNum}"
+if [ -z "${BROWSER_COMMAND}" ]; then
+  printBrowserVariableNotDefinedMessage '' \
+      "${BROWSER_COMMAND_BROWSER_TYPE}${brwsrNum}"
   exit 1
 fi
 
-if [ "${DUMP}" = 'true' ] && [ "${BROWSER_TYPE}" = 'GUI' ]; then
-  BROWSER="${BROWSER_TERM1}"
-  BROWSER_TYPE='TERM'
+if [ "${DUMP}" = 'true' ] && [ "${BROWSER_COMMAND_BROWSER_TYPE}" = 'GUI' ]; then
+  BROWSER_COMMAND="${BROWSER_TERM1}"
+  BROWSER_COMMAND_BROWSER_TYPE='TERM'
 fi
 
 # ============================================
@@ -293,7 +287,7 @@ fi
 # ============================================
 
 for urlAliasesFile in "${URL_ALIASES_FILES[@]}"; do
-  path="${URL_ALIASES_FILES_DIR}/${urlAliasesFile}"
+  path="${URL_ALIASES_FILES_DIRECTORY}/${urlAliasesFile}"
   if [ ! -f "${path}" ]; then
     echo -e "openurl: URL aliases file not found:\n  '${path}'" 1>&2
     exit 1
@@ -314,11 +308,11 @@ processAliasConfigurations() {
         local brwsrVal="${aliasOpt#*=}"
         local brwsrValCaps="$(echo -n "${brwsrVal}"|tr '[:lower:]' '[:upper:]')"
         local brwsrVar="BROWSER_${brwsrValCaps}"
-        BROWSER="${!brwsrVar}"
-        BROWSER_TYPE="${brwsrValCaps%[0-9]}"
+        BROWSER_COMMAND="${!brwsrVar}"
+        BROWSER_COMMAND_BROWSER_TYPE="${brwsrValCaps%[0-9]}"
 
-        [ -z "${BROWSER}" ] && printBrowserVariableNotDefinedMessage 'alias' \
-            "${1}" "${brwsrVal}" && exit 1
+        [ -z "${BROWSER_COMMAND}" ] && printBrowserVariableNotDefinedMessage \
+            'alias' "${1}" "${brwsrVal}" && exit 1
         ;;
       dump*)
         DUMP=true
@@ -326,8 +320,8 @@ processAliasConfigurations() {
           DUMP_PG_FWD="${aliasOpt#*+}"
         fi
         if [ -z "${brwsrVar}" ]; then
-          BROWSER="${BROWSER_TERM1}"
-          BROWSER_TYPE='TERM'
+          BROWSER_COMMAND="${BROWSER_TERM1}"
+          BROWSER_COMMAND_BROWSER_TYPE='TERM'
         fi
         ;;
     esac
@@ -342,13 +336,13 @@ createBrowserUrlHashes() {
     local url_urlOptsArr=(${url_urlOpts//'<>'/ })
     if [[ "${#url_urlOptsArr[@]}" -eq 1 || "${CONFIG_OPT_SET}" = 'true' ]]; then
       if [ "${DUMP}" != 'true' ]; then
-        local key="${BROWSER}%%${BROWSER_TYPE}"
+        local key="${BROWSER_COMMAND}%%${BROWSER_COMMAND_BROWSER_TYPE}"
         BROWSER_URL_HASHES["${key}"]+=" ${url_urlOptsArr[0]}"
       else
         # add the dump page forward value so that it can be retrieved later
         [ "${DUMP_PG_FWD}" -ne 0 ] && local addPgFwd="<>${DUMP_PG_FWD}";
         local hashVal=" ${url_urlOptsArr[0]}${addPgFwd}"
-        BROWSER_URL_DUMP_HASHES["${BROWSER}"]+="${hashVal}"
+        BROWSER_URL_DUMP_HASHES["${BROWSER_COMMAND}"]+="${hashVal}"
       fi
     else
       local brwsrVal=
@@ -428,7 +422,7 @@ finalizeConfigurationsAndExecuteBrowser() {
   fi
 
   if [ "${dump}" = 'true' ]; then
-    cmd="${browser} -dump ${urls} | less ${DUMP_LESS_OPTS} +${dumpPgFwd}p"
+    cmd="${browser} -dump ${urls} | less ${LESS_COMMAND_OPTIONS} +${dumpPgFwd}p"
     TERMINAL "${termTtl}" "${cmd}"
   else
     if [ "${browserType}" = 'GUI' ]; then
@@ -456,23 +450,23 @@ finalizeConfigurationsAndExecuteBrowser() {
 #   Open all URL arguments and exit if any are
 # ===================================================
 
-topLevlDomnsRegx="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
-topLevlDomnsRegx="${topLevlDomnsRegx//'.'/'\.'}"
+topLevlDomnsRegex="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
+topLevlDomnsRegex="${topLevlDomnsRegex//'.'/'\.'}"
 
-regx='('                               # begin prefix group
-regx+='www\.|'                         # match "www." as a valid prefix
-regx+='(http[s]?|ftp|file):\/\/'       # match schemes
-regx+=')'                              # end prefix group
-regx+='\S+'      # ensure prefix is followed by one or more non-space characters
-regx+='|'                              # or match the following
-regx+='\S+'      # ensure suffix is preceded by one or more non-space characters
-regx+='('                              # begin suffix group
-regx+="${topLevlDomnsRegx// /|}"       # match top level domains
-regx+=')'                              # end suffix group
-regx+='\S*'                            # include trailing non-space characters
+regex='('                               # begin prefix group
+regex+='www\.|'                         # match "www." as a valid prefix
+regex+='(http[s]?|ftp|file):\/\/'       # match schemes
+regex+=')'                              # end prefix group
+regex+='\S+'     # ensure prefix is followed by one or more non-space characters
+regex+='|'                              # or match the following
+regex+='\S+'     # ensure suffix is preceded by one or more non-space characters
+regex+='('                              # begin suffix group
+regex+="${topLevlDomnsRegex// /|}"      # match top level domains
+regex+=')'                              # end suffix group
+regex+='\S*'                            # include trailing non-space characters
 
 URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "
-  while (m/(${regx})/g) { print \"'\$1' \"; }
+  while (m/(${regex})/g) { print \"'\$1' \"; }
 "))
 
 if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
@@ -481,8 +475,9 @@ if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
     exit 1
   fi
 
-  finalizeConfigurationsAndExecuteBrowser "${BROWSER}" "${BROWSER_TYPE}" \
-      "${DUMP}" "${DUMP_PG_FWD}" "${URLS_FOR_DIRECT_OPEN[@]}"
+  finalizeConfigurationsAndExecuteBrowser "${BROWSER_COMMAND}" \
+      "${BROWSER_COMMAND_BROWSER_TYPE}" "${DUMP}" "${DUMP_PG_FWD}" \
+      "${URLS_FOR_DIRECT_OPEN[@]}"
   exit
 fi
 
@@ -511,7 +506,7 @@ else
 fi
 
 aliasesFileParserOut="$("${HERE}/aliases-file-parser.pl" \
-    "${URL_ALIASES_FILES_DIR}" "${URL_ALIASES_FILES_STR}" \
+    "${URL_ALIASES_FILES_DIRECTORY}" "${URL_ALIASES_FILES_STR}" \
     ${aliasesFileParserArgs})"
 
 if [ -n "${aliasesFileParserOut}" ]; then
@@ -523,7 +518,7 @@ if [ -n "${aliasesFileParserOut}" ]; then
     exit 1
   fi
 
-  initBrowser="${BROWSER}"
+  initBrowserCmd="${BROWSER_COMMAND}"
   initDump="${DUMP}"
   initDumpPgFwd="${DUMP_PG_FWD}"
 
@@ -594,7 +589,7 @@ if [ -n "${aliasesFileParserOut}" ]; then
       brwsrType="${brwsr_brwsrType#*'%%'}"
       urls="${BROWSER_URL_HASHES["${brwsr_brwsrType}"]}"
 
-      if [ "${OPEN_TERM_BRWSR_URLS_IN_INDV_WIND}" = 'true' ] && [ \
+      if [ "${OPEN_TERM_BROWSER_URLS_IN_INDIVIDUAL_WINDOWS}" = 'true' ] && [ \
           "${brwsrType}" = 'TERM' ]; then
         for url in ${urls[@]}; do
           finalizeConfigurationsAndExecuteBrowser "${brwsr}" ${brwsrType} \
@@ -623,7 +618,7 @@ if [ -n "${aliasesFileParserOut}" ]; then
       done
     done
 
-    BROWSER="${initBrowser}"
+    BROWSER_COMMAND="${initBrowserCmd}"
     DUMP="${initDump}"
     DUMP_PG_FWD="${initDumpPgFwd}"
   done #!for each alias options and URLs
@@ -645,12 +640,13 @@ else
   if [ "${OPT_OUTPUT_TO_CLIPBOARD}" = 'true' ]; then
     URLS_FOR_X11_CLIPBOARD=("${dfltSrchUrlPrsd}")
   else
-    finalizeConfigurationsAndExecuteBrowser "${BROWSER}" "${BROWSER_TYPE}" \
-        "${DUMP}" "${DUMP_PG_FWD}" "${dfltSrchUrlPrsd}"
+    finalizeConfigurationsAndExecuteBrowser "${BROWSER_COMMAND}" \
+        "${BROWSER_COMMAND_BROWSER_TYPE}" "${DUMP}" "${DUMP_PG_FWD}" \
+        "${dfltSrchUrlPrsd}"
   fi
 fi
 
-if [[ -n "${URLS_FOR_X11_CLIPBOARD[@]}" ]]; then
+if [ "${#URLS_FOR_X11_CLIPBOARD[@]}" -gt 0 ]; then
   echo "${URLS_FOR_X11_CLIPBOARD[@]}" | xclip -r -selection c
 fi
 
