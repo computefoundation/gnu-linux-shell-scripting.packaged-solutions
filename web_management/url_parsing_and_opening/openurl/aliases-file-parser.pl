@@ -80,16 +80,16 @@ sub parseOptions {
       my ($all, $optVal) = ($1, $3);
 
       if (!$optVal) {
-        print "error:\n  $urlAliasesFileName:\n  no value given for option",
-            " %browser\n  on line $lineNo (use %browser=gui<1-9>\n  or",
-            " %browser=term<1-7>)\n";
+        print "error:\n  \"$urlAliasesFileName\":\n    no value given for",
+            " option %browser\n    on line $lineNo (use %browser=gui<1-9>\n   ",
+            " or %browser=term<1-7>)\n";
         exit 1;
       }
 
       if ($optVal !~ m/^(gui[1-9]|term[1-7])$/) {
-        print "error:\n  $urlAliasesFileName:\n  invalid value \"$optVal\" for",
-            " option\n  %browser on line $lineNo; allowed\n  values are",
-            " \"gui<1-9>\" and \"term<1-7>\"\n";
+        print "error:\n  \"$urlAliasesFileName\":\n    invalid value",
+            " \"$optVal\" for option\n    %browser on line $lineNo; allowed\n ",
+            "   values are \"gui<1-9>\" and \"term<1-7>\"\n";
         exit 1;
       }
 
@@ -99,25 +99,25 @@ sub parseOptions {
       my ($all, $intOrDec, $rmnTxt) = ($1, $4, $5);
 
       if ($rmnTxt && $rmnTxt !~ m/^[p]/) {
-        print "error:\n  $urlAliasesFileName:\n  invalid format for option\n ",
-            " %dump on line $lineNo\n";
+        print "error:\n  \"$urlAliasesFileName\":\n    invalid format for",
+            " option\n    %dump on line $lineNo\n";
         exit 1;
       }
 
       $frmtdOpt = 'dump';
       if ($intOrDec) {
         if ($intOrDec > 300) {
-          print "error:\n  $urlAliasesFileName:\n  page forward value",
-              " $intOrDec for\n  option %dump on line $lineNo\n  is too large",
-              " (max: 300).\n";
+          print "error:\n  \"$urlAliasesFileName\":\n    page forward value",
+              " $intOrDec for\n    option %dump on line $lineNo\n    is too",
+              " large (max: 300).\n";
           exit 1;
         }
         $frmtdOpt .= '+'.$intOrDec;
       }
     } else {
       $opt =~ m/(.*)/;
-      print "error:\n  $urlAliasesFileName:\n  invalid option on line",
-          " $lineNo:\n  \"$1\"";
+      print "error:\n  \"$urlAliasesFileName\":\n    invalid option on line",
+          " $lineNo:\n    \"$1\"";
       if ($opt !~ m/^%/) {
         print "\n  options must begin with \"%\"\n";
       }
@@ -125,8 +125,8 @@ sub parseOptions {
     }
 
     if ($frmtdOpts && $frmtdOpts =~ m/$optName/) {
-      print "error:\n  $urlAliasesFileName:\n  option %$optName specified",
-          " more\n  than once on line $lineNo\n";
+      print "error:\n  \"$urlAliasesFileName\":\n    option %$optName",
+          " specified more\n    than once on line $lineNo\n";
       exit 1;
     }
 
@@ -138,9 +138,9 @@ sub parseOptions {
 
     if ($frmtdOpts =~ m/dump/ && $frmtdOpts =~ m/browser=(.*)/) {
       if ($1 =~ m/^(gui.)/) {
-        print "error:\n  $urlAliasesFileName:\n  line $lineNo: GUI value not",
-            " allowed\n  for option %browser with option\n  %dump; must use",
-            " value \"term<1-7>\"\n";
+        print "error:\n  \"$urlAliasesFileName\":\n    line $lineNo: GUI value",
+            " not allowed\n    for option %browser with option\n    %dump;",
+            " must use value \"term<1-7>\"\n";
         exit 1;
       }
     }
@@ -188,8 +188,9 @@ for my $argUrlAlias (@ARG_URL_ALIASES) {
         my ($lineAliases, $options) = ($1, $2);
 
         if ($lineAliases =~ qr'\.|:|<|>') {
-          print "error:\n  $urlAliasesFileName:\n  line $lineNo: alias names",
-              " cannot\n  contain dots, colons or angle\n  brackets\n";
+          print "error:\n  \"$urlAliasesFileName\":\n    line $lineNo: alias",
+              " names cannot\n    contain dots, colons or angle\n   ",
+              " brackets\n";
           exit 1;
         }
 
@@ -222,29 +223,30 @@ for my $argUrlAlias (@ARG_URL_ALIASES) {
               last;
             } else {
               $_ =~ m/^(\S*)(?:\s+(.*)|$)/;
-              print "error:\n  $urlAliasesFileName:\n  URL on line $lineNo for",
-                  " alias(es)\n  \"$lineAliases\" is either\n  in an unallowed",
-                  " format or contains\n  unallowed characters. URLs must",
-                  " contain\n  at least one dot or colon and not begin\n  or",
-                  " end with one; unallowed characters\n  include the",
-                  " following: ^ ` < > \n";
+              print "error:\n  \"$urlAliasesFileName\":\n    URL on line",
+                  " $lineNo for alias(es)\n    \"$lineAliases\" is either\n   ",
+                  " in an unallowed format or contains\n    unallowed",
+                  " characters. URLs must contain\n    at least one dot or",
+                  " colon and not begin\n    or end with one; unallowed",
+                  " characters\n    include the following: ^ ` < >\n";
               exit 1;
             }
           }
 
           if ($urlsRetStr) {
             if ($urlsCnt > $MAX_URLS_PER_ALIAS) {
-              print "error:\n  $urlAliasesFileName:\n  line $aliasesLineNo:",
-                  " too many URLs for\n  alias \"$argUrlAlias\": $urlsCnt",
-                  " (max:\n  $MAX_URLS_PER_ALIAS; value can be changed in\n ",
-                  " aliases-file-parser.pl)\n";
+              print "error:\n  \"$urlAliasesFileName\":\n    line",
+                  " $aliasesLineNo: too many URLs for\n    alias",
+                  " \"$argUrlAlias\": $urlsCnt (max:\n    $MAX_URLS_PER_ALIAS;",
+                  " value can be changed in\n    aliases-file-parser.pl)\n";
               exit 1;
             }
 
             $aliasRetStr .= $urlsRetStr.'<&>';
           } else {
-            print "error:\n  $urlAliasesFileName:\n  alias \"$argUrlAlias\" on",
-                " line\n  $aliasesLineNo does not have any URLs\n";
+            print "error:\n  \"$urlAliasesFileName\":\n    alias",
+                " \"$argUrlAlias\" on line\n    $aliasesLineNo does not have",
+                " any URLs\n";
             exit 1;
           }
 
@@ -252,11 +254,12 @@ for my $argUrlAlias (@ARG_URL_ALIASES) {
         } #!if argument alias matches line alias
 
       } elsif ($_ !~ m/^\s*(?!')(${URL_REGEX})(?:\s+(.*)|$)/) {
-        print "error:\n  $urlAliasesFileName:\n  line $lineNo does not contain",
-            " a valid alias\n  or URL. Alias names must have a vertical\n  bar",
-            " (\"|\") before or after them. URLs must\n  contain at least one",
-            " dot or colon and not\n  begin or end with one; unallowed URL\n ",
-            " characters include the following:\n    ^ ` < > \n";
+        print "error:\n  \"$urlAliasesFileName\":\n    line $lineNo does not",
+            " contain a valid alias\n    or URL. Alias names must have a",
+            " vertical\n    bar (\"|\") before or after them. URLs must\n   ",
+            " contain at least one dot or colon and not\n    begin or end with",
+            " one; unallowed URL\n    characters include the following:\n     ",
+            " ^ ` < > \n";
         exit 1;
       }
     } #!while each line in URL aliases file
