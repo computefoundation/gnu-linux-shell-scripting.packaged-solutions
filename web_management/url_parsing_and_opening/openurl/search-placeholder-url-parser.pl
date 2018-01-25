@@ -178,7 +178,7 @@ for my $urlWData (@ARG_URLS_W_DATA) {
     }
 
     # ===============================================
-    #   Process options for the search placeholder
+    #   Process the search placeholder's options
     # ===============================================
 
     if ($opts ne '') {
@@ -233,7 +233,7 @@ for my $urlWData (@ARG_URLS_W_DATA) {
     $fnlUrl .= escapeUrlSection(\$txtBefr, \$URI_ASCII_ESCP_RNGS);
 
     # ============================================
-    #   Process the search query for the the search placeholder
+    #   Process the search query for the search placeholder
     # ============================================
 
     my $srchQryIndx;
