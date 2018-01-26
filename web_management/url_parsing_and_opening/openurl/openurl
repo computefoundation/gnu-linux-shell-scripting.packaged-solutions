@@ -159,34 +159,64 @@ listBrowserCommands() {
 }
 
 # printBrowserVariableNotDefinedMessage:
-#   Print an error message for the browser variable not being defined. Argument
-#   1 should be how the variable was defined; it must be either "alias", "url"
-#   or empty if it was specified with an argument option.
+#   Print an error message for the browser variable not being defined.
+#   Parameters:
+#     1. How the browser was selected: "alias" for alias, "url" for url and ""
+#        for an argument option. 
+#     2. Alias name; empty otherwise
+#     3. Browser type (e.g. "gui1", "gui4", "term3")
 printBrowserVariableNotDefinedMessage() {
-  if [ $# -ge 3 ]; then
-    local brwsrValCaps="$(echo -n "${3}"|tr '[:lower:]' '[:upper:]')"
-  fi
+  local brwsrTypeCaps="$(echo -n "${3}" | tr '[:lower:]' '[:upper:]')"
 
+  echo -n 'openurl: '
   if [ "${1}" = 'alias' ]; then
-    echo -e "openurl: Browser \"${3}\" selected for alias\n  \"${2}\""\
-        "in one of the URL aliases\n  files, however, variable"\
-        "BROWSER_${brwsrValCaps} is\n  not defined." 1>&2
+    echo -e "Browser ${brwsrTypeCaps} selected for alias\n "\
+        "\"${2}\" in one of the URL aliases\n "\
+        "files and variable BROWSER_${brwsrTypeCaps} is not\n "\
+        "defined." 1>&2
   elif [ "${1}" = 'url' ]; then
-    echo -e "openurl: Browser \"${3}\" selected for a URL in\n  one of"\
-        "the URL aliases files, however, variable\n  BROWSER_${brwsrValCaps}"\
-        "is not defined." 1>&2
+    echo -e "Browser ${brwsrTypeCaps} selected for a URL\n "\
+        "in one of the URL aliases files and\n "\
+        "variable BROWSER_${brwsrTypeCaps} is not defined." 1>&2
   else
-    echo -e "openurl: Browser \"${2}\" is not defined." 1>&2
+    echo -e "Browser ${brwsrTypeCaps} selected and variable\n "\
+        "BROWSER_${brwsrTypeCaps} is not defined." 1>&2
   fi
+  echo -e "  Please define variable BROWSER_${brwsrTypeCaps} in\n "\
+      "section Configurations."
+}
 
-  read -d '' mesg <<-EOF
-    Please define it under CONFIGURATIONS or
-    use a different browser. The value may be
-    a new browser command or simply a
-    duplicate of another.
-	EOF
-  
-  while read -r line; do echo "  ${line}" 1>&2; done <<< "${mesg}"
+# printBrowserCommandDoesNotExistMessage:
+#   Print an error message for a browser command not existing.
+#   Parameters:
+#     1. How the browser was selected: "alias" for alias, "url" for url and ""
+#        for an argument option.
+#     2. Alias name; empty otherwise
+#     3. Browser type (e.g. "gui1", "gui4", "term3")
+printBrowserCommandDoesNotExistMessage() {
+  local brwsrTypeCaps="$(echo -n "${3}" | tr '[:lower:]' '[:upper:]')"
+  local brwsrCmdVar="BROWSER_${brwsrTypeCaps}"
+  local brwsrCmdStart="${!brwsrCmdVar%%' '*}"
+
+  echo -n 'openurl: '
+  if [ "${1}" = 'alias' ]; then
+    echo -e "Browser ${brwsrTypeCaps} selected for alias\n "\
+        "\"${2}\" in one of the URL aliases\n "\
+        "files and command \"${brwsrCmdStart}\"\n "\
+        "assigned to variable BROWSER_${brwsrTypeCaps} does not\n "\
+        "exist." 1>&2
+  elif [ "${1}" = 'url' ]; then
+    echo -e "Browser ${brwsrTypeCaps} selected for a URL\n "\
+        "in one of the URL aliases files and command\n "\
+        "\"${brwsrCmdStart}\" assigned to variable\n "\
+        "BROWSER_${brwsrTypeCaps} does not exist." 1>&2
+  else
+    echo -e "Browser ${brwsrTypeCaps} selected and command\n "\
+        "\"${brwsrCmdStart}\" assigned to variable\n "\
+        "BROWSER_${brwsrTypeCaps} does not exist." 1>&2
+  fi
+  echo -e "  Please fix the command assigned to\n "\
+      "BROWSER_${brwsrTypeCaps} in section Configurations."
 }
 
 # ============================================
@@ -272,7 +302,11 @@ if [ "${OPT_MULTIPLE_ALIASES}" = 'true' ] && [ $# -eq 0 ]; then
 fi
 
 if [ -z "${BROWSER_COMMAND}" ]; then
-  printBrowserVariableNotDefinedMessage '' \
+  printBrowserVariableNotDefinedMessage '' '' \
+      "${BROWSER_COMMAND_BROWSER_TYPE}${brwsrNum}"
+  exit 1
+elif ! command -v "${BROWSER_COMMAND%%' '*}" >/dev/null 2>&1; then
+  printBrowserCommandDoesNotExistMessage '' '' \
       "${BROWSER_COMMAND_BROWSER_TYPE}${brwsrNum}"
   exit 1
 fi
@@ -313,6 +347,9 @@ processAliasConfigurations() {
 
         [ -z "${BROWSER_COMMAND}" ] && printBrowserVariableNotDefinedMessage \
             'alias' "${1}" "${brwsrVal}" && exit 1
+        ! command -v "${BROWSER_COMMAND%%' '*}" >/dev/null 2>&1 && \
+            printBrowserCommandDoesNotExistMessage 'alias' "${1}" \
+            "${brwsrVal}" && exit 1
         ;;
       dump*)
         DUMP=true
@@ -330,7 +367,7 @@ processAliasConfigurations() {
 
 # createBrowserCommandUrlsHashes:
 #   Create hashes for URLs using the same browser command and URLs that are to
-#   dump their output and process their final configuration values.
+#   dump their output and process their configuration values.
 createBrowserCommandUrlsHashes() {
   for url_urlOpts in ${URLS_URLSOPTS[@]}; do
     local url_urlOptsArr=(${url_urlOpts//'<>'/ })
@@ -362,13 +399,16 @@ createBrowserCommandUrlsHashes() {
         brwsrVal='term1'
       fi
 
-      local brwsrValCaps="$(echo -n "${brwsrVal}"|tr '[:lower:]' '[:upper:]')"
+      local brwsrValCaps="$(echo -n "${brwsrVal}" | tr '[:lower:]' '[:upper:]')"
       local brwsrVar="BROWSER_${brwsrValCaps}"
       local brwsr="${!brwsrVar}"
       local brwsrType="${brwsrValCaps%[0-9]}"
 
       [ -z "${brwsr}" ] && printBrowserVariableNotDefinedMessage 'url' '' \
           "${brwsrVal}" && exit 1
+      ! command -v "${brwsr%%' '*}" >/dev/null 2>&1 && \
+          printBrowserCommandDoesNotExistMessage 'url' '' "${brwsrVal}" && \
+          exit 1
 
       if [[ ( "${hasDumpOpt}" = 'true' || "${DUMP}" = 'true' ) && ${brwsrType} \
           != 'GUI' ]]; then
