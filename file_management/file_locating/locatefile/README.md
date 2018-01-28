@@ -5,13 +5,13 @@ Locate a file from a database.
 
 ## Databases
 
-Locatefile uses two databases consisting of file and directory paths, respectively.
+Locatefile uses two databases: one for file and one for directory paths.
 
-It searches the file paths database by default and the directory paths database via switch `-d`.
-
-*The directories **file_paths_database** and **directory_paths_database** are precreated example databases. The following examples are based on them.*
+[locatefile](locatefile) searches the file paths database by default and the directory paths database via switch `-d`.
 
 ## Examples
+
+*Note: The following examples are based on the precreated example databases [file_paths_database](file_paths_database) and [directory_paths_database](directory_paths_database).*
 
 ### 1. Locate a file
 
@@ -19,13 +19,13 @@ It searches the file paths database by default and the directory paths database 
 locatefile my-doc # returns "/home/user/documents/my-document.txt"
 ```
 
-*Use any part of the file or directory name; the first match will be returned.*
+*Any part of the file name can be used; the first match will be returned*
 
 ```bash
 locatefile shr # returns "/home/user/.bashrc"
 ```
 
-*Locate a file or directory in a mounted drive (see the MOUNTPOINT_PATHS variable in [configurations](configurations) for more information).*
+*A file can be located in a mounted drive (see the MOUNTPOINT_PATHS variable in [configurations](configurations) for more information)*
 
 ```bash
 locatefile stat # returns "MNTPNT_PATH/records/external/statistics.txt" (if the drive containing the
@@ -38,22 +38,22 @@ locatefile stat # returns "MNTPNT_PATH/records/external/statistics.txt" (if the 
 locatefile -d tur # returns "/home/user/pictures"
 ```
 
-## Set up
+## Usage
 
-1. Adjust configurations as needed in [configurations](configurations).
-2. Define the databases file/directory paths in [filepaths](filepaths).
+1. Adjust the configurations in [configurations](configurations).
+2. Define the databases' file paths in [filepaths](filepaths).
 3. Run [updatedb](updatedb).
 
 ## Notes
 
-Locatefile...
+[locatefile](locatefile)...
 
-* ...accepts regular expressions for the file/directory name.
+* ...accepts regular expressions in its file name argument.
 * ...does not support file names with spaces.
 
 ## Download
 
-Run the following command to download:
+Run the following command to download Locatefile:
 
 ```bash
 bash <(curl -s 'https://raw.githubusercontent.com/computingfoundation/'\
