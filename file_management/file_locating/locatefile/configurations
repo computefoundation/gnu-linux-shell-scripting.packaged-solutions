@@ -20,7 +20,7 @@ DIRECTORY_PATHS_DATABASE_DIRECTORY="${HERE}/directory_paths_database"
 # Names of files used in both databases
 #   These file names must match the file names in dbfilepaths. Note: These files
 #   will be searched in in the given order.
-DATABASE_FILE_NAMES=('mount-drive-1-paths' 'mount-drive-2-paths' 'home-paths')
+DATABASE_FILE_NAMES=('home-paths' 'mount-drive-1-paths' 'mount-drive-2-paths')
 
 # Paths of mounted drives containing files to be located
 #   When a databse file or directory path begins with "{MNTPNT_PATH}/", these

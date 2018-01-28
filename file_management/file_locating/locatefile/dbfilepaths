@@ -31,20 +31,6 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
   dest="${FILE_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
 
   case "${dbFileName}" in
-    'home-paths')
-      echo -n '' > "${dest}"
-
-      find_out 'f' '1' "${dest}" '/home/user/documents'
-      find_out 'f' '0' "${dest}" '/home/user/.bashrc'
-      find_out 'f' '0' "${dest}" '/home/user/.bash_profile'
-      find_out 'f' '0' "${dest}" '/home/user/.vimrc'
-      find_out 'f' '0' "${dest}" '/home/user/.ssh/config'
-      find_out 'f' '1' "${dest}" '/home/user/bin'
-      find_out 'f' '0' "${dest}" '/home/user/share/calendar/events.txt'
-      find_out 'f' '2' "${dest}" '/home/user/pictures'
-      find_out 'f' '1' "${dest}" '/home/user/archived_data/backup'
-      ;;
-
     'mount-drive-1-paths')
       if mountpoint '/mnt/usb2' >/dev/null; then
         echo -n '' > "${dest}"
@@ -70,6 +56,20 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
         find_out 'f' '0' "${dest}" '/mnt/usb3/components/main/resources/logo.png'
         find_out 'f' '2' "${dest}" '/mnt/usb3/global'
       fi
+      ;;
+
+    'home-paths')
+      echo -n '' > "${dest}"
+
+      find_out 'f' '1' "${dest}" '/home/user/documents'
+      find_out 'f' '0' "${dest}" '/home/user/.bashrc'
+      find_out 'f' '0' "${dest}" '/home/user/.bash_profile'
+      find_out 'f' '0' "${dest}" '/home/user/.vimrc'
+      find_out 'f' '0' "${dest}" '/home/user/.ssh/config'
+      find_out 'f' '1' "${dest}" '/home/user/bin'
+      find_out 'f' '0' "${dest}" '/home/user/share/calendar/events.txt'
+      find_out 'f' '2' "${dest}" '/home/user/pictures'
+      find_out 'f' '1' "${dest}" '/home/user/archived_data/backup'
       ;;
   esac
 done
