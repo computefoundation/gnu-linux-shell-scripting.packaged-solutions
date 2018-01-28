@@ -10,10 +10,10 @@
 #   accepts multiple URL aliases and URL aliases files.
 # 
 # Usage:
-#   aliases-file-parser.pl <URL aliases files directory> <URL aliases files>
+#   aliases-file-parser.pl <URL_aliases_files_directory> <URL_aliases_files>
 #           <aliases...>
 # 
-#   <URL aliases files>: delimited by a vertical bar ("|")
+#       <URL_aliases_files>: delimited by a vertical bar ("|")
 # 
 # Returns:
 #   Returns an empty string if no aliases are found. Returns either the final
@@ -23,7 +23,7 @@
 #     [alias1_opt1[<>alias1_opt2]<$>]URL1[<>opt1[<>opt2]]
 #     [  <|>URL2[<>opt1[<>opt2]]  [<|>URL3[<>opt1[<>opt2]]  ...]  ]
 #     [<&>
-#     (alias 2; everything above the previous line)
+#     (same as above previous line for alias 2)
 #     ...]
 # 
 #   Example (newlines added for clarity):
@@ -49,7 +49,7 @@ use warnings;
 # ======= CONFIGURATIONS ==============
 
 # Maximum number of URLs allowed per alias
-my $MAX_URLS_PER_ALIAS = 40;
+my $MAXIMUM_URLS_ALLOWED_PER_ALIAS = 40;
 
 # ======= ! CONFIGURATIONS ==============
 
@@ -228,17 +228,18 @@ for my $argUrlAlias (@ARG_URL_ALIASES) {
                   " in an unallowed format or contains\n    unallowed",
                   " characters. URLs must contain\n    at least one dot or",
                   " colon and not begin\n    or end with one; unallowed",
-                  " characters\n    include the following: ^ ` < >\n";
+                  " characters\n    include the following: ^ ` < > \n";
               exit 1;
             }
           }
 
           if ($urlsRetStr) {
-            if ($urlsCnt > $MAX_URLS_PER_ALIAS) {
+            if ($urlsCnt > $MAXIMUM_URLS_ALLOWED_PER_ALIAS) {
               print "error:\n  \"$urlAliasesFileName\":\n    line",
                   " $aliasesLineNo: too many URLs for\n    alias",
-                  " \"$argUrlAlias\": $urlsCnt (max:\n    $MAX_URLS_PER_ALIAS;",
-                  " value can be changed in\n    aliases-file-parser.pl)\n";
+                  " \"$argUrlAlias\": $urlsCnt (max:\n    ",
+                  "$MAXIMUM_URLS_ALLOWED_PER_ALIAS; value can be changed in\n",
+                  "    aliases-file-parser.pl)\n";
               exit 1;
             }
 
