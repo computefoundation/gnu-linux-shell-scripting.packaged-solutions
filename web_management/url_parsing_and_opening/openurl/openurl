@@ -22,7 +22,7 @@ readonly HERE="$(dirname "${0}")"
 
 # ======= CONFIGURATIONS ==============
 
-# Directory where URL aliases files are stored.
+# Directory where URL aliases files are stored
 readonly URL_ALIASES_FILES_DIRECTORY="${HERE}"
 
 # URL aliases files
@@ -32,13 +32,10 @@ readonly URL_ALIASES_FILES=(
 
 # GUI and terminal web browser commands
 # Options:
-#   1. All URLs for a browser command are opened in a single run. To open each
-#      URL for a browser command independently, prepend two colons ("::") to the
-#      browser command. Note: This applies only to GUI browsers.
-#   2. To run a command after the browser command has run, append two semicolons
-#      (";;") to the browser command followed by the command to run. Note: This
-#      applies to both GUI and terminal browsers. Note: The command will run
-#      once regardless if option #1 is used.
+#   1. Prepend two colons ("::") to a browser command to open each URL for a
+#      browser command independently. (This applies only to GUI browsers).
+#   2. Append two semicolons (";;") to a browser command followed by a command
+#      to execute after the browser command has executed.
 readonly BROWSER_GUI1='/usr/bin/firefox'
 readonly BROWSER_GUI2='/usr/bin/firefox -private-window'
 readonly BROWSER_GUI3='/usr/bin/chromium'
@@ -56,17 +53,18 @@ readonly BROWSER_TERM5=''
 readonly BROWSER_TERM6=''
 readonly BROWSER_TERM7=''
 
-# Whether or not to use all arguments as a search query with the default search
-# URL if the first argument does not match any alias; will exit otherwise.
+# Use all arguments as a search query with the default search URL if the first
+# argument does not match any alias; exit otherwise.
 readonly SEARCH_IF_ALIAS_NOT_FOUND=true
 
-# Default search URL
-readonly DEFAULT_SEARCH_URL='https://www.google.com/search?q={search\+}'
+# Default search URL used for a search query
+readonly SEARCH_QUERY_SEARCH_URL='https://www.google.com/search?q={search\+}'
 
-# Top level domains used to match URLs
-readonly URL_MATCH_TOP_LEVEL_DOMAINS='.com .org .edu .gov .uk .net'
+# Top level domain suffixes used to match URL arguments
+readonly URL_ARGUMENT_MATCH_TOP_LEVEL_DOMAIN_SUFFIXES='.com .org .edu .gov .uk
+.net'
 
-# Terminal emulator used for opening terminal windows
+# The terminal emulator command used for opening terminal windows
 TERMINAL() {
   local startX=50; local startY=100; local width=110; local height=44
 
@@ -76,15 +74,15 @@ TERMINAL() {
       "eval ${@:2};"' rs=$? && [ $rs -ne 0 ] && sleep 3' &>/dev/null &
 }
 
-# Whether or not to open all URLs for a terminal browser in their own individual
-# terminal windows; if not, they will be opened in the same terminal window for
-# their browser. (The latter works well with browsers that use switchable
-# buffers, such as w3m; if a browser does not support buffers, it may not work
-# well.) Note: This configuration will not apply when the dump option is used
-# as each URL will always be dumped to its own individual terminal window).
+# Open all URLs for a terminal browser in their own individual terminal windows;
+# open in the same terminal window otherwise.
+# Notes:
+#   -The latter works well with browsers supporting buffers (e.g. w3m).
+#   -This configuration does not apply to the dump option as each URL is always
+#    dumped to its own terminal window.
 readonly OPEN_TERM_BROWSER_URLS_IN_INDIVIDUAL_WINDOWS=false
 
-# Default options used for less when dumping a webpage
+# Default less command options used when dumping a webpage
 readonly LESS_COMMAND_OPTIONS='-IFRXMc'
 
 # ======= ! CONFIGURATIONS ==============
@@ -101,7 +99,7 @@ Usage:
   3. openurl [options] <websites/URLs...>
          If any of the arguments begin with \"http[s]://\",
          \"ftp://\" or \"file://\" or end with any of the top
-         level domains defined by URL_MATCH_TOP_LEVEL_DOMAINS
+         level domains defined by URL_ARGUMENT_MATCH_TOP_LEVEL_DOMAIN_SUFFIXES
          under CONFIGURATIONS, each will be openeded as a URL
          directly.
 
@@ -220,7 +218,7 @@ printBrowserCommandDoesNotExistMessage() {
 }
 
 # ============================================
-#   Initialize main variables
+#   Initialize the main variables
 # ============================================
 
 # DEFAULT/ALIAS CONFIGURATIONS: Congiurations for URL opening assigned by either
@@ -490,7 +488,7 @@ finalizeConfigurationsAndExecuteBrowser() {
 #   Open URL arguments and exit if any are
 # ===================================================
 
-topLevlDomnsRegex="$(echo "${URL_MATCH_TOP_LEVEL_DOMAINS}" | tr -s ' ')"
+topLevlDomnsRegex="$(echo "${URL_ARGUMENT_MATCH_TOP_LEVEL_DOMAIN_SUFFIXES}" | tr -s ' ')"
 topLevlDomnsRegex="${topLevlDomnsRegex//'.'/'\.'}"
 
 regex='('                               # begin prefix group
@@ -676,7 +674,7 @@ else
   fi
 
   dfltSrchUrlPrsd="$("${HERE}/search-placeholder-url-parser.pl" \
-      "${DEFAULT_SEARCH_URL}" "${@}")"
+      "${SEARCH_QUERY_SEARCH_URL}" "${@}")"
 
   if [ "${OPT_OUTPUT_TO_CLIPBOARD}" = 'true' ]; then
     URLS_FOR_X11_CLIPBOARD=("${dfltSrchUrlPrsd}")
