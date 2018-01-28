@@ -1,7 +1,7 @@
 
 # Openurl
 
-Open one or more URLs from the terminal directly or using an alias or search query.
+Open one or more URLs from the terminal directly or with an alias or search query.
 
 Openurl defines four argument schemas:
 
@@ -72,7 +72,7 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 
 ## Download
 
-Run the following command to download:
+Run the following command to download Openurl:
 
 ```bash
 bash <(curl -s 'https://raw.githubusercontent.com/computingfoundation/'\

@@ -4,7 +4,7 @@
 #   openurl
 # 
 # Description:
-#   Open one or more URLs from the terminal directly or using an alias or search
+#   Open one or more URLs from the terminal directly or with an alias or search
 #   query.
 # 
 # Dependencies:
