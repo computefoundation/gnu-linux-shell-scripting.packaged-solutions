@@ -1,5 +1,5 @@
 
-This repository is an extension of [General-purpose-computing](https://github.com/computingfoundation/general-purpose-computing) for solutions consisting of more than one file.
+An extension of [General-purpose-computing](https://github.com/computingfoundation/general-purpose-computing) for solutions consisting of more than one file
 
 ## File management
 
