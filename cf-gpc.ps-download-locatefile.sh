@@ -8,7 +8,7 @@
 #   computingfoundation/general-purpose-computing.packaged-solutions.
 # 
 
-readonly SOLUTION_PATH='file_management/file_locating/locatefile'
+readonly SOLUTION_PATH='file_management/file_retrieval/locatefile'
 readonly SOLUTION_URL='https://raw.githubusercontent.com/computingfoundation'\
 "/general-purpose-computing.packaged-solutions/master/${SOLUTION_PATH}"
 
