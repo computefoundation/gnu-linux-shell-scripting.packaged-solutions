@@ -14,17 +14,17 @@ source "${HERE}/configurations"
 #   Create the main functions
 # ============================================
 
-# find_out:
+# find_out
 #   Recursively search through a file or directory and output all found files or
 #   directories to a file.
-# Parameters:
-#   1. Type of file to output: "f" for files and "d" for directories
-#   2. Maximum depth to search (e.g. "0" for no depth [and to output just the
-#      file itself] and "1" for the first level subdirectory)
-#   3. Path of file where output will be sent
-#   4. Path of file or directory to search through (note: accepts wildcards)
-#   5. (Optional) Whether or not to disclude dot files; pass "--nodot" to
-#      specify true 
+#   Parameters:
+#     1. Type of file to output: "f" for files and "d" for directories
+#     2. Maximum depth to search (e.g. "0" for no depth [and to output just the
+#        file itself] and "1" for the first level subdirectory)
+#     3. Path of file where output will be sent
+#     4. Path of file or directory to search through (note: accepts wildcards)
+#     5. (Optional) Whether or not to disclude dot files; pass "--nodot" for
+#        true
 find_out() {
   if [ $# -le 3 ] || [ $# -ge 6 ]; then
     echo 'updatedb: invalid number of arguments' 1>&2
@@ -65,7 +65,7 @@ fi
 #   Populate the databases
 # ============================================
 
-source "${HERE}/filepaths"
+source "${HERE}/dbfilepaths"
 
 # ============================================
 #   Process the mountpoint directory paths

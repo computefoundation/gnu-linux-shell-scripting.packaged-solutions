@@ -4,7 +4,7 @@
 #   configurations
 # 
 # Description:
-#   Configurations for scripts in this directory
+#   The configurations for Locatefile
 # 
 # Note:
 #   Variable "HERE" is defined in the sourcing scripts (locatefile and updatedb)
@@ -18,7 +18,7 @@ FILE_PATHS_DATABASE_DIRECTORY="${HERE}/file_paths_database"
 DIRECTORY_PATHS_DATABASE_DIRECTORY="${HERE}/directory_paths_database"
 
 # Names of files used in both databases
-#   These file names must match the file names in filepaths. Note: The files
+#   These file names must match the file names in dbfilepaths. Note: These files
 #   will be searched in in the given order.
 DATABASE_FILE_NAMES=('mount-drive-1-paths' 'mount-drive-2-paths' 'home-paths')
 
@@ -35,6 +35,6 @@ MOUNTPOINT_PATHS=(
   '/mnt/usb4'
 )
 
-# Remove all databases files before updating databases
+# Remove all files from the databases before updating them
 REMOVE_DATABASE_FILES_BEFORE_UPDATING_DATABASES=true
 

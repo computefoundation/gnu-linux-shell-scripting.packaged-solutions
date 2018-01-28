@@ -41,7 +41,7 @@ locatefile -d tur # returns "/home/user/pictures"
 ## Usage
 
 1. Adjust the configurations in [configurations](configurations).
-2. Define the databases' file paths in [filepaths](filepaths).
+2. Define the databases' file paths in [dbfilepaths](dbfilepaths).
 3. Run [updatedb](updatedb).
 
 ## Notes

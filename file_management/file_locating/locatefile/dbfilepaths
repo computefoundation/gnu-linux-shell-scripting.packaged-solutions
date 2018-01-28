@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 # 
 # File:
-#   filepaths
+#   dbfilepaths
 # 
 # Description:
-#   The database file and directory paths
+#   The databases' file paths
 # 
-# Notes:
-#   The file names in the case blocks must match those defined in the
-#   configurations file.
-# 
+# Usage note:
 #   A file or directory path for a database is specified using the "find_out"
 #   function. It searches and returns files (or directories) recursively and
-#   has the following five parameters:
+#   has the following parameters:
 #     1. Type of file to output: "f" for files and "d" for directories
 #     2. Maximum depth to search (e.g. "0" for no depth [and to output just the
 #        file itself] and "1" for the first level subdirectory)
@@ -20,6 +17,10 @@
 #     4. Path of file or directory to search through (note: accepts wildcards)
 #     5. (Optional) Whether or not to disclude dot files; pass "--nodot" to
 #        specify true
+# 
+# Notes:
+#   The file names in the case blocks must match those defined in the
+#   configurations file.
 # 
 
 source "${HERE}/configurations"
