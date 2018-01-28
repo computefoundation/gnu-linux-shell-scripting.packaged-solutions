@@ -40,7 +40,7 @@ echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation\
 /general-purpose-computing.packaged-solutions\n  Please wait"
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
-curl -O "${SOLUTION_URL}/{configurations,filepaths,locatefile,updatedb}"
+curl -O "${SOLUTION_URL}/{configurations,dbfilepaths,locatefile,updatedb}"
 chmod +x 'locatefile' 'updatedb'
 
 currPath='/directory_paths_database'
