@@ -11,13 +11,16 @@
 #   search-placeholder-url-parser.pl \
 #       "https://duckduckgo.com/?q={search\+}&iax=1&ia=images" \
 #       "earth's biosphere"
+# 
 #   # output: "https://duckduckgo.com/?q=earth%27s+biosphere&iax=1&ia=images"
 # 
 # Usage:
-#   search-placeholder-url-parser.pl <URLs> <search queries...>
+#   search-placeholder-url-parser.pl <URLs> <search_queries...>
+# 
 #       <URLs>: must be in the first argument and delimited by "<|>"
-#       <search queries...>: delimited by $SEARCH_QUERY_DELIM; can be passed in
-#           any number of arguments as all arguments after the first are joined.
+#       <search_queries...>: delimited by $SEARCH_QUERY_DELIMITER; can be passed
+#           in any number of arguments as all arguments after the first are
+#           joined.
 # 
 # The search query placeholder:
 #   A URL may contain multiple {search\D} placeholders to use multiple search
@@ -67,29 +70,31 @@ use URI::Escape;
 
 # ======= CONFIGURATIONS ==============
 
-# Delimiter used to separate search queries.
-my $SEARCH_QUERY_DELIM = '%%';
+# Delimiter used to separate search queries
+my $SEARCH_QUERY_DELIMITER = '%%';
 
-# Maximum number of {search\D} placeholders allowed per URL.
-my $MAX_SEARCH_PLACEHOLDERS_PER_URL = 8;
+# Maximum {search\D} placeholders allowed per URL
+my $MAXIMUM_SEARCH_PLACEHOLDERS_ALLOWED_PER_URL = 8;
 
 # ======= ! CONFIGURATIONS ==============
 
-# These are the ASCII ranges for escaping unsafe URL characters in the URLs and
-# the search queries. (The following ranges include almost all unsafe URL
-# characters and disclude [#$%&-=?_ ]. To include these with the exception of
-# the space, use "\x00-\x1F\x21-\x2C\x3B-\x40\x5B-\x60\x7B-\xFF" instead.)
-# Important note: Do not include the space character as spaces must be replaced
-# with the search placeholder delimiter.
-my $SRCH_QRY_ASCII_ESCP_RNGS = '\x00-\x1F\x21\x22\x24\x27-\x2C\x3B\x3C\x3E\x40';
-$SRCH_QRY_ASCII_ESCP_RNGS .= '\x5B-\x5E\x60\x7B-\xFF';
+# ASCII ranges for unsafe URL characters in the search queries
+# Notes:
+#   -The following ranges include almost all unsafe URL characters and disclude
+#    [#$%&-=?_ ] (to include these with the exception of the space, use
+#    "\x00-\x1F\x21-\x2C\x3B-\x40\x5B-\x60\x7B-\xFF" instead).
+#   -Important: The space character must not be included as spaces are replaced
+#    by the search placeholder delimiter.
+my $SEARCH_QUERY_ASCII_ESCAPE_RANGES = '\x00-\x1F\x21\x22\x24\x27-\x2C\x3B\x3C';
+$SEARCH_QUERY_ASCII_ESCAPE_RANGES .= '\x3E\x40\x5B-\x5E\x60\x7B-\xFF';
 
-# ASCII escape ranges for all other parts of the URL
-my $URI_ASCII_ESCP_RNGS = $SRCH_QRY_ASCII_ESCP_RNGS.'\x20';
+# ASCII ranges for unsafe URL characters in all parts of the URL except the
+# search queries
+my $URI_ASCII_ESCAPE_RANGES = $SEARCH_QUERY_ASCII_ESCAPE_RANGES.'\x20';
 
 if (scalar @ARGV < 1) {
-  # "error" for script errors are followed by an underscore to distinguish them
-  # from formatting errors (this distinction is primarily used by other scripts)
+  # Script error messages begin with "error" followed by an underscore so they
+  # can be distinguished from URL and search query formatting error messages.
   print 'error_: invalid number of arguments: '.scalar @ARGV."\n";
   exit 1;
 }
@@ -111,11 +116,16 @@ $ARG_SEARCH_QUERIES =~ s/^\s+|\s+$//g;
 # are no empty search queries at the beginning. This means the first non-empty
 # search query is shifted to the first position. Empty search queries after it
 # are allowed.
-$ARG_SEARCH_QUERIES =~ s/^(\s*$SEARCH_QUERY_DELIM\s*)*//;
+$ARG_SEARCH_QUERIES =~ s/^(\s*$SEARCH_QUERY_DELIMITER\s*)*//;
 
-my @SEARCH_QUERIES = split(/\s*$SEARCH_QUERY_DELIM\s*/, $ARG_SEARCH_QUERIES);
+my @SEARCH_QUERIES = split(/\s*$SEARCH_QUERY_DELIMITER\s*/,
+    $ARG_SEARCH_QUERIES);
 
-# Utility function to escape a section of a URL.
+# escapeUrlSection
+#   Escape unsafe URL characters in a section of a URL.
+#   Parameters:
+#     1. The section of the URL to escape (passed by reference)
+#     2. The ASCII escape range(s) to use (passed by reference)
 sub escapeUrlSection {
   my $urlSect = ${(shift)};
   my $uriEscpRngs = ${(shift)};
@@ -171,9 +181,10 @@ for my $urlWData (@ARG_URLS_W_DATA) {
           " Length: ".length($spcDelim)."\n  Delimiter: \"$spcDelim\"\n ",
           " URL:\n  $url\n";
       exit 1;
-    } elsif ($srchPlhNo > $MAX_SEARCH_PLACEHOLDERS_PER_URL) {
-      print "error: cannot use\n  more than $MAX_SEARCH_PLACEHOLDERS_PER_URL",
-          " {search\\D}\n  placeholders; URL:\n  $url\n";
+    } elsif ($srchPlhNo > $MAXIMUM_SEARCH_PLACEHOLDERS_ALLOWED_PER_URL) {
+      print "error: cannot use\n  more than",
+          " $MAXIMUM_SEARCH_PLACEHOLDERS_ALLOWED_PER_URL {search\\D}\n ",
+          " placeholders; URL:\n  $url\n";
       exit 1;
     }
 
@@ -192,10 +203,11 @@ for my $urlWData (@ARG_URLS_W_DATA) {
         my $opt = $1;
 
         if ($opt =~ qr/^[0-9]{1,2}$/) {
-          if ($opt < 1 || $opt > $MAX_SEARCH_PLACEHOLDERS_PER_URL) {
+          if ($opt < 1 || $opt > $MAXIMUM_SEARCH_PLACEHOLDERS_ALLOWED_PER_URL) {
             print "error: search query\n  position $opt in placeholder\n ",
                 " $plh\n  out of range; valid range is",
-                " 1-$MAX_SEARCH_PLACEHOLDERS_PER_URL;\n  URL:\n  $url\n";
+                " 1-$MAXIMUM_SEARCH_PLACEHOLDERS_ALLOWED_PER_URL;\n  URL:\n ",
+                " $url\n";
             exit 1;
           }
 
@@ -230,7 +242,7 @@ for my $urlWData (@ARG_URLS_W_DATA) {
 
     $urlEndPos = $+[0];
 
-    $fnlUrl .= escapeUrlSection(\$txtBefr, \$URI_ASCII_ESCP_RNGS);
+    $fnlUrl .= escapeUrlSection(\$txtBefr, \$URI_ASCII_ESCAPE_RANGES);
 
     # ============================================
     #   Process the search query for the search placeholder
@@ -286,7 +298,8 @@ for my $urlWData (@ARG_URLS_W_DATA) {
         $srchQry =~ s/%2C//g;
       }
 
-      $srchQry = escapeUrlSection(\$srchQry, \$SRCH_QRY_ASCII_ESCP_RNGS);
+      $srchQry = escapeUrlSection(\$srchQry,
+          \$SEARCH_QUERY_ASCII_ESCAPE_RANGES);
 
       $srchQry =~ s/\s/$spcDelim/g;
 
@@ -297,7 +310,7 @@ for my $urlWData (@ARG_URLS_W_DATA) {
   my $urlEnd = substr($url, $urlEndPos);
   
   if ($urlEnd ne '') {
-    $fnlUrl .= escapeUrlSection(\$urlEnd, \$URI_ASCII_ESCP_RNGS);
+    $fnlUrl .= escapeUrlSection(\$urlEnd, \$URI_ASCII_ESCAPE_RANGES);
   }
 
   my $fnlStr = ($urlData) ? "$fnlUrl$urlData" : $fnlUrl;
