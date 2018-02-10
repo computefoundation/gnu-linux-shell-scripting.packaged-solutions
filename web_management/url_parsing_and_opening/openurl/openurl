@@ -8,6 +8,10 @@
 #   query.
 # 
 # Dependencies:
+#   aliases-file-parser.pl
+# 
+#   search-placeholder-url-parser.pl
+# 
 #   Perl module "URI::Escape"
 #       (Run "cpan URI::Escape" to install.)
 # 
@@ -295,7 +299,8 @@ if [ "$#" -eq 0 ] && [ "${DUMP}" = 'true' ]; then
 fi
 
 if [ "${OPT_MULTIPLE_ALIASES}" = 'true' ] && [ $# -eq 0 ]; then
-  echo -e 'openurl: one or more aliases required\n  with option -m' 1>&2
+  echo -e 'openurl: one or more aliases required with\n  option -m,'\
+      '--multiple-aliases' 1>&2
   exit 1
 fi
 
