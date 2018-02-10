@@ -4,10 +4,9 @@
 #   aliases-file-parser.pl
 # 
 # Description:
-#   This is the URL aliases file parser for openurl. It searches for the given
-#   alias in the specified URL aliases file and returns its/their URL(s) with
-#   any configuration options for both specified in the URL aliases file. It
-#   accepts multiple URL aliases and URL aliases files.
+#   This is the parser for the URL aliases file for openurl. It searches for the
+#   given alias in the specified URL aliases file and returns its/their URL(s)
+#   with any configuration options for both.
 # 
 # Usage:
 #   aliases-file-parser.pl <URL_aliases_files_directory> <URL_aliases_files>
@@ -65,8 +64,8 @@ my @URL_ALIASES_FILES = split(/\|/, $ARGV[1]);
 shift @ARGV for 1..2;
 my @ARG_URL_ALIASES = @ARGV;
 
-# parseOptions:
-#   Parse options for an alias or a URL.
+# parseOptions
+#   Parse an alias' or a URL's options.
 sub parseOptions {
   my $optionsStr = shift;
   my $urlAliasesFileName = shift;
@@ -148,8 +147,8 @@ sub parseOptions {
   return $frmtdOpts;
 }
 
-# A URL must contain at least one dot or colon so that all remaining aliases
-# after the one matched are not interpreted as URLs.
+# A URL must contain at least one dot or colon so that all alias lines in the
+# file after the one on which an alias was matched are not interpreted as URLs.
 my $URL_REGEX = qr/
   [-A-Za-z0-9+&@#\/%?=~_|()\[\]{}\\*\$'"!,;]+[:.]
   [-A-Za-z0-9+&@#\/%?=~_|()\[\]{}\\*\$'"!:,.;]*
