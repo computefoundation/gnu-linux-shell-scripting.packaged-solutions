@@ -274,7 +274,7 @@ while true; do
         CONFIG_OPT_SET=true
         if [ -n "${2}" ]; then
           arg="${2}"
-          [[ "${arg}" = 'ump'* ]] && arg="${arg#'ump'}"
+          [ -z "${arg##'ump'*}" ] && arg="${arg#'ump'}"
           if [[ "${arg}" =~ ^\+([0-9]{1,3}(\.[0-9])?)$ ]]; then
             DUMP_PG_FWD="${BASH_REMATCH[1]}"
           elif [ -n "${arg}" ]; then
@@ -343,7 +343,8 @@ processAliasConfigurations() {
     case "${aliasOpt}" in
       browser*)
         local brwsrVal="${aliasOpt#*=}"
-        local brwsrValCaps="$(echo -n "${brwsrVal}"|tr '[:lower:]' '[:upper:]')"
+        local brwsrValCaps="$(echo -n "${brwsrVal}" | tr '[:lower:]' \
+            '[:upper:]')"
         local brwsrVar="BROWSER_${brwsrValCaps}"
         BROWSER_COMMAND="${!brwsrVar}"
         BROWSER_COMMAND_BROWSER_TYPE="${brwsrValCaps%[0-9]}"
@@ -356,7 +357,7 @@ processAliasConfigurations() {
         ;;
       dump*)
         DUMP=true
-        if [[ "${aliasOpt}" = 'dump+'* ]]; then
+        if [ -z "${aliasOpt##'dump+'*}" ]; then
           DUMP_PG_FWD="${aliasOpt#*+}"
         fi
         if [ -z "${brwsrVar}" ]; then
@@ -374,7 +375,8 @@ processAliasConfigurations() {
 createBrowserCommandUrlsHashes() {
   for url_urlOpts in ${URLS_URLSOPTS[@]}; do
     local url_urlOptsArr=(${url_urlOpts//'<>'/ })
-    if [[ "${#url_urlOptsArr[@]}" -eq 1 || "${CONFIG_OPT_SET}" = 'true' ]]; then
+    if [ "${#url_urlOptsArr[@]}" -eq 1 ] || [ "${CONFIG_OPT_SET}" = 'true' ]
+    then
       if [ "${DUMP}" != 'true' ]; then
         local key="${BROWSER_COMMAND}%%${BROWSER_COMMAND_BROWSER_TYPE}"
         BROWSER_URL_HASHES["${key}"]+=" ${url_urlOptsArr[0]}"
@@ -393,12 +395,12 @@ createBrowserCommandUrlsHashes() {
           browser*) brwsrVal="${urlOpt#*=}";;
           dump*)
             hasDumpOpt=true
-            [[ "${urlOpt}" = 'dump+'* ]] && pgFwdVal="${urlOpt#*+}"
+            [ -z "${urlOpt##'dump+'*}" ] && pgFwdVal="${urlOpt#*+}"
             ;;
         esac
       done
 
-      if [[ "${hasDumpOpt}" = 'true' && -z "${brwsrVal}" ]]; then
+      if [ "${hasDumpOpt}" = 'true' ] && [ -z "${brwsrVal}" ]; then
         brwsrVal='term1'
       fi
 
@@ -419,7 +421,7 @@ createBrowserCommandUrlsHashes() {
         if [ "${hasDumpOpt}" = 'true' ]; then
           [ -n "${pgFwdVal}" ] && addPgFwd="<>${pgFwdVal}"
         else
-          [[ "${DUMP_PG_FWD}" != 0 ]] && addPgFwd="<>${DUMP_PG_FWD}"
+          [ "${DUMP_PG_FWD}" != 0 ] && addPgFwd="<>${DUMP_PG_FWD}"
         fi
 
         BROWSER_URL_DUMP_HASHES["${brwsr}"]+=" ${url_urlOptsArr[0]}${addPgFwd}"
@@ -459,7 +461,7 @@ finalizeConfigurationsAndExecuteBrowser() {
     [ "${#urlsArr[@]}" -gt 1 ] && termTtl+='...'
   fi
 
-  if [[ "${browser}" = *';;'* ]]; then
+  if [ -z "${browser##*';;'*}" ]; then
     local postRunCmd="${browser##*';;'}"
     browser="${browser%';;'*}"
   fi
@@ -469,7 +471,7 @@ finalizeConfigurationsAndExecuteBrowser() {
     TERMINAL "${termTtl}" "${cmd}"
   else
     if [ "${browserType}" = 'GUI' ]; then
-      if [[ "${browser}" = '::'* ]]; then
+      if [ -z "${browser##'::'*}" ]; then
         browser="${browser#*'::'}"
 
         local urlsArr=(${urls})
@@ -554,10 +556,10 @@ aliasesFileParserOut="$("${HERE}/aliases-file-parser.pl" \
     ${aliasesFileParserArgs})"
 
 if [ -n "${aliasesFileParserOut}" ]; then
-  if [[ "${aliasesFileParserOut}" = 'error:'* ]]; then
+  if [ -z "${aliasesFileParserOut##'error:'*}" ]; then
     echo "error in URL aliases file ${aliasesFileParserOut#'error:'}" 1>&2
     exit 1
-  elif [[ "${aliasesFileParserOut}" = 'error_:'* ]]; then
+  elif [ -z "${aliasesFileParserOut##'error_:'*}" ]; then
     echo "error in arguments: ${aliasesFileParserOut#'error_:'}" 1>&2
     exit 1
   fi
@@ -597,7 +599,7 @@ if [ -n "${aliasesFileParserOut}" ]; then
       local urlSrchPlhParserOut="$("${HERE}/search-placeholder-url-parser.pl" \
           "${aliasOpts_urls_urlsOpts["${1}"]}" \
           ${urlSearchPlaceholderParserArgs})"
-      [[ "${urlSrchPlhParserOut}" = 'error:'* ]] && \
+      [ -z "${urlSrchPlhParserOut##'error:'*}" ] && \
           echo -e "error in URL aliases file: ${urlSrchPlhParserOut#'error:'}" \
           1>&2 && exit 1
       URLS_URLSOPTS=(${urlSrchPlhParserOut//'<|>'/ })
