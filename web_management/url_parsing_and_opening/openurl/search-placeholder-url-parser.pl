@@ -5,7 +5,7 @@
 # 
 # Description:
 #   Replace one or more "{search\D}" placeholders in one or more URLs with a
-#   search query, where D is the URL's space delimiter.
+#   search query, where D is the space delimiter of the URL.
 # 
 # Example:
 #   search-placeholder-url-parser.pl \
@@ -22,25 +22,26 @@
 #           in any number of arguments as all arguments after the first are
 #           joined.
 # 
-# The search query placeholder:
-#   A URL may contain multiple {search\D} placeholders to use multiple search
-#   queries (e.g. start and end locations for travel directions) or to copy them
-#   within itself. The search query used by a placeholder corresponds to the
-#   placeholder's position in the URL. If one's search query does not exist, it
-#   will be replaced with an empty string.
+# Multiple search queries per URL:
+#   A URL can contain multiple {search\D} placeholders to allow multiple search
+#   queries (e.g. start and end locations for travel directions) or to copy one
+#   within itself. The search query used for a placeholder corresponds to the
+#   position of the placeholder in the URL. If a placeholder does not have a
+#   search query, it is replaced with an empty string.
 # 
-#   Placeholder options can be used to change and modify the search query used
-#   by a placeholder. They are specified with a bang ("!") and placed right
-#   before the delimiter specifier. They are the following:
+# Search query options:
+#   Search query options can be used to change and modify the search query used
+#   for a placeholder. They are specified with a bang ("!") and placed after the
+#   delimiter specifier. They are the following:
 # 
 #     !<N>:    Use search query N (e.g. {search!3\D})
 #     !W<P>:   Use word at position P of the search query only; will work for
 #              multiple words (e.g. {search!W2!W5!W6\+})
 #     !U[P]:   Make all letters of word at position P of the search query
 #              uppercase (e.g. {search!U1!U3\+}); omit P for all words
-#     !C:      Capitalize all words in the search query
-#     !R:      Reverse all words in the search query
-#     !M:      Remove all commas in the search query
+#     !C:      Capitalize all words of the search query
+#     !R:      Reverse all words of the search query
+#     !M:      Remove all commas of the search query
 # 
 # Multiple URLs:
 #   Multiple URLs can be passed in at once. They must be passed in the first
@@ -99,7 +100,7 @@ if (scalar @ARGV < 1) {
   exit 1;
 }
 
-# Remove leading "<|>" delimiters (including surrounding spaces) as they cause
+# Remove leading "<|>" delimiters and their surrounding spaces as they cause
 # empty array elements to be created at the beginning of the array.
 $ARGV[0] =~ s/^(\s*<|>\s*)*//;
 
@@ -112,7 +113,7 @@ shift @ARGV;
 my $ARG_SEARCH_QUERIES = join(' ', @ARGV);
 $ARG_SEARCH_QUERIES =~ s/^\s+|\s+$//g;
 
-# Remove leading search query delimiters (including surrounding spaces) so there
+# Remove leading search query delimiters and their surrounding spaces so there
 # are no empty search queries at the beginning. This means the first non-empty
 # search query is shifted to the first position. Empty search queries after it
 # are allowed.
