@@ -5,7 +5,7 @@ Locate a file from a database.
 
 ## Databases
 
-Locatefile uses two databases: one for file and one for directory paths.
+Locatefile uses two databases consisting of text files: one of file paths and one of directory paths.
 
 [locatefile](locatefile) searches the file paths database by default and the directory paths database via switch `-d`.
 
@@ -41,14 +41,14 @@ locatefile -d tur # returns "/home/user/pictures"
 ## Usage
 
 1. Adjust the configurations in [configurations](configurations).
-2. Define the databases' file paths in [dbfilepaths](dbfilepaths).
+2. Define the databases' file and directory paths in [dbfilepaths](dbfilepaths).
 3. Run [updatedb](updatedb).
 
 ## Notes
 
 [locatefile](locatefile)...
 
-* ...accepts regular expressions in its file name argument.
+* ...accepts regular expressions.
 * ...does not support file names with spaces.
 
 ## Download
