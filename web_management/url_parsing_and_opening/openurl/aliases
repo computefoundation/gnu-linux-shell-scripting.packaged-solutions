@@ -134,14 +134,14 @@ https://www.google.com/maps/place/{search\+}
 
 'Ex.: Get directions between two locations (this URL accepts two search queries,
 '     however, one or none will also be accepted)
-directions|dir
+directions|dirs
 https://www.google.com/maps/dir/{search\+}/{search\+}
 
 ' ---------------------------------------------------
 '   SHOPPING
 ' ---------------------------------------------------
 
-amazon|amz
+amazon|amzn
 http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
 ebay|eby
 http://www.ebay.com/sch/i.html?_nkw={search\%20}
@@ -149,13 +149,13 @@ jet|
 https://jet.com/search?term={search\%20}
 
 'Ex.: Search multiple commerce websites at once.
-shopping|shp
+shopping|shop
 http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
 http://www.ebay.com/sch/i.html?_nkw={search\%20}
 https://jet.com/search?term={search\%20}
 
 ' ---------------------------------------------------
-'   STORE/BUSINESS LOCATORS
+'   BUSINESS/STORE SEARCHING
 ' ---------------------------------------------------
 
 'Ex.: Search for businesses/stores in any location with Yellowpages.com.
@@ -171,7 +171,6 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Ba
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Seattle,+WA
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Nashville,+TN
 
-
 'Ex.: Same as previous except dump the output of each URL using terminal browser
 '     3 and open the URL for Austin, TX in GUI browser 1.
 yellowpages-my-cities2-stores|ypmc2s|my-cities2-stores|mc2s %dump+10 %browser=term3
@@ -180,11 +179,10 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Au
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Indianapolis,+IN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Saint+Louis,+MO
 
-
 'Ex.: Search for businesses/stores with multiple business/store locator
 '     websites. (This example provides examples on using the {search\D}
 '     placeholder options).
-businesses|stores
+businesses|stores|buss|strs
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
 '      Foursquare.com requires two search queries like other business locator

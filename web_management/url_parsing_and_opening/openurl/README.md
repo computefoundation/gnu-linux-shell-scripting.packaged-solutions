@@ -17,37 +17,37 @@ Aliases are defined in [aliases](aliases) and configurations are defined in [ope
 
 ## Examples
 
-### 1. Alias
+### 1. An alias
+
+Open Wikipedia with alias "wiki" (aliases the Wikipedia search URL).
+
+```bash
+openurl wiki
+```
 
 Search...
 
-...for information on ancient egypt with alias "wiki" (aliases the Wikipedia search URL).
+...synonyms for the word "moderate" with alias "thes" (aliases a thesaurus search URL).
 
 ```bash
-openurl wiki ancient egypt
+openurl thes moderate
 ```
 
-...directions from Phoenix, AZ to Seattle, WA with alias "dir" (aliases a maps directions search URL).
+...for outdoor gear stores in Burlington, VT with alias "buss" (aliases business/store search URLs) and open in GUI browser 3.
 
 ```bash
-openurl dir phoenix, az %% seattle, wa
-```
-
-...for outdoor gear stores in Burlington, VT with alias "businesses" (aliases businesses search URLs) and open in GUI browser 3.
-
-```bash
-openurl -g3 businesses outdoor gear %% burlington, vt
+openurl -g3 buss outdoor gear %% burlington, vt
 ```
 
 ### 2. Multiple aliases
 
-Search "home goods" with aliases "amazon," "ebay" and "jet" (respectively alias the Amazon, eBay and Jet search URLs).
+Search "home goods" with aliases "amzn," "ebay" and "jet" (respectively alias the Amazon, eBay and Jet search URLs).
 
 ```bash
-openurl -m amazon ebay jet home goods
+openurl -m amzn ebay jet home goods
 ```
 
-### 3. Search query
+### 3. A search query
 
 Search "how to make quinoa tabbouleh" with the default search URL.
 
