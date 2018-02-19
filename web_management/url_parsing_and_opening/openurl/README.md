@@ -1,7 +1,7 @@
 
 # Openurl
 
-Open one or more URLs from the terminal directly or with an alias or search query.
+Open one or more URLs from the terminal directly, by alias or using a search query.
 
 Openurl defines four argument schemas:
 
