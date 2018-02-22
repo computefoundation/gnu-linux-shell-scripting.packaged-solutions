@@ -19,7 +19,7 @@ Aliases are defined in [aliases](aliases) and configurations are defined in [ope
 
 ### 1. An alias
 
-Open Wikipedia with alias "wiki" (aliases the Wikipedia search URL).
+Open Wikipedia with alias "wiki."
 
 ```bash
 openurl wiki
