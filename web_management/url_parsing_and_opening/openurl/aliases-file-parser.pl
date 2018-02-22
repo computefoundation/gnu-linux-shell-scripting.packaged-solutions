@@ -5,8 +5,9 @@
 # 
 # Description:
 #   This is the parser for the URL aliases file for openurl. It searches for the
-#   given alias in the specified URL aliases file and returns its/their URL(s)
-#   with any configuration options for both.
+#   given alias in the specified URL aliases file and if found returns its
+#   URL(s) with all configuration options specified for both the alias and its
+#   URL(s).
 # 
 # Usage:
 #   aliases-file-parser.pl <URL_aliases_files_directory> <URL_aliases_files>
