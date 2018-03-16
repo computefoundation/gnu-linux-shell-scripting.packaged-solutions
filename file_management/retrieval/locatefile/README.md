@@ -5,7 +5,7 @@ Locate a file from a database.
 
 ## Databases
 
-Locatefile uses two databases consisting of text files: one of file paths and one of directory paths.
+Locatefile uses two databases consisting of text files: one for file and one for directory paths.
 
 [locatefile](locatefile) searches the file paths database by default and the directory paths database via switch `-d`.
 
