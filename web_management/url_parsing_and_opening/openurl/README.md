@@ -76,6 +76,6 @@ Run the following command to download Openurl:
 
 ```bash
 bash <(curl -s 'https://raw.githubusercontent.com/computingfoundation/'\
-'general-purpose-computing.packaged-solutions/helper_scripts/cf-gpc.ps-download-openurl.sh')
+'gnu-linux-shell-usage.packaged-solutions/helper_scripts/cf-glsu.ps-download-openurl.sh')
 ```
 
