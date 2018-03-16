@@ -8,7 +8,7 @@
 #   computingfoundation/gnu-linux-shell-usage.packaged-solutions.
 # 
 
-readonly SOLUTION_PATH='web_management/url_parsing_and_opening/openurl'
+readonly SOLUTION_PATH='url_management/url_parsing_and_opening/openurl'
 readonly SOLUTION_URL='https://raw.githubusercontent.com/computingfoundation'\
 "/gnu-linux-shell-usage.packaged-solutions/master/${SOLUTION_PATH}"
 
