@@ -3,7 +3,7 @@
 '   aliases
 ' 
 ' Description:
-'   Aliased URLs
+'   Aliases and URLs for Openurl
 ' 
 ' Format:
 '   alias|
@@ -16,29 +16,26 @@
 '   ...
 ' 
 ' Aliases:
-'   An alias is defined on a single line and preceded or followed by a vertical
-'   bar ("|"). Multiple aliases defined for one or more URLs are separated by a
-'   vertical bar.
+'   One or more aliases are defined on a single line and preceeded or followed
+'   and separated by a vertical bar ("|").
 ' 
 ' URLs:
-'   Each aliased URL is placed on its own line under the alias line.
+'   A URL is placed on its own line under an aliases line.
 ' 
-' Search queries:
-'   A URL with a search query section can use a "{search\D}", where D is the
-'   space delimiter of the URL, placeholder in its place to use the search query
-'   passed to openurl, 
+' URL search query:
+'   A search query passed to openurl replaces a "{search\D}" placeholder, where
+'   D is the space delimiter of the URL, in an aliased URL.
 ' 
 '     Example:
 '       openurl "buss" "outdoor gear"
 '         # opens all URLs aliased by "buss" and replaces each of their
 '         # {search\D} placeholders with "outdoorDgear"
 ' 
-' Multiple search queries per URL:
-'   A URL can contain multiple {search\D} placeholders to allow multiple search
-'   queries (e.g. start and end locations for travel directions) or to copy one
-'   within itself. The search query used for a placeholder corresponds to the
-'   position of the placeholder in the URL. If a placeholder does not have a
-'   search query, it is replaced with an empty string. (See openurl's help
+' Multiple search queries for a URL:
+'   A URL can allow multiple search queires by using multiple {search\D}
+'   placeholders. The position of a placeholder corresponds with the position of
+'   the search query used to replace it. If a placeholder does not have a search
+'   query, it is replaced with an empty string. (See openurl's help
 '   documentation for information on passing in multiple search queries.)
 ' 
 ' Search query options:
@@ -55,7 +52,7 @@
 '     !R:      Reverse all words of the search query
 '     !M:      Remove all commas of the search query
 ' 
-' Configuration options:
+' URL opening configuration options:
 '   Configuration options can be used to configure how one or more URLs are
 '   opened. They are placed after the last alias on an alias line to apply all
 '   aliased URLS or an individual URL to apply only to the individual URL. They
@@ -83,9 +80,9 @@
 '   Instructions on adding a new URL with a {search\D} placeholder are at the
 '   bottom of this file.
 ' 
-' Predefined aliases:
-'   Many of the predefined aliases below have a comment above them for
-'   explanation prefixed with "Ex.".
+' Predefined alias explanations:
+'   Some of the predefined aliases below have a comment for explanation prefixed
+'   by "Expl."
 ' 
 
 ' ---------------------------------------------------
@@ -107,7 +104,7 @@ https://www.youtube.com/results?search_query={search\+}
 dictionary|dict
 http://www.thefreedictionary.com/{search\+}
 
-'Ex.: Open the second dictionary in GUI browser 2.
+'Expl.: Open the second dictionary in GUI browser 2.
 dictionary2|dict2 %browser=gui2
 http://www.merriam-webster.com/dictionary/{search\+}
 
@@ -124,7 +121,7 @@ http://www.abbreviations.com/abbreviation/{search\%20}
 wikipedia|wikip|wiki
 https://en.wikipedia.org/w/index.php?search={search\+}
 
-'Ex.: Dump the output of each HTML reference site to a terminal window.
+'Expl.: Dump the output of each HTML reference site to a terminal window.
 html-reference|html-ref %dump
 https://www.codecademy.com/articles/glossary-html
 http://www.tizag.com/htmlT/reference/htmlreference.php
@@ -137,8 +134,8 @@ http://www.simplehtmlguide.com/cheatsheet.php
 maps|map
 https://www.google.com/maps/place/{search\+}
 
-'Ex.: Get directions between two locations (this URL accepts two search queries,
-'     however, one or none will also be accepted)
+'Expl.: Get directions between two locations (this URL accepts two search
+'       queries, however, one or none will also be accepted).
 directions|dirs
 https://www.google.com/maps/dir/{search\+}/{search\+}
 
@@ -153,7 +150,7 @@ http://www.ebay.com/sch/i.html?_nkw={search\%20}
 jet|
 https://jet.com/search?term={search\%20}
 
-'Ex.: Search multiple commerce websites at once.
+'Expl.: Search multiple commerce websites at once.
 shopping|shop
 http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
 http://www.ebay.com/sch/i.html?_nkw={search\%20}
@@ -163,30 +160,30 @@ https://jet.com/search?term={search\%20}
 '   BUSINESS/STORE SEARCHING
 ' ---------------------------------------------------
 
-'Ex.: Search for businesses/stores in any location with Yellowpages.com.
+'Expl.: Search for businesses/stores in any location with Yellowpages.com.
 yellowpages|yp
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 
-'Ex.: Search for businesses/stores in multiple cities with multiple
-'     Yellowpages.com URLs and dump the output of each to a terminal window
-'     skipping ahead 18 pages.
+'Expl.: Search for businesses/stores in multiple cities with multiple
+'       Yellowpages.com URLs and dump the output of each to a terminal window
+'       skipping ahead 18 pages.
 yellowpages-my-cities|ypmc %dump+18
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Minneapolis,+MN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Baltimore,+MD
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Seattle,+WA
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Nashville,+TN
 
-'Ex.: Same as previous except dump the output of each URL using terminal browser
-'     3 and open the URL for Austin, TX in GUI browser 1.
+'Expl.: Same as previous except dump the output of each URL using terminal browser
+'       3 and open the URL for Austin, TX in GUI browser 1.
 yellowpages-my-cities2-stores|ypmc2s|my-cities2-stores|mc2s %dump+10 %browser=term3
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Phoenix,+AZ
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Austin,+TX %browser=gui1
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Indianapolis,+IN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Saint+Louis,+MO
 
-'Ex.: Search for businesses/stores with multiple business/store locator
-'     websites. (This example provides examples on using the {search\D}
-'     placeholder options).
+'Expl.: Search for businesses/stores with multiple business/store locator
+'       websites. (These predefined aliases exemplify use of the {search\D}
+'       placeholder options.)
 businesses|stores|buss|strs
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
@@ -204,16 +201,15 @@ http://www.merchantcircle.com/search?q={search\+}&qn={search!C\+}
 http://www.local.com/business/results/?keyword={search\%20}&location={search!C\%20}
 
 
-
 ' 
 ' Instructions on adding a new URL with a {search\D} placeholder:
 ' 
-'   1. Go to the search page for the URL of interest.
+'   1. Go to the search page of the domain of interest.
 '   2. Search for something using at least two (space separated) search words.
-'   3. Copy and paste the loaded URL (in the browser's URL bar) to this file
-'      under an alias.
-'   4. Find the search words in the URL and make note of the character(s) used
-'      as their space delimiter.
+'   3. Copy and paste the loaded URL (in the URL bar of the web browser) to this
+'      file under an alias.
+'   4. Find the search words in the URL and note of the character(s) used as
+'      their space delimiter.
 '   5. Replace the search words with "{search\D}", where D is the space
 '      delimiter.
 ' 

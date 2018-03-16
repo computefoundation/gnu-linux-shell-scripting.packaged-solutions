@@ -19,15 +19,14 @@
 # 
 #       <URLs>: must be in the first argument and delimited by "<|>"
 #       <search_queries...>: delimited by $SEARCH_QUERY_DELIMITER; can be passed
-#           in any number of arguments as all arguments after the first are
-#           joined.
+#           in any number of arguments (all arguments after the first are
+#           joined).
 # 
-# Multiple search queries per URL:
-#   A URL can contain multiple {search\D} placeholders to allow multiple search
-#   queries (e.g. start and end locations for travel directions) or to copy one
-#   within itself. The search query used for a placeholder corresponds to the
-#   position of the placeholder in the URL. If a placeholder does not have a
-#   search query, it is replaced with an empty string.
+# Multiple search queries for a URL:
+#   A URL can allow multiple search queires by using multiple {search\D}
+#   placeholders. The position of a placeholder corresponds with the position of
+#   the search query used to replace it. If a placeholder does not have a search
+#   query, it is replaced with an empty string.
 # 
 # Search query options:
 #   Search query options can be used to change and modify the search query used
