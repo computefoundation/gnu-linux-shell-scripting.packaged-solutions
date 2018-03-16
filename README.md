@@ -3,13 +3,13 @@ An extension of [Gnu-linux-use](https://github.com/computingfoundation/gnu-linux
 
 ## File management
 
-### File retrieval
+### Retrieval
 
-* [Locatefile](https://github.com/computingfoundation/gnu-linux-use.packaged-solutions/tree/master/file_management/file_retrieval/locatefile#locatefile): Locate a file from a database.
+* [Locatefile](https://github.com/computingfoundation/gnu-linux-use.packaged-solutions/tree/master/file_management/retrieval/locatefile#locatefile): Locate a file from a database.
 
-## Web management
+## URL management
 
-### URL parsing and opening
+### Parsing and opening
 
-* [Openurl](https://github.com/computingfoundation/gnu-linux-use.packaged-solutions/tree/master/web_management/url_parsing_and_opening/openurl#openurl): Open one or more URLs from the terminal directly, by alias or using a search query.
+* [Openurl](https://github.com/computingfoundation/gnu-linux-use.packaged-solutions/tree/master/url_management/parsing_and_opening/openurl#openurl): Open one or more URLs from the terminal directly, by alias or using a search query.
 
