@@ -27,10 +27,10 @@ openurl wiki
 
 Search...
 
-...synonyms for the word "moderate" with alias "thes" (aliases a thesaurus search URL).
+...synonyms for the word "valid" with alias "thes" (aliases a thesaurus search URL).
 
 ```bash
-openurl thes moderate
+openurl thes valid
 ```
 
 ...for outdoor gear stores in Burlington, VT with alias "buss" (aliases business/store search URLs) and open in GUI browser 3.
