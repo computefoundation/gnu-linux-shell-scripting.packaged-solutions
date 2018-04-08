@@ -65,8 +65,8 @@ readonly SEARCH_IF_ALIAS_NOT_FOUND=true
 readonly SEARCH_QUERY_SEARCH_URL='https://www.google.com/search?q={search\+}'
 
 # Top level domain suffixes used to match URL arguments
-readonly URL_ARGUMENT_MATCH_TOP_LEVEL_DOMAIN_SUFFIXES='.com .org .edu .gov .uk
-.net'
+readonly URL_ARGUMENT_MATCH_TOP_LEVEL_DOMAIN_SUFFIXES=\
+'.com .org .edu .gov .uk .net'
 
 # The terminal emulator command used for opening terminal windows
 TERMINAL() {
@@ -90,6 +90,10 @@ readonly OPEN_TERM_BROWSER_URLS_IN_INDIVIDUAL_WINDOWS=false
 readonly LESS_COMMAND_OPTIONS='-IFRXMc'
 
 # ======= ! CONFIGURATIONS ==============
+
+# ============================================
+#   Create initial functions
+# ============================================
 
 printHelpMessage() {
   [ "${1}" = 'full' ] && echo -e 'Openurl\n'
@@ -222,7 +226,7 @@ printBrowserCommandDoesNotExistMessage() {
 }
 
 # ============================================
-#   Initialize the main variables
+#   Initialize main variables
 # ============================================
 
 # DEFAULT/ALIAS CONFIGURATIONS: Congiurations for URL opening assigned by either
@@ -333,7 +337,7 @@ for urlAliasesFile in "${URL_ALIASES_FILES[@]}"; do
 done
 
 # ============================================
-#   Create the main functions
+#   Create main functions
 # ============================================
 
 # processAliasConfigurations:
@@ -495,7 +499,8 @@ finalizeConfigurationsAndExecuteBrowser() {
 #   Open URL arguments and exit if any are
 # ===================================================
 
-topLevlDomnsRegex="$(echo "${URL_ARGUMENT_MATCH_TOP_LEVEL_DOMAIN_SUFFIXES}" | tr -s ' ')"
+topLevlDomnsRegex="$(echo "${URL_ARGUMENT_MATCH_TOP_LEVEL_DOMAIN_SUFFIXES}" | \
+    tr -s ' ')"
 topLevlDomnsRegex="${topLevlDomnsRegex//'.'/'\.'}"
 
 regex='('                               # begin prefix group
@@ -508,11 +513,11 @@ regex+='\S+'     # ensure suffix is preceded by one or more non-space characters
 regex+='('                              # begin suffix group
 regex+="${topLevlDomnsRegex// /|}"      # match top level domains
 regex+=')'                              # end suffix group
-regex+='\S*'                            # include trailing non-space characters
+regex+='([ ]|[:\/?][^ ]*|$)'  # match a trailing space or URL portion or the end
 
-URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne "
-  while (m/(${regex})/g) { print \"'\$1' \"; }
-"))
+URLS_FOR_DIRECT_OPEN=($(echo "${@}" | perl -ne '
+    while(/('"${regex}"')/g) { print "'\''$1'\''\n"; }
+'))
 
 if [ "${#URLS_FOR_DIRECT_OPEN[@]}" -ge 1 ]; then
   if [ "${OPT_OUTPUT_TO_CLIPBOARD}" = 'true' ]; then
