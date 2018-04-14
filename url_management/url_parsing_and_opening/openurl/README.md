@@ -1,7 +1,7 @@
 
 # Openurl
 
-Open one or more URLs from the terminal by alias, using a search query or directly.
+Open one or more URLs from the terminal (1) using an alias or (2) search query or (3) directly.
 
 Openurl defines four argument schemas:
 
@@ -11,7 +11,7 @@ Openurl defines four argument schemas:
 
 3. **A search query** (when the first argument does not match any alias). *The default search URL is defined in section Configurations of [openurl](openurl).*
 
-4. **URLs** (when one or more arguments begin with prefix *http[s]://*, *ftp://*, *file://* or *www.* or end with suffix *.com*, *.org*, *.edu*, *.gov*, *.uk* or *.net*).
+4. **URLs** (when one or more arguments begin with URL schema *http*, *https*, *ftp* or *file* or subdomain *www* or contain a top-level domain suffix). *The top-level domain suffixes used to match URLs are defined in section Configurations of [openurl](openurl).*
 
 Aliases are defined in [aliases](aliases) and configurations are defined in [openurl](openurl).
 
@@ -19,29 +19,33 @@ Aliases are defined in [aliases](aliases) and configurations are defined in [ope
 
 ### 1. An alias
 
-Open Wikipedia with alias "wiki."
+Open the URL for Wikipedia with alias "wiki."
 
 ```bash
 openurl wiki
 ```
 
-Search...
-
-...synonyms for the word "valid" with alias "thes" (aliases a thesaurus search URL).
+Open the URL for Wikipedia with alias "wiki" using "ancient egypt" as its search argument.
 
 ```bash
-openurl thes valid
+openurl wiki ancient egypt
 ```
 
-...for outdoor gear stores in Burlington, VT with alias "buss" (aliases business/store search URLs) and open in GUI browser 3.
+Open a thesaurus search URL with alias "thes" using "original" as its search argument.
 
 ```bash
-openurl -g3 buss outdoor gear %% burlington, vt
+openurl thes original
+```
+
+Open business/store search URLs with alias "buss" using "outdoor gear" as their first and "burlington, vt" as their second search argument. (Additionally, open the URLs in GUI browser #3.)
+
+```bash
+openurl --g3 buss outdoor gear %% burlington, vt
 ```
 
 ### 2. Multiple aliases
 
-Search "home goods" with aliases "amzn," "ebay" and "jet" (respectively alias the Amazon, eBay and Jet search URLs).
+Open the URLs for Amazon, eBay and Jet with aliases "amzn," "ebay" and "jet" using "home goods" as their search argument.
 
 ```bash
 openurl -m amzn ebay jet home goods
@@ -49,7 +53,7 @@ openurl -m amzn ebay jet home goods
 
 ### 3. A search query
 
-Search "how to make quinoa tabbouleh" with the default search URL.
+Open the default search URL using "how to make quinoa tabbouleh" as its search argument.
 
 ```bash
 openurl how to make quinoa tabbouleh
@@ -66,7 +70,7 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 ## Features
 
 * Use up to 9 GUI and 7 terminal browser commands.
-* Specify a configuration option (e.g. open in GUI browser 3) per alias or URL (see [aliases](aliases) for more information).
+* Specify a configuration option (e.g. open in GUI browser 3) per alias or aliased URL (see [aliases](aliases) for more information).
 * Dump the output of each URL to a terminal window.
 * Output the URLs to the clipboard.
 
