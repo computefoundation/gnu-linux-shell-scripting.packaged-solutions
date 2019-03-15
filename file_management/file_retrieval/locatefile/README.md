@@ -1,7 +1,7 @@
 
 # Locatefile
 
-Locate a file from a database.
+Locate a file from a text-based database directory.
 
 ## Databases
 
