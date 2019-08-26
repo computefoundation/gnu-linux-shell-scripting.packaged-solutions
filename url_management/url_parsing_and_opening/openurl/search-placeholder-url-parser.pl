@@ -153,7 +153,7 @@ for my $urlWData (@ARG_URLS_W_DATA) {
   my $urlEndPos = 0;
   my $fnlUrl;
 
-  while ($url =~ /(.*?)({search([^\\]*)(?:\\([^}]*))})/g) {
+  while ($url =~ /(.*?)(\{search([^\\]*)(?:\\([^}]*))})/g) {
     my ($txtBefr, $plh, $opts, $spcDelim) = ($1, $2, $3, $4);
     my $optSrchQryPos;
     my @optOnlyWrdsPos;
