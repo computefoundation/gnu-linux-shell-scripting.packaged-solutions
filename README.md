@@ -5,7 +5,7 @@
 
 ### File retrieval
 
-* [Locatefile](https://github.com/computingfoundation/gnu-linux-shell-use.packaged-solutions/tree/master/file_management/file_retrieval/locatefile#locatefile): Locate a file from a text-based database directory.
+* [Locatefile](https://github.com/computingfoundation/gnu-linux-shell-use.packaged-solutions/tree/master/file_management/file_retrieval/locatefile#locatefile): Locate a file or directory from a database.
 
 ## URL management
 

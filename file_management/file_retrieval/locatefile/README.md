@@ -1,35 +1,35 @@
 
 # Locatefile
 
-Locate a file from a text-based database directory.
+Locate a file or directory from a database.
 
 ## Databases
 
-Locatefile uses two databases consisting of text files: one for file and one for directory paths.
+The database consists of file and directory paths stored in text documents.
 
-[locatefile](locatefile) searches the file paths database by default and the directory paths database via switch `-d`.
+[locatefile](locatefile) searches the file paths by default and the directory paths via switch `-d` given part of a file name.
 
 ## Examples
 
-*Note: The following examples are based on the precreated example [database](database).*
-
 ### 1. Locate a file
+
+Locate a file by its prefix; the matched file in the database will be returned.
 
 ```bash
 locatefile my-doc # returns "/home/user/documents/my-document.txt"
 ```
 
-Any part of a file name can be used to find a file; the first match will be returned.
+Locate a file using any part of its name.
 
 ```bash
 locatefile roj # returns "/home/user/archives/backup/projects.txt"
 ```
 
-A file can be located in a mounted drive (see the MOUNTPOINT_PATHS variable in [CONFIGURATIONS](CONFIGURATIONS) for more information).
+Locate a file in a mounted drive (requires setting up mounpoint paths; see [CONFIGURATIONS](CONFIGURATIONS) for more details).
 
 ```bash
-locatefile my-note # returns "MNTPNT_PATH/general/notes/my-notes.txt" (if the drive containing the
-                   # file is mounted), where "MNTPNT_PATH" is the mountpoint of the mounted drive
+locatefile my-notes # returns "MNTPNT_PATH/general/notes/my-notes.txt", where "MNTPNT_PATH" is
+                    # one of the mountpoint paths specified in CONFIGURATIONS
 ```
 
 ### 2. Locate a directory
@@ -42,13 +42,13 @@ Locate file rules apply.
 
 ## Usage
 
-1. Adjust the configurations in [CONFIGURATIONS](CONFIGURATIONS).
-2. Define the databases' file and directory paths in [FILEPATHS](FILEPATHS).
+1. Adjust any needed configurations in [CONFIGURATIONS](CONFIGURATIONS).
+2. Define the files and directories to output to the database in [FILEPATHS](FILEPATHS).
 3. Run [updatedb](updatedb).
 
 ## Notes
 
-[locatefile](locatefile)...
+Locatefile...
 
 * ...accepts regular expressions.
 * ...does not support file names with spaces.
