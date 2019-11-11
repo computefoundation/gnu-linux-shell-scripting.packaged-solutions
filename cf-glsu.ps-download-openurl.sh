@@ -8,7 +8,8 @@
 #   computingfoundation/gnu-linux-shell-use.packaged-solutions.
 # 
 
-readonly SOLUTION_PATH='url_management/url_parsing_and_opening/openurl'
+readonly SOLUTION_NAME='openurl'
+readonly SOLUTION_PATH="url_management/url_parsing_and_opening/${SOLUTION_NAME}"
 readonly SOLUTION_URL='https://raw.githubusercontent.com/computingfoundation'\
 "/gnu-linux-shell-use.packaged-solutions/master/${SOLUTION_PATH}"
 
@@ -24,7 +25,7 @@ readonly DOWNLOAD_ROOT_DIRECTORY="${HOME}"
 # ============================================
 
 readonly DOWNLOAD_DIRECTORY="${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation"\
-"/gnu-linux-shell-use.packaged-solutions/${SOLUTION_PATH}"
+"/gnu-linux-shell-use.packaged-solutions/${SOLUTION_NAME}"
 
 if [ ! -d "${DOWNLOAD_DIRECTORY}" ]; then
   mkdir -p "${DOWNLOAD_DIRECTORY}"
@@ -36,8 +37,7 @@ fi
 
 cd "${DOWNLOAD_DIRECTORY}"
 
-echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation\
-/gnu-linux-shell-use.packaged-solutions\n  Please wait"
+echo -e "::Downloading files to \"${DOWNLOAD_DIRECTORY}\"..."
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
 curl -O "${SOLUTION_URL}/{aliases,aliases-file-parser.pl,openurl,"\
@@ -46,5 +46,5 @@ chmod +x 'aliases-file-parser.pl' 'openurl' 'search-placeholder-url-parser.pl'
 
 
 exec >&3 2>&4 # redirect all output back to /dev/tty
-echo '::Finished'
+echo '::Files downloaded'
 

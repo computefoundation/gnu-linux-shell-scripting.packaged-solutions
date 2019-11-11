@@ -8,7 +8,8 @@
 #   computingfoundation/gnu-linux-shell-use.packaged-solutions.
 # 
 
-readonly SOLUTION_PATH='file_management/file_retrieval/locatefile'
+readonly SOLUTION_NAME='locatefile'
+readonly SOLUTION_PATH="file_management/file_retrieval/${SOLUTION_NAME}"
 readonly SOLUTION_URL='https://raw.githubusercontent.com/computingfoundation'\
 "/gnu-linux-shell-use.packaged-solutions/master/${SOLUTION_PATH}"
 
@@ -24,7 +25,7 @@ readonly DOWNLOAD_ROOT_DIRECTORY="${HOME}"
 # ============================================
 
 readonly DOWNLOAD_DIRECTORY="${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation"\
-"/gnu-linux-shell-use.packaged-solutions/${SOLUTION_PATH}"
+"/gnu-linux-shell-use.packaged-solutions/${SOLUTION_NAME}"
 
 if [ ! -d "${DOWNLOAD_DIRECTORY}" ]; then
   mkdir -p "${DOWNLOAD_DIRECTORY}"
@@ -36,8 +37,7 @@ fi
 
 cd "${DOWNLOAD_DIRECTORY}"
 
-echo -e "::Downloading files to ${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation\
-/gnu-linux-shell-use.packaged-solutions\n  Please wait"
+echo -e "::Downloading files to \"${DOWNLOAD_DIRECTORY}\"..."
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
 curl -O "${SOLUTION_URL}/{configurations,dbfilepaths,locatefile,updatedb}"
@@ -59,5 +59,5 @@ curl -O "${SOLUTION_URL}${currPath}/{mount-drive-1-paths,mount-drive-2-paths,"\
 
 
 exec >&3 2>&4 # redirect all output back to /dev/tty
-echo '::Finished'
+echo '::Files downloaded'
 
