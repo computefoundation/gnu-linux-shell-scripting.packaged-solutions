@@ -25,7 +25,7 @@ Any part of a file name can be used to find a file; the first match will be retu
 locatefile roj # returns "/home/user/archives/backup/projects.txt"
 ```
 
-A file can be located in a mounted drive (see the MOUNTPOINT_PATHS variable in [configurations](configurations) for more information).
+A file can be located in a mounted drive (see the MOUNTPOINT_PATHS variable in [CONFIGURATIONS](CONFIGURATIONS) for more information).
 
 ```bash
 locatefile my-note # returns "MNTPNT_PATH/general/notes/my-notes.txt" (if the drive containing the
@@ -42,7 +42,7 @@ Locate file rules apply.
 
 ## Usage
 
-1. Adjust the configurations in [configurations](configurations).
+1. Adjust the configurations in [CONFIGURATIONS](CONFIGURATIONS).
 2. Define the databases' file and directory paths in [FILEPATHS](FILEPATHS).
 3. Run [updatedb](updatedb).
 

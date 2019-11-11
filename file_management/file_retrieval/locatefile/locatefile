@@ -8,7 +8,7 @@
 # 
 
 readonly HERE="$(dirname "${0}")"
-source "${HERE}/configurations"
+source "${HERE}/CONFIGURATIONS"
 
 printHelpMessage() {
   echo -ne "\

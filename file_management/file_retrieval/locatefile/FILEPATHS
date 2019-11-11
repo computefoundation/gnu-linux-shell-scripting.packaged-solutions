@@ -22,7 +22,7 @@
 #   configurations file.
 # 
 
-source "${HERE}/configurations"
+source "${HERE}/CONFIGURATIONS"
 
 # FILE PATHS
 
