@@ -65,7 +65,7 @@ fi
 #   Populate the databases
 # ============================================
 
-source "${HERE}/dbfilepaths"
+source "${HERE}/FILEPATHS"
 
 # ============================================
 #   Process the mountpoint directory paths

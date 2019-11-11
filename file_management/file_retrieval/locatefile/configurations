@@ -18,7 +18,7 @@ FILE_PATHS_DATABASE_DIRECTORY="${HERE}/database/file_paths"
 DIRECTORY_PATHS_DATABASE_DIRECTORY="${HERE}/database/directory_paths"
 
 # Names of files used in both databases
-#   These file names must match the file names in dbfilepaths. Note: These files
+#   These file names must match the file names in FILEPATHS. Note: These files
 #   will be searched in in the given order.
 DATABASE_FILE_NAMES=('home-paths' 'mount-drive-1-paths' 'mount-drive-2-paths')
 

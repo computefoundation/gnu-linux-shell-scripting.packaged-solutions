@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 
 # File:
-#   dbfilepaths
+#   FILEPATHS
 # 
 # Description:
 #   The file paths to extract to the database

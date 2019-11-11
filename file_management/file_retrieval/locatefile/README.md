@@ -43,7 +43,7 @@ Locate file rules apply.
 ## Usage
 
 1. Adjust the configurations in [configurations](configurations).
-2. Define the databases' file and directory paths in [dbfilepaths](dbfilepaths).
+2. Define the databases' file and directory paths in [FILEPATHS](FILEPATHS).
 3. Run [updatedb](updatedb).
 
 ## Notes
