@@ -11,7 +11,7 @@ Locatefile uses two databases consisting of text files: one for file and one for
 
 ## Examples
 
-*Note: The following examples are based on the precreated example databases [file_paths_database](file_paths_database) and [directory_paths_database](directory_paths_database).*
+*Note: The following examples are based on the precreated example [database](database).*
 
 ### 1. Locate a file
 

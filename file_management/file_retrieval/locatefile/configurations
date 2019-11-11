@@ -12,10 +12,10 @@
 # 
 
 # Directory of file paths files database
-FILE_PATHS_DATABASE_DIRECTORY="${HERE}/file_paths_database"
+FILE_PATHS_DATABASE_DIRECTORY="${HERE}/database/file_paths"
 
 # Directory of directory paths files database
-DIRECTORY_PATHS_DATABASE_DIRECTORY="${HERE}/directory_paths_database"
+DIRECTORY_PATHS_DATABASE_DIRECTORY="${HERE}/database/directory_paths"
 
 # Names of files used in both databases
 #   These file names must match the file names in dbfilepaths. Note: These files
