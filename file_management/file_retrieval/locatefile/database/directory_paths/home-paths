@@ -1,5 +1,9 @@
 /home/user/documents
+/home/user/archives
+/home/user/archives/backups
+/home/user/archives/save
 /home/user/bin
-/home/user/share
-/home/user/pictures
-/home/user/archived_data
+/home/user/bin/my-scripts
+/home/user/bin/utilities
+/home/user/bin/utilities/file-parsers
+/home/user/bin/utilities/tests

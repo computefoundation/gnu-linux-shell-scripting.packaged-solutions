@@ -1,6 +1,5 @@
 {MNTPNT_PATH}/components/main
 {MNTPNT_PATH}/components/main/configurations/default
 {MNTPNT_PATH}/components/main/configurations/webapp
-{MNTPNT_PATH}/components/main/resources
 {MNTPNT_PATH}/global
 {MNTPNT_PATH}/global/resources

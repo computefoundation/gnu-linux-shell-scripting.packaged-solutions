@@ -4,12 +4,11 @@
 #   dbfilepaths
 # 
 # Description:
-#   The databases' file paths
+#   The file paths to extract to the database
 # 
 # Usage note:
 #   A file or directory path for a database is specified using the "find_out"
-#   function. It searches and returns files (or directories) recursively and
-#   has the following parameters:
+#   function. It has the following parameters:
 #     1. Type of file to output: "f" for files and "d" for directories
 #     2. Maximum depth to search (e.g. "0" for no depth [and to output just the
 #        file itself] and "1" for the first level subdirectory)
@@ -31,19 +30,23 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
   dest="${FILE_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
 
   case "${dbFileName}" in
+    'home-paths')
+      echo -n '' > "${dest}"
+
+      # Add a single file.
+      find_out f 0 "${dest}" '/home/user/documents/my-document.txt'
+      # Add all files in a directory.
+      find_out f 1 "${dest}" '/home/user/archives/backup'
+      # Add all files in a directory and its subdirectories.
+      find_out f 2 "${dest}" '/home/user/bin'
+      ;;
+
     'mount-drive-1-paths')
       if mountpoint '/mnt/usb2' >/dev/null; then
         echo -n '' > "${dest}"
 
-        find_out 'f' '0' "${dest}" '/mnt/usb2/general/notes/assignment.txt'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/general'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/general/reference'
-        find_out 'f' '0' "${dest}" '/mnt/usb2/other/finished_tasks.txt'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/finance'
-        find_out 'f' '9' "${dest}" '/mnt/usb2/current' --nodot
-        find_out 'f' '1' "${dest}" '/mnt/usb2/records/internal'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/records/external'
-        find_out 'f' '1' "${dest}" '/mnt/usb2/bookmarks'
+        find_out f 0 "${dest}" '/mnt/usb2/general/notes/my-notes.txt'
+        find_out f 4 "${dest}" '/mnt/usb2/current' --nodot
       fi
       ;;
 
@@ -51,25 +54,9 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
       if mountpoint '/mnt/usb3' >/dev/null; then
         echo -n '' > "${dest}"
 
-        find_out 'f' '5' "${dest}" '/mnt/usb3/components/main'
-        find_out 'f' '0' "${dest}" '/mnt/usb3/components/configurations/default/main_config.sh'
-        find_out 'f' '0' "${dest}" '/mnt/usb3/components/main/resources/logo.png'
-        find_out 'f' '2' "${dest}" '/mnt/usb3/global'
+        find_out f 5 "${dest}" '/mnt/usb3/components/main'
+        find_out f 2 "${dest}" '/mnt/usb3/global'
       fi
-      ;;
-
-    'home-paths')
-      echo -n '' > "${dest}"
-
-      find_out 'f' '1' "${dest}" '/home/user/documents'
-      find_out 'f' '0' "${dest}" '/home/user/.bashrc'
-      find_out 'f' '0' "${dest}" '/home/user/.bash_profile'
-      find_out 'f' '0' "${dest}" '/home/user/.vimrc'
-      find_out 'f' '0' "${dest}" '/home/user/.ssh/config'
-      find_out 'f' '1' "${dest}" '/home/user/bin'
-      find_out 'f' '0' "${dest}" '/home/user/share/calendar/events.txt'
-      find_out 'f' '2' "${dest}" '/home/user/pictures'
-      find_out 'f' '1' "${dest}" '/home/user/archived_data/backup'
       ;;
   esac
 done
@@ -83,21 +70,20 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
     'home-paths')
       echo -n '' > "${dest}"
 
-      find_out 'd' '0' "${dest}" '/home/user/documents'
-      find_out 'd' '0' "${dest}" '/home/user/bin'
-      find_out 'd' '0' "${dest}" '/home/user/share'
-      find_out 'd' '0' "${dest}" '/home/user/pictures'
-      find_out 'd' '0' "${dest}" '/home/user/archived_data'
+      # Add a single directory.
+      find_out d 0 "${dest}" '/home/user/documents'
+      # Add all directories in a directory.
+      find_out d 1 "${dest}" '/home/user/archives'
+      # Add all directories in a directory and all second level directories.
+      find_out d 2 "${dest}" '/home/user/bin'
       ;;
       
     'mount-drive-1-paths')
       if mountpoint '/mnt/usb2' >/dev/null; then
         echo -n '' > "${dest}"
 
-        find_out 'd' '1' "${dest}" '/mnt/usb2/general'
-        find_out 'd' '1' "${dest}" '/mnt/usb2/current'
-        find_out 'd' '1' "${dest}" '/mnt/usb2/records'
-        find_out 'd' '0' "${dest}" '/mnt/usb2/bookmarks'
+        find_out d 1 "${dest}" '/mnt/usb2/general'
+        find_out d 1 "${dest}" '/mnt/usb2/current'
       fi
       ;;
 
@@ -105,9 +91,8 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
       if mountpoint '/mnt/usb3' >/dev/null; then
         echo -n '' > "${dest}"
 
-        find_out 'd' '5' "${dest}" '/mnt/usb3/components/main'
-        find_out 'd' '0' "${dest}" '/mnt/usb3/global'
-        find_out 'd' '0' "${dest}" '/mnt/usb3/global/resources'
+        find_out d 5 "${dest}" '/mnt/usb3/components/main'
+        find_out d 1 "${dest}" '/mnt/usb3/global'
       fi
       ;;
   esac

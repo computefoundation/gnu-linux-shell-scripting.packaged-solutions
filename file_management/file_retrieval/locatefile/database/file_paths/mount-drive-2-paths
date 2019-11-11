@@ -4,9 +4,6 @@
 {MNTPNT_PATH}/components/main/webapp/source1.html
 {MNTPNT_PATH}/components/main/webapp/source2.html
 {MNTPNT_PATH}/components/main/webapp/source1.js
-{MNTPNT_PATH}/components/main/configurations/default/main_config.sh
-{MNTPNT_PATH}/components/main/resources/logo.png
-{MNTPNT_PATH}/global/INFO
 {MNTPNT_PATH}/global/utilities.jar
 {MNTPNT_PATH}/global/resources/global_functions.sh
-{MNTPNT_PATH}/global/resources/parser.pl
+{MNTPNT_PATH}/global/resources/file-parser.pl
