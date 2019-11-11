@@ -11,23 +11,21 @@
 #   and is assigned the path to the current directory.
 # 
 
-# Directory of file paths files database
-FILE_PATHS_DATABASE_DIRECTORY="${HERE}/database/file_paths"
+# Database file and directory paths directories 
+DATABASE_FILE_PATHS_DIRECTORY="${HERE}/database/file_paths"
+DATABASE_DIRECTORY_PATHS_DIRECTORY="${HERE}/database/directory_paths"
 
-# Directory of directory paths files database
-DIRECTORY_PATHS_DATABASE_DIRECTORY="${HERE}/database/directory_paths"
-
-# Names of files used in both databases
-#   These file names must match the file names in FILEPATHS. Note: These files
-#   will be searched in in the given order.
+# Names of files used in both database file and directory paths directories
+#   These file names must match the file names in FILEPATHS. Note: They are
+#   searched in the given order.
 DATABASE_FILE_NAMES=('home-paths' 'mount-drive-1-paths' 'mount-drive-2-paths')
 
 # Paths of mounted drives containing files to be located
 #   When a databse file or directory path begins with "{MNTPNT_PATH}/", these
 #   paths will traversed through in place of the "{MNTPNT_PATH}" placeholder
 #   until the file or directory is found. Database paths beginning with
-#   "{MNTPNT_PATH}/" are created when a database file/directory output path
-#   defined in updatedb is prefixed with one of these paths.
+#   "{MNTPNT_PATH}/" are created when a database file path specified in
+#   FILEPATHS is prefixed with one of these paths.
 MOUNTPOINT_PATHS=(
   '/mnt/usb1'
   '/mnt/usb2'

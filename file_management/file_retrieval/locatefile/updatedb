@@ -49,16 +49,16 @@ find_out() {
 #   Prepare the database directories
 # ============================================
 
-if [ ! -d "${FILE_PATHS_DATABASE_DIRECTORY}" ]; then
-  mkdir "${FILE_PATHS_DATABASE_DIRECTORY}"
+if [ ! -d "${DATABASE_FILE_PATHS_DIRECTORY}" ]; then
+  mkdir "${DATABASE_FILE_PATHS_DIRECTORY}"
 elif [ "${REMOVE_DATABASE_FILES_BEFORE_UPDATING_DATABASES}" = 'true' ]; then
-  rm -Rf "${FILE_PATHS_DATABASE_DIRECTORY}"/*
+  rm -Rf "${DATABASE_FILE_PATHS_DIRECTORY}"/*
 fi
 
-if [ ! -d "${DIRECTORY_PATHS_DATABASE_DIRECTORY}" ]; then
-  mkdir "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"
+if [ ! -d "${DATABASE_DIRECTORY_PATHS_DIRECTORY}" ]; then
+  mkdir "${DATABASE_DIRECTORY_PATHS_DIRECTORY}"
 elif [ "${REMOVE_DATABASE_FILES_BEFORE_UPDATING_DATABASES}" = 'true' ]; then
-  rm -Rf "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"/*
+  rm -Rf "${DATABASE_DIRECTORY_PATHS_DIRECTORY}"/*
 fi
 
 # ============================================
@@ -71,8 +71,8 @@ source "${HERE}/FILEPATHS"
 #   Process the mountpoint directory paths
 # ============================================
 
-for dbDir in "${FILE_PATHS_DATABASE_DIRECTORY}" \
-    "${DIRECTORY_PATHS_DATABASE_DIRECTORY}"; do
+for dbDir in "${DATABASE_FILE_PATHS_DIRECTORY}" \
+    "${DATABASE_DIRECTORY_PATHS_DIRECTORY}"; do
 
   for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
     dbFile="${dbDir}/${dbFileName}"

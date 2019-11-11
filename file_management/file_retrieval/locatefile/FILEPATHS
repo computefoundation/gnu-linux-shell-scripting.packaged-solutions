@@ -4,7 +4,7 @@
 #   FILEPATHS
 # 
 # Description:
-#   The file paths to extract to the database
+#   The file paths to output to the database
 # 
 # Usage note:
 #   A file or directory path for a database is specified using the "find_out"
@@ -27,7 +27,7 @@ source "${HERE}/CONFIGURATIONS"
 # FILE PATHS
 
 for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
-  dest="${FILE_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
+  dest="${DATABASE_FILE_PATHS_DIRECTORY}/${dbFileName}"
 
   case "${dbFileName}" in
     'home-paths')
@@ -64,7 +64,7 @@ done
 # DIRECTORY PATHS
 
 for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
-  dest="${DIRECTORY_PATHS_DATABASE_DIRECTORY}/${dbFileName}"
+  dest="${DATABASE_DIRECTORY_PATHS_DIRECTORY}/${dbFileName}"
 
   case "${dbFileName}" in
     'home-paths')
