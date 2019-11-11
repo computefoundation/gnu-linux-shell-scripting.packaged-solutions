@@ -40,22 +40,22 @@ cd "${DOWNLOAD_DIRECTORY}"
 echo -e "::Downloading files to \"${DOWNLOAD_DIRECTORY}\"..."
 exec 3>&1 4>&2; exec >/dev/null 2>&1 # redirect all output to /dev/null
 
-curl -O "${SOLUTION_URL}/{configurations,dbfilepaths,locatefile,updatedb}"
+curl -O "${SOLUTION_URL}/{CONFIGURATIONS,FILEPATHS,locatefile,updatedb}"
 chmod +x 'locatefile' 'updatedb'
 
-currPath='/directory_paths_database'
+currPath='database'
 
-mkdir "${DOWNLOAD_DIRECTORY}${currPath}"
-cd "${DOWNLOAD_DIRECTORY}${currPath}"
-curl -O "${SOLUTION_URL}${currPath}/{mount-drive-1-paths,mount-drive-2-paths,"\
-'home-paths}'
+mkdir "${DOWNLOAD_DIRECTORY}/${currPath}"
 
-currPath='/file_paths_database'
+mkdir "${DOWNLOAD_DIRECTORY}/${currPath}/file_paths"
+cd "${DOWNLOAD_DIRECTORY}/${currPath}/file_paths"
+curl -O "${SOLUTION_URL}/${currPath}/file_paths/{mount-drive-1-paths,"\
+'mount-drive-2-paths,home-paths}'
 
-mkdir "${DOWNLOAD_DIRECTORY}${currPath}"
-cd "${DOWNLOAD_DIRECTORY}${currPath}"
-curl -O "${SOLUTION_URL}${currPath}/{mount-drive-1-paths,mount-drive-2-paths,"\
-'home-paths}'
+mkdir "${DOWNLOAD_DIRECTORY}/${currPath}/directory_paths"
+cd "${DOWNLOAD_DIRECTORY}/${currPath}/directory_paths"
+curl -O "${SOLUTION_URL}/${currPath}/directory_paths/{mount-drive-1-paths,"\
+'mount-drive-2-paths,home-paths}'
 
 
 exec >&3 2>&4 # redirect all output back to /dev/tty
