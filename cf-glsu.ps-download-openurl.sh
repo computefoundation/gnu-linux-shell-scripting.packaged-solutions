@@ -5,13 +5,13 @@
 # 
 # Description:
 #   Download utility Openurl from
-#   computingfoundation/gnu-linux-shell-use.packaged-solutions.
+#   computingfoundation/gnu-linux-shell-scripting.packaged-solutions.
 # 
 
 readonly SOLUTION_NAME='openurl'
 readonly SOLUTION_PATH="url_management/url_parsing_and_opening/${SOLUTION_NAME}"
 readonly SOLUTION_URL='https://raw.githubusercontent.com/computingfoundation'\
-"/gnu-linux-shell-use.packaged-solutions/master/${SOLUTION_PATH}"
+"/gnu-linux-shell-scripting.packaged-solutions/master/${SOLUTION_PATH}"
 
 # ======= CONFIGURATIONS ==============
 
@@ -25,7 +25,7 @@ readonly DOWNLOAD_ROOT_DIRECTORY="${HOME}"
 # ============================================
 
 readonly DOWNLOAD_DIRECTORY="${DOWNLOAD_ROOT_DIRECTORY}/computingfoundation"\
-"/gnu-linux-shell-use.packaged-solutions/${SOLUTION_NAME}"
+"/gnu-linux-shell-scripting.packaged-solutions/${SOLUTION_NAME}"
 
 if [ ! -d "${DOWNLOAD_DIRECTORY}" ]; then
   mkdir -p "${DOWNLOAD_DIRECTORY}"
