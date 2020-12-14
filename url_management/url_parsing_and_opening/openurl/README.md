@@ -3,7 +3,7 @@
 
 Open one or more URLs from the terminal (1) using an alias or (2) search query or (3) directly.
 
-Openurl defines four argument schemas:
+Openurl accepts four argument types:
 
 1. **An alias** (first argument) with one or more optional search queries (remaining arguments).
 
@@ -11,9 +11,9 @@ Openurl defines four argument schemas:
 
 3. **A search query** (when the first argument does not match any alias). *The default search URL is defined in section Configurations of [openurl](openurl).*
 
-4. **URLs** (when one or more arguments begin with URL schema *http*, *https*, *ftp* or *file* or subdomain *www* or contain a top-level domain suffix). *The top-level domain suffixes used to match URLs are defined in section Configurations of [openurl](openurl).*
+4. **Direct URLs** (when one or more arguments begin with URL schema *http*, *https*, *ftp* or *file* or subdomain *www* or contain a top-level domain suffix). *The top-level domain suffixes used to match URLs are defined in section Configurations of [openurl](openurl).*
 
-Aliases are defined in [aliases](aliases) and configurations are defined in [openurl](openurl).
+Aliases are defined in [aliases](aliases). To confgure Openurl (e.g. change browser types), change configurations in [openurl](openurl).
 
 ## Examples
 
@@ -74,9 +74,11 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 * Dump the output of each URL to a terminal window.
 * Output the URLs to the clipboard.
 
+*To get all configuration options, run `openurl --help`.*
+
 ## Download
 
-Run the following command to download Openurl:
+Run the following command to download Openurl. *Note: This will create directory "computingfoundation/gnu-linux-shell-scripting.packaged-solutions/openurl" in your home directory*:
 
 ```bash
 bash <(curl -s 'https://raw.githubusercontent.com/computingfoundation/'\
