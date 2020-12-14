@@ -1,19 +1,25 @@
 
 # Openurl
 
-Open one or more URLs from the terminal (1) using an alias or (2) search query or (3) directly.
+Openurl allows you to open one or more URLs from the terminal using one of the following argument types:
 
-Openurl accepts four argument types:
+1. **An alias**
 
-1. **An alias** (first argument) with one or more optional search queries (remaining arguments).
+First argument with one or more optional search queries (remaining arguments).
 
-2. **Multiple aliases** (first N arguments) with one or more optional search queries (all arguments after the last matching alias). *Requires switch `-m`.*
+2. **Multiple aliases**
 
-3. **A search query** (when the first argument does not match any alias). *The default search URL is defined in section Configurations of [openurl](openurl).*
+First N arguments with one or more optional search queries (all arguments after the last matching alias). *Requires switch `-m`.*
 
-4. **Direct URLs** (when one or more arguments begin with URL schema *http*, *https*, *ftp* or *file* or subdomain *www* or contain a top-level domain suffix). *The top-level domain suffixes used to match URLs are defined in section Configurations of [openurl](openurl).*
+3. **A search query**
 
-Aliases are defined in [aliases](aliases). To confgure Openurl (e.g. change browser types), change configurations in [openurl](openurl).
+(When the first argument does not match any alias). *This will open the deafult search URL defined in section Configurations of [openurl](openurl).*
+
+4. **Direct URLs**
+
+(When one or more arguments begin with URL schema *http*, *https*, *ftp* or *file* or subdomain *www* or contain a top-level domain suffix). *The top-level domain suffixes are defined in section Configurations of [openurl](openurl).*
+
+You can define aliases and alias configuration options in [aliases](aliases). To confgure Openurl (e.g. change browser types), see the configurations section in [openurl](openurl).
 
 ## Examples
 
@@ -59,7 +65,7 @@ Open the default search URL using "how to make quinoa tabbouleh" as its search a
 openurl how to make quinoa tabbouleh
 ```
 
-### 4. URLs
+### 4. Direct URLs
 
 Open two URLs directly.
 
@@ -69,10 +75,10 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 
 ## Features
 
-* Use up to 9 GUI and 7 terminal browser commands.
-* Specify a configuration option (e.g. open in GUI browser 3) per alias or aliased URL (see [aliases](aliases) for more information).
-* Dump the output of each URL to a terminal window.
-* Output the URLs to the clipboard.
+* Use up to 9 GUI and 7 terminal browsers.
+* Specify a browser for each alias or URL.
+* Dump output to terminal window.
+* Output URLs to the clipboard.
 
 *To get all configuration options, run `openurl --help`.*
 
