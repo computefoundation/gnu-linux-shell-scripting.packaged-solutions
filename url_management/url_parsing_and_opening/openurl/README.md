@@ -3,27 +3,27 @@
 
 Openurl allows you to open one or more URLs from the terminal using one of the following argument types:
 
-1. **An alias**
+1. **Aliases**
 
-First argument with one or more optional search queries (remaining arguments).
+Pass the alias as the first argument. Openurl will try to find a match from [aliases](aliases). The remainig arguments can be used as search queries. To use multiple aliases, use option `-m`.
 
-2. **Multiple aliases**
+2. **A search query**
 
-First N arguments with one or more optional search queries (all arguments after the last matching alias). *Requires switch `-m`.*
+Pass a search query to [openurl](openurl) assuming the first argument does not match an alias. *The deafult search URL can be configured in [openurl](openurl).*
 
-3. **A search query**
+3. **URLs directly**
 
-(When the first argument does not match any alias). *This will open the deafult search URL defined in section Configurations of [openurl](openurl).*
+Pass one or more URLs directly to openurl. *(Please note: All other arugments will be discarded.)*
 
-4. **Direct URLs**
+URLs are matched by prefixes *http*, *https*, *ftp* or *file* or subdomain *www* or containing one of top-level domain suffixes configured in [openurl](openurl).*
 
-(When one or more arguments begin with URL schema *http*, *https*, *ftp* or *file* or subdomain *www* or contain a top-level domain suffix). *The top-level domain suffixes are defined in section Configurations of [openurl](openurl).*
+## Important files
 
-You can define aliases and alias configuration options in [aliases](aliases). To confgure Openurl (e.g. change browser types), see the configurations section in [openurl](openurl).
+The two important files for the user are [aliases](aliases) and [openurl](openurl). Define aliases in [aliases](aliases) and confgure Openurl (e.g. change browser types) in [openurl](openurl).
 
 ## Examples
 
-### 1. An alias
+### 1. Aliases
 
 Open the URL for Wikipedia with alias "wiki."
 
@@ -31,25 +31,25 @@ Open the URL for Wikipedia with alias "wiki."
 openurl wiki
 ```
 
-Open the URL for Wikipedia with alias "wiki" using "ancient egypt" as its search argument.
+Open the URL for Wikipedia with alias "wiki" and search "ancient egypt".
 
 ```bash
 openurl wiki ancient egypt
 ```
 
-Open a thesaurus search URL with alias "thes" using "original" as its search argument.
+Open a thesaurus search URL with alias "thes" and search "original".
 
 ```bash
 openurl thes original
 ```
 
-Open business/store search URLs with alias "buss" using "outdoor gear" as their first and "burlington, vt" as their second search argument. (Additionally, open the URLs in GUI browser #3.)
+Open business/store search URLs with alias "buss" and use "outdoor gear" as their first and "burlington, vt" as their second search argument. (And open the URLs in GUI browser #3.)
 
 ```bash
 openurl --g3 buss outdoor gear %% burlington, vt
 ```
 
-### 2. Multiple aliases
+**Multiple aliases**
 
 Open the URLs for Amazon, eBay and Jet with aliases "amzn," "ebay" and "jet" using "home goods" as their search argument.
 
@@ -57,15 +57,15 @@ Open the URLs for Amazon, eBay and Jet with aliases "amzn," "ebay" and "jet" usi
 openurl -m amzn ebay jet home goods
 ```
 
-### 3. A search query
+### 2. A search query
 
-Open the default search URL using "how to make quinoa tabbouleh" as its search argument.
+Search "how to make quinoa tabbouleh" using the default search URL.
 
 ```bash
 openurl how to make quinoa tabbouleh
 ```
 
-### 4. Direct URLs
+### 3. URLs directly
 
 Open two URLs directly.
 
@@ -77,7 +77,7 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 
 * Use up to 9 GUI and 7 terminal browsers.
 * Specify a browser for each alias or URL.
-* Dump output to terminal window.
+* Dump the output of a page to terminal window.
 * Output URLs to the clipboard.
 
 *To get all configuration options, run `openurl --help`.*
