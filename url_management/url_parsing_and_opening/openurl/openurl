@@ -38,8 +38,8 @@ readonly URL_ALIASES_FILES=(
 # Options:
 #   1. Prepend two colons ("::") to a browser command to open each URL for a
 #      browser command independently. (This applies only to GUI browsers).
-#   2. Append two semicolons (";;") to a browser command followed by a command
-#      to execute after the browser command has executed.
+#   2. To run a command after the browser command has run, append two semicolons
+#      (" ;;") to the browser command followed by the command to run.
 readonly BROWSER_GUI1='/usr/bin/firefox'
 readonly BROWSER_GUI2='/usr/bin/firefox -private-window'
 readonly BROWSER_GUI3='/usr/bin/chromium'
