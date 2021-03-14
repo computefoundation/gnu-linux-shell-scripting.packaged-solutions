@@ -7,18 +7,26 @@
 #   The configurations for Locatefile
 # 
 # Note:
-#   Variable "HERE" is defined in the sourcing scripts (locatefile and updatedb)
-#   and is assigned the path to the current directory.
+#   Variable "HERE" is defined in scripts locatefile and updatedb and this
+#   file is sourced within them. HERE is assigned the absolute path of directory
+#   "locatefile".
 # 
+
+# ======= PRIMARY CONFIGURATIONS (CHANGES REQUIRED) ==============
+
+# Names of files used in both database file and directory paths directories
+# NOTES:
+#   These names must match the names in FILEPATHS.
+#   They are searched in the given order.
+DATABASE_FILE_NAMES=('home-paths' 'project-paths')
+
+# ======= ! PRIMARY CONFIGURATIONS (CHANGES REQUIRED) ==============
+
+# ======= SECONDARY CONFIGURATIONS (CHANGES NOT REQUIRED) ==============
 
 # Database file and directory paths directories 
 DATABASE_FILE_PATHS_DIRECTORY="${HERE}/database/file_paths"
 DATABASE_DIRECTORY_PATHS_DIRECTORY="${HERE}/database/directory_paths"
-
-# Names of files used in both database file and directory paths directories
-#   These file names must match the file names in FILEPATHS. Note: They are
-#   searched in the given order.
-DATABASE_FILE_NAMES=('home-paths' 'mount-drive-1-paths' 'mount-drive-2-paths')
 
 # Paths of mounted drives containing files to be located
 #   When a databse file or directory path begins with "{MNTPNT_PATH}/", these
@@ -33,6 +41,8 @@ MOUNTPOINT_PATHS=(
   '/mnt/usb4'
 )
 
-# Remove all files from the databases before updating them
-REMOVE_DATABASE_FILES_BEFORE_UPDATING_DATABASES=true
+# Clear the database before updating.
+CLEAR_DATABASE_BEFORE_UPDATING=true
+
+# ======= ! SECONDARY CONFIGURATIONS (CHANGES NOT REQUIRED) ==============
 

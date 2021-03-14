@@ -24,12 +24,15 @@
 
 source "${HERE}/CONFIGURATIONS"
 
-# FILE PATHS
+# ========================================================
+#   FILE PATHS
+# ========================================================
 
 for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
   dest="${DATABASE_FILE_PATHS_DIRECTORY}/${dbFileName}"
 
   case "${dbFileName}" in
+    
     'home-paths')
       echo -n '' > "${dest}"
 
@@ -39,34 +42,40 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
       find_out f 1 "${dest}" '/home/user/archives/backup'
       # Add all files in a directory and its subdirectories.
       find_out f 2 "${dest}" '/home/user/bin'
+      # Add all files in a directory, its subdirectories and its subdirectories.
+      find_out f 3 "${dest}" '/home/user/other'
+      # etc ...
       ;;
 
-    'mount-drive-1-paths')
-      if mountpoint '/mnt/usb2' >/dev/null; then
-        echo -n '' > "${dest}"
+    'project-paths')
+      echo -n '' > "${dest}"
 
-        find_out f 0 "${dest}" '/mnt/usb2/general/notes/my-notes.txt'
-        find_out f 4 "${dest}" '/mnt/usb2/current' --nodot
-      fi
+      find_out f 0 "${dest}" '/home/user/my-project-data.txt'
+      find_out f 4 "${dest}" '/home/user/my-project-2' --nodot
       ;;
 
-    'mount-drive-2-paths')
-      if mountpoint '/mnt/usb3' >/dev/null; then
+    'mount-drive-paths')
+      if mountpoint '/mnt/usb' >/dev/null; then
         echo -n '' > "${dest}"
 
         find_out f 5 "${dest}" '/mnt/usb3/components/main'
-        find_out f 2 "${dest}" '/mnt/usb3/global'
+        find_out f 2 "${dest}" '/mnt/usb3/vacations'
       fi
       ;;
+      
   esac
+  
 done
 
-# DIRECTORY PATHS
+# ========================================================
+#   DIRECTORY PATHS
+# ========================================================
 
 for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
   dest="${DATABASE_DIRECTORY_PATHS_DIRECTORY}/${dbFileName}"
 
   case "${dbFileName}" in
+    
     'home-paths')
       echo -n '' > "${dest}"
 
@@ -76,25 +85,28 @@ for dbFileName in "${DATABASE_FILE_NAMES[@]}"; do
       find_out d 1 "${dest}" '/home/user/archives'
       # Add all directories in a directory and all second level directories.
       find_out d 2 "${dest}" '/home/user/bin'
+      # Add all directory, its subdirectories and its subdirectories.
+      find_out d 3 "${dest}" '/home/user/other'
+      # etc ...
       ;;
       
-    'mount-drive-1-paths')
-      if mountpoint '/mnt/usb2' >/dev/null; then
-        echo -n '' > "${dest}"
+    'project-paths')
+      echo -n '' > "${dest}"
 
-        find_out d 1 "${dest}" '/mnt/usb2/general'
-        find_out d 1 "${dest}" '/mnt/usb2/current'
-      fi
+      find_out d 1 "${dest}" '/home/user/my-project'
+      find_out d 1 "${dest}" '/home/user/my-project-2'
       ;;
 
-    'mount-drive-2-paths')
-      if mountpoint '/mnt/usb3' >/dev/null; then
+    'mount-drive-paths')
+      if mountpoint '/mnt/usb' >/dev/null; then
         echo -n '' > "${dest}"
 
         find_out d 5 "${dest}" '/mnt/usb3/components/main'
         find_out d 1 "${dest}" '/mnt/usb3/global'
       fi
       ;;
+      
   esac
+  
 done
 

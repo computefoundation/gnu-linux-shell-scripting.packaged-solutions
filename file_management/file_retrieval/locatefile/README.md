@@ -1,49 +1,43 @@
 
 # Locatefile
 
-Locate a file or directory from a custom created database.
+Locate a file or directory from a custom database.
 
-## Databases
-
-The database consists of file and directory paths stored in text documents.
-
-[locatefile](locatefile) searches the file paths by default and the directory paths via switch `-d` given part of a file name.
+The database is created by you and consists of plain text documents containing file and directory paths.
 
 ## Examples
 
 ### 1. Locate a file
 
-Locate a file by its prefix; the matched file in the database will be returned.
+1. Locate a file using any part of its name.
 
 ```bash
-locatefile my-doc # returns "/home/user/documents/my-document.txt"
+locatefile my-doc # "/home/user/documents/my-document.txt"
 ```
 
-Locate a file using any part of its name.
-
 ```bash
-locatefile roj # returns "/home/user/archives/backup/projects.txt"
+locatefile oje # "/home/user/archives/backup/projects.txt"
 ```
 
-Locate a file in a mounted drive (requires setting up mounpoint paths; see [CONFIGURATIONS](CONFIGURATIONS) for more details).
+*Note: The first match will be returned.*
+
+2. Locate a file in a mounted drive (please see variable MOUNTPOINT_PATHS in [CONFIGURATIONS](CONFIGURATIONS) for more information).
 
 ```bash
-locatefile my-notes # returns "MNTPNT_PATH/general/notes/my-notes.txt", where "MNTPNT_PATH" is
-                    # one of the mountpoint paths specified in CONFIGURATIONS
+locatefile my-notes # "MNTPNT_PATH/general/notes/my-notes.txt", where MNTPNT_PATH is
+                    # one of the mountpoint paths specified in MOUNTPOINT_PATHS in CONFIGURATIONS
 ```
 
 ### 2. Locate a directory
 
 ```bash
-locatefile -d arc # returns "/home/user/archives"
+locatefile -d arc # "/home/user/archives"
 ```
-
-Locate file rules apply.
 
 ## Usage
 
-1. Adjust any needed configurations in [CONFIGURATIONS](CONFIGURATIONS).
-2. Define the files and directories to output to the database in [FILEPATHS](FILEPATHS).
+1. Adjust any needed configurations in [CONFIGURATIONS](CONFIGURATIONS) (note: the only variable that really needs to be changed is DATABASE_FILE_NAMES).
+2. Define the file and directory paths that will be sent to the database in [FILEPATHS](FILEPATHS).
 3. Run [updatedb](updatedb).
 
 ## Notes
