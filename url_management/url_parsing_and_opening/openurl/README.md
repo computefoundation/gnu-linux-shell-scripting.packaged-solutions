@@ -13,37 +13,37 @@ Pass a search query to [openurl](openurl) assuming the first argument does not m
 
 3. **URLs directly**
 
-Pass one or more URLs directly to openurl. *(Please note: All other arugments will be discarded.)*
+Pass one or more URLs directly to openurl. *(Please note: All non-URL arugments will be discarded.)*
 
-URLs are matched by prefixes *http*, *https*, *ftp* or *file* or subdomain *www* or containing one of top-level domain suffixes configured in [openurl](openurl).*
+URLs are matched by prefixes *http*, *https*, *ftp* or *file* or subdomain *www* or containing one of top-level domain suffixes configured in [openurl](openurl).
 
 ## Important files
 
-The two important files for the user are [aliases](aliases) and [openurl](openurl). Define aliases in [aliases](aliases) and confgure Openurl (e.g. change browser types) in [openurl](openurl).
+The two important files to configure are [aliases](aliases) and [openurl](openurl). Define aliases in [aliases](aliases) and confgurations (e.g. browsers) in [openurl](openurl).
 
 ## Examples
 
 ### 1. Aliases
 
-Open the URL for Wikipedia with alias "wiki."
+Open the URL for Wikipedia via alias "wiki."
 
 ```bash
 openurl wiki
 ```
 
-Open the URL for Wikipedia with alias "wiki" and search "ancient egypt".
+Open the URL for Wikipedia via alias "wiki" and search for "ancient egypt".
 
 ```bash
 openurl wiki ancient egypt
 ```
 
-Open a thesaurus search URL with alias "thes" and search "original".
+Open a thesaurus search URL via alias "thes" and search for "original".
 
 ```bash
 openurl thes original
 ```
 
-Open business/store search URLs with alias "buss" and use "outdoor gear" as their first and "burlington, vt" as their second search argument. (And open the URLs in GUI browser #3.)
+Open business/store search URLs via alias "buss" and use "outdoor gear" as their first and "burlington, vt" as their second search argument. (And open the URLs in GUI browser #3.)
 
 ```bash
 openurl --g3 buss outdoor gear %% burlington, vt
@@ -51,7 +51,7 @@ openurl --g3 buss outdoor gear %% burlington, vt
 
 **Multiple aliases**
 
-Open the URLs for Amazon, eBay and Jet with aliases "amzn," "ebay" and "jet" using "home goods" as their search argument.
+Open the URLs for Amazon, eBay and Jet via aliases "amzn," "ebay" and "jet" using "home goods" as their search argument.
 
 ```bash
 openurl -m amzn ebay jet home goods
@@ -75,12 +75,12 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 
 ## Features
 
-* Use up to 9 GUI and 7 terminal browsers.
+* Use up to 9 GUI and 7 terminal browsers (configured in [openurl](openurl)).
 * Specify a browser for each alias or URL.
 * Dump the output of a page to terminal window.
 * Output URLs to the clipboard.
 
-*To get all configuration options, run `openurl --help`.*
+*Run `openurl --help` to see all configurations and options.*
 
 ## Download
 

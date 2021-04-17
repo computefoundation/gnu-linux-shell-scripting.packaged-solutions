@@ -9,7 +9,7 @@
 
 ## URL management
 
-### URL parsing and opening
+### Opening URLs
 
 * [Openurl](https://github.com/computingfoundation/gnu-linux-shell-scripting.packaged-solutions/tree/master/url_management/url_parsing_and_opening//openurl#openurl): Open one or more URLs from the terminal (1) using an alias or (2) search query or (3) directly.
 
