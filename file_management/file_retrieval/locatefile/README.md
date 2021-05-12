@@ -52,7 +52,7 @@ Locatefile...
 Run the following command to download Locatefile:
 
 ```bash
-bash <(curl -s 'https://raw.githubusercontent.com/computingfoundation/'\
+bash <(curl -s 'https://raw.githubusercontent.com/computefoundation/'\
 'gnu-linux-shell-usage.packaged-solutions/helper_scripts/cf-glsu.ps-download-locatefile.sh')
 ```
 
