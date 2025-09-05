@@ -1,105 +1,96 @@
 ' 
 ' File:
-' 
-'   aliases
+'     aliases
 ' 
 ' Description:
-' 
-'   Aliases and URLs for Openurl
+'     Aliases and URLs for Openurl
 ' 
 ' Format:
-' 
-'   alias1|
-'   url1
-'   url2
-'   ...
-'   alias1|alias2|alias3|...
-'   url1
-'   url2
-'   ...
+'     alias1|
+'     url1
+'     url2
+'     ...
+'     alias1|alias2|alias3|...
+'     url1
+'     url2
+'     ...
 ' 
 ' Aliases and URLs:
+'     An alias is defined on a single line and preceeded or followed by a
+'     vertical bar ("|"). Its URLs are placed directly on the lines below it.
 ' 
-'   An alias is defined on a single line and preceeded or followed by a
-'   vertical bar ("|"). Its URLs are placed directly on the lines below it.
-' 
-'   Multiple aliases can defined for one or more URLs by separating them with a
-'   vertical bar.
+'     Multiple aliases can defined for one or more URLs by separating the aliases with a
+'     vertical bar.
 ' 
 ' Search queries:
+'     A URL can allow multiple search queries to be passed by using "{search\D}"
+'     placeholders (where D is the space delimiter).
 ' 
-'   A URL can allow multiple search queries to be passed by using "{search\D}"
-'   placeholders (where D is the space delimiter).
+'         Example alias and URLs and running the alias:
+'             businesses|stores|buss|strs
+'             https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
+'             http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
 ' 
-'     Example alias and URLs and running the alias:
+'             openurl "stores" "outdoor gear"
+'             # This command will open all of the above URLs and replace each
+'             # of their first {search\D} placeholders with "outdoorDgear". (The
+'             # remaining search placeholders will be replaced with an empty string.)
 ' 
-'       businesses|stores|buss|strs
-'       https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
-'       http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
+'     The search query used for a placeholder corresponds with position of the
+'     search query passed to Openurl. To pass multiple search queries to Openurl,
+'     delimit each with "%%".
 ' 
-'       openurl "stores" "outdoor gear"
-'       # This command will open all of the above URLs and replace each
-'       # of their first {search\D} placeholders with "outdoorDgear". (The
-'       # remaining search placeholders will be replaced with an empty string.)
-' 
-'   The search query used for a placeholder corresponds with position of the
-'   search query passed to Openurl. To pass multiple search queries to Openurl,
-'   delimit each with "%%".
-' 
-'   If a URL has more placeholders than search queries, the remaining
-'   placeholders will be replaced by an empty string.
+'     If a URL has more placeholders than search queries, the remaining
+'     placeholders will be replaced by an empty string.
 ' 
 ' Search query options:
+'     Search query options can be used to change the search used by a
+'     placeholder or modify the search query. They are used using a bang ("!")
+'     after the delimiter and are the following:
 ' 
-'   Search query options can be used to change the search used by a
-'   placeholder or modify the search query. They are used using a bang ("!")
-'   after the delimiter and are the following:
-' 
-'     !<N>:    Use search query N of all the search queries passed to Openurl.
-'              (e.g. {search!3\+})
-'     !W<P>:   Use word at position P of the search query only; will work for
-'              multiple words (e.g. {search!W2!W5!W6\+}).
-'     !U[P]:   Make all letters of word at position P of the search query
-'              uppercase (e.g. {search!U1!U3\+}); omit P for all words.
-'     !C:      Capitalize all words of the search query.
-'     !R:      Reverse all words of the search query.
-'     !M:      Remove all commas in the search query.
+'         !<N>:    Use search query N of all the search queries passed to Openurl.
+'                  (e.g. {search!3\+})
+'         !W<P>:   Use word at position P of the search query only; will work for
+'                  multiple words (e.g. {search!W2!W5!W6\+}).
+'         !U[P]:   Make all letters of word at position P of the search query
+'                  uppercase (e.g. {search!U1!U3\+}); omit P for all words.
+'         !C:      Capitalize all words of the search query.
+'         !R:      Reverse all words of the search query.
+'         !M:      Remove all commas in the search query.
 ' 
 ' URL open configuration options:
+'     Configuration options can be used to specify which browser is used to
+'     open a URL or how the URL should be output in the browser.
 ' 
-'   Configuration options can be used to specify which browser is used to
-'   open a URL or how the URL should be output in the browser.
+'     They are placed after the last alias on an alias line to apply all aliased
+'     URLS or an individual URL to apply only to one individual URL and are the
+'     following:
 ' 
-'   They are placed after the last alias on an alias line to apply all aliased
-'   URLS or an individual URL to apply only to one individual URL and are the
-'   following:
+'         %browser=VALUE:     The browser to use; possible values are "gui<1-9>"
+'                             (for graphical browsers) and "term<1-7>" (for terminal
+'                             browsers). Browsers are defined in section
+'                             Configurations of open url; the default is GUI 1.
 ' 
-'     %browser=VALUE:     The browser to use; possible values are "gui<1-9>"
-'                         (for graphical browsers) and "term<1-7>" (for terminal
-'                         browsers). Browsers are defined in section
-'                         Configurations of open url; the default is GUI 1.
+'         %dump[+NUM_PAGES]:  Whether to dump the output of each URL to a terminal
+'                             window (using terminal browser 1 by default).
+'                             Optionally, jump forward the given number of pages.
+'                             (The letter "p" may be appended to NUM_PAGES for
+'                             readability.)
 ' 
-'     %dump[+NUM_PAGES]:  Whether to dump the output of each URL to a terminal
-'                         window (using terminal browser 1 by default).
-'                         Optionally, jump forward the given number of pages.
-'                         (The letter "p" may be appended to NUM_PAGES for
-'                         readability.)
-' 
-'   A configuration option for a URL will override the same configuration for
-'   the respective alias.
+'     A configuration option for a URL will override the same configuration for
+'     the respective alias.
 ' 
 ' Notes:
+'     Instructions on adding new URLs with the {search\D} placeholder are at the
+'     bottom of this file.
 ' 
-'   Instructions on adding new URLs with the {search\D} placeholder are at the
-'   bottom of this file.
-' 
-'   Unsafe URL characters will be encoded. To prevent a character from being
-'   encoded, add two backslashes before it. This also applies to the delimiter
-'   in the "{search\D}" URL placeholder and search queries passed to openurl.
+'     Unsafe URL characters will be encoded. To prevent a character from being
+'     encoded, add two backslashes before it. This also applies to the delimiter
+'     in the "{search\D}" URL placeholder and search queries passed to openurl.
 ' 
 
 ' ---------------------------------------------------
-'   MAIN
+'     MAIN
 ' ---------------------------------------------------
 
 search|s|google|g
@@ -128,21 +119,20 @@ abbreviations|abbr
 http://www.abbreviations.com/abbreviation/{search\%20}
 
 ' ---------------------------------------------------
-'   REFERENCE AND INFORMATION
+'     REFERENCE AND INFORMATION
 ' ---------------------------------------------------
 
 wikipedia|wikip|wiki
 https://en.wikipedia.org/w/index.php?search={search\+}
 
 ' Example: Dump the output of each HTML reference site to a terminal window.
- 
 html-reference|html-ref %dump
 https://www.codecademy.com/articles/glossary-html
 http://www.tizag.com/htmlT/reference/htmlreference.php
 http://www.simplehtmlguide.com/cheatsheet.php
 
 ' ---------------------------------------------------
-'   MAPS AND NAVIGATION
+'     MAPS AND NAVIGATION
 ' ---------------------------------------------------
 
 maps|map
@@ -150,12 +140,11 @@ https://www.google.com/maps/place/{search\+}
 
 ' Example: Get directions between two locations (this URL accepts two search
 '          queries, however, one or none will also be accepted).
- 
 directions|dirs
 https://www.google.com/maps/dir/{search\+}/{search\+}
 
 ' ---------------------------------------------------
-'   SHOPPING
+'     SHOPPING
 ' ---------------------------------------------------
 
 amazon|amzn
@@ -166,26 +155,23 @@ jet|
 https://jet.com/search?term={search\%20}
 
 ' Example: Search multiple commerce websites at once.
- 
 shopping|shop
 http://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={search\+}
 http://www.ebay.com/sch/i.html?_nkw={search\%20}
 https://jet.com/search?term={search\%20}
 
 ' ---------------------------------------------------
-'   BUSINESS/STORE SEARCHING
+'     BUSINESS/STORE SEARCHING
 ' ---------------------------------------------------
 
 ' Example: Search for businesses/stores in a location by passing two search
 '          queries to yellowpages.com.
- 
 yellowpages|yp
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 
 ' Example: Search for businesses/stores in multiple cities with multiple
 '          yellowpages.com URLs and dump the output of each to a terminal
 '          window and skip ahead 18 pages.
- 
 yellowpages-my-cities|ypmc %dump+18
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Minneapolis,+MN
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Baltimore,+MD
@@ -194,7 +180,6 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Na
 
 ' Example: Same as previous except dump the output of each URL using terminal
 '          browser 3 and open the URL for Austin, TX in GUI browser 1.
- 
 yellowpages-my-cities2-stores|ypmc2s|my-cities2-stores|mc2s %dump+10 %browser=term3
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Phoenix,+AZ
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Austin,+TX %browser=gui1
@@ -204,7 +189,6 @@ https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms=Sa
 ' Example: Search for businesses/stores with multiple business/store locator
 '          URLs and modify or change the position of the search queries passed
 '          to them.
- 
 businesses|stores|buss|strs
 https://www.yellowpages.com/search?search_terms={search\+}&geo_location_terms={search\+}
 http://www.whitepages.com/business?utf8=%E2%9C%93&key={search\+}&where={search\+}
@@ -220,31 +204,30 @@ https://www.yelp.com/search?find_desc={search\+}&find_loc={search!C\+}
 http://www.merchantcircle.com/search?q={search\+}&qn={search!C\+}
 http://www.local.com/business/results/?keyword={search\%20}&location={search!C\%20}
 
-
 ' 
 ' Instructions on adding a new URL with a {search\D} placeholder:
 ' 
-'   1. Go to the search page of the domain of interest.
-'   2. Search for something using at least two (space separated) search words.
-'   3. Copy the URL in the URL bar.
-'   4. Past the URL in this file under an alias.
-'   5. Find the search words in the URL and make note of the character(s) used
-'      to separate them (e.g. "+", "%20", "-").
-'   6. Replace the search words with "{search\D}", where D is the space
-'      delimiter.
+'     1. Go to the search page of interest.
+'     2. Search for something using at least two (space separated) search words.
+'     3. Copy the URL in the URL bar.
+'     4. Past the URL in this file under an alias.
+'     5. Find the search words in the URL and make note of the character(s) used
+'        to separate them (e.g. "+", "%20", "-").
+'     6. Replace the search words with "{search\D}", where D is the space
+'        delimiter.
 ' 
 ' Helpful notes/tips:
 ' 
-'   Search query not appearing in URL:
-'     This means the website sends them using the request's body, form fields or
-'     another method. In this case, the {search\D} placeholder cannot be used
-'     with the URL.
+'     Search query not appearing in URL:
+'         This means the website sends them using the request's body, form fields or
+'         another method. In this case, the {search\D} placeholder cannot be used
+'         with the URL.
 ' 
-'   URL is very long (e.g. contains a long key of random letters and numbers):
-'     A URL may possibly be shortened by removing some query parameters
-'     from it. Query parameters are started by a question mark ("?") and
-'     delimited by an ampersand ("&"). Please note however removing query
-'     parameters from a URL may cause the URL to stop working, so any
-'     alterations should be tested.
+'     URL is very long (e.g. contains a long key of random letters and numbers):
+'         A URL may possibly be shortened by removing some query parameters
+'         from it. Query parameters are started by a question mark ("?") and
+'         delimited by an ampersand ("&"). Please note however removing query
+'         parameters from a URL may cause the URL to stop working, so any
+'         alterations should be tested.
 ' 
 
