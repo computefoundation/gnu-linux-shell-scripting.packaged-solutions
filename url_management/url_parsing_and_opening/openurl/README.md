@@ -71,13 +71,3 @@ openurl "blogspot.com" "http://www.scholarpedia.org/article/Swarm_robotics"
 * Specify a specific browser for each alias or URL
 * Dump the output of any opened webpage to a terminal window
 * Output all generated URLs to the clipboard
-
-## Download
-
-Run the following command to download Openurl (this will download the application to "\<your-home-directory>/computingfoundation/gnu-linux-shell-scripting.packaged-solutions/openurl"):
-
-```bash
-bash <(curl -s 'https://raw.githubusercontent.com/computefoundation/'\
-'gnu-linux-shell-usage.packaged-solutions/helper_scripts/cf-glsu.ps-download-openurl.sh')
-```
-
